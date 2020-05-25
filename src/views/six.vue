@@ -15,15 +15,13 @@ import { OBJLoader, MTLLoader } from 'three-obj-mtl-loader';
 import OrbitControls from "three/examples/js/controls/OrbitControls";
 import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader";
 import { HDRLoader, HDRCubeTextureLoader } from "three/examples/jsm/loaders/HDRCubeTextureLoader";
-
 import FirstPersonControls from "three/examples/js/controls/FirstPersonControls";
 import ThreeBSP from "../plugins/ThreeBSP";
-
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
-
+import TWEEN from "@tweenjs/tween.js";
 
 
 export default {
@@ -39,9 +37,18 @@ export default {
             container: null,
             controls: null,
             leftPress: null,
-            groupName: 'J01',
+            groupName: "J01",//默认第一个
+
             labelTop: 0,
             labelLeft: 0,
+
+            door_state_left1: true,//默认是门是关闭的
+            door_state_right1: true, //默认是门是关闭的
+            //场景变量
+            HEIGHT: 50,
+            WIDTH: 400,
+            LENGTH: 200,
+            interval: 50,
         }
     },
     methods: {
@@ -155,7 +162,7 @@ export default {
         //添加环境
         createEnvironment() {
             //天空球
-            let geometry = new Three.SphereGeometry(500, 50, 50);
+            let geometry = new Three.SphereGeometry(700, 50, 50);
             let material = new Three.MeshBasicMaterial({
                 map: Three.ImageUtils.loadTexture(require(`../../public/image/timg4.jpg`)),//将图片纹理贴上
                 side: Three.BackSide/*镜像翻转，如果设置镜像翻转，那么只会看到黑漆漆的一片，因为你身处在盒子的内部，所以一定要设置镜像翻转。*/
@@ -170,10 +177,10 @@ export default {
         createFloor() {
             let that = this;
             let loader = new Three.TextureLoader();
-            loader.load(require("../../public/image/floor.jpg"), function (texture) {
+            loader.load(require("../../public/image/timg6.jpg"), function (texture) {
                 texture.wrapS = texture.wrapT = Three.RepeatWrapping;
                 texture.repeat.set(10, 10);
-                let floorGeometry = new Three.BoxGeometry(200, 400, 1);
+                let floorGeometry = new Three.BoxGeometry(that.LENGTH, that.WIDTH, 1);
                 let floorMaterial = new Three.MeshBasicMaterial({ map: texture, side: Three.DoubleSide });
                 let floor = new Three.Mesh(floorGeometry, floorMaterial);
                 floor.position.y = -0.5;
@@ -205,6 +212,8 @@ export default {
             requestAnimationFrame(this.animate);
             this.renderer.render(this.scene, this.camera);
             this.composer.render();//后期
+            this.update();
+
             let vect = this.camera.getWorldDirection(new Three.Vector3());//获取当前视角方向
             //前进
             if (this.front) {
@@ -246,20 +255,98 @@ export default {
                 this.shaftFive();
             }
         },
-        //鼠标点击事件
 
         createAllCubeWall() {
-            this.createCubeWall(400, 50, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, -150, "墙面1");
-            this.createCubeWall(400, 50, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 100, 25, -150, "墙面2");
-            this.createCubeWall(200, 50, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
-            let a = this.returnWallObject(200, 50, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, 50, "墙面");
-            let b = this.returnWallObject(30, 40, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 20, 50, "墙面");
-            let arr = [];
-            arr.push(b);
-            this.createResultBsp(a, arr);
+            let that = this;
+            this.createCubeWall(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
 
-            this.createDoor_left(15, 40, 1, 0, -57.5, 20, 50, "左门1");
-            this.createDoor_right(15, 40, 1, 0, -42.5, 20, 50, "右门1");
+
+            // this.createCubeWall(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, -150, "墙面1");
+            // this.createCubeWall(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 100, 25, -150, "墙面2");
+
+
+            //有窗户的墙
+            let wall1 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, -150, "墙面1");
+            let arr1 = [];
+            for (let i = 0; i < 7; i++) {
+                arr1.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, - 50 * i, "墙面1"));
+            }
+            this.createResultBsp(wall1, arr1);
+
+            //有窗户的墙
+            let wall2 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 100, 25, -150, "墙面2");
+            let arr2 = [];
+            for (let i = 0; i < 7; i++) {
+                arr2.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 100, 25, - 50 * i, "墙面2"));
+            }
+            this.createResultBsp(wall2, arr2);
+
+
+            //有门的墙
+            let wall3 = this.returnWallObject(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, 50, "墙面4");
+            let b = this.returnWallObject(30, 40, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 20, 50, "墙面4");
+            let arr3 = [];
+            arr3.push(b);
+            this.createResultBsp(wall3, arr3);
+
+
+            // 有字的墙
+            // let wall4 = this.returnWallObject(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
+            // let c = this.returnWallObject(150, 25, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
+            // let arr4 = [];
+            // arr4.push(c);
+            // this.createResultBsp(wall4, arr4);
+
+            // 安装门
+            this.createDoor_left(15, 40, 1, 0, -15, 20, 50, "左门1");
+            this.createDoor_right(15, 40, 1, 0, 15, 20, 50, "右门1");
+
+            //安装窗户
+            for (let i = 0; i < 7; i++) {
+                this.createWindow(20, 20, 1, 0.5, -100, 25, -50 * i, `窗户${i + 1}`);
+                this.createWindow(20, 20, 1, 0.5, 100, 25, -50 * i, `窗户${14 - i}`);
+            }
+            //安装字
+            let loader = new Three.TextureLoader();
+            loader.load(require("../../public/image/biaoyu.png"), function (texture) {
+                let doorgeometry = new Three.PlaneGeometry(100, 20);
+                let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
+                let door = new Three.Mesh(doorgeometry, doormaterial);
+                doormaterial.opacity = 1.0;
+                doormaterial.transparent = true;
+                door.position.set(0, 25, -349);
+                // door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
+                door.name = "";
+                that.scene.add(door);
+            });
+            //安装警戒线
+            let loader2 = new Three.TextureLoader();
+
+            // loader2.load(require("../../public/image/line.png"), function (texture) {
+            //     let doorgeometry = new Three.PlaneGeometry(400, 2);
+            //     let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
+            //     let door = new Three.Mesh(doorgeometry, doormaterial);
+            //     doormaterial.opacity = 1.0;
+            //     doormaterial.transparent = true;
+            //     door.position.set(-50, 0.1, -150);
+            //     door.rotation.x = -0.5 * Math.PI;
+            //     door.rotation.z = -0.5 * Math.PI;
+
+            //     // door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
+            //     door.name = "";
+
+            //     let axesHelper = new Three.AxesHelper(30);
+            //     door.add(axesHelper);
+            //     that.scene.add(door);
+            // });
+
+
+            this.addAlarmLine(400, 2, 0.5, -50, 0.1, -150, "线1", "../../public/image/line.png");
+            this.addAlarmLine(400, 2, 0.5, 50, 0.1, -150, "线2", "../../public/image/line.png");
+
+
+            this.addAlarmLineP(400, 2, 0.5, -30, 0.1, -150, "线3");
+            this.addAlarmLineP(400, 2, 0.5, 30, 0.1, -150, "线4");
 
 
         },
@@ -285,6 +372,7 @@ export default {
 
         //创建一面无窗墙
         createCubeWall(width, height, depth, angle, material, x, y, z, name) {
+            let that = this;
             let cubeGeometry = new Three.BoxGeometry(width, height, depth);
             let cube = new Three.Mesh(cubeGeometry, material);
             cube.position.x = x;
@@ -292,7 +380,7 @@ export default {
             cube.position.z = z;
             cube.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
             cube.name = name;
-            this.scene.add(cube);
+            that.scene.add(cube);
         },
 
         //返回墙对象
@@ -313,7 +401,7 @@ export default {
             let loader = new Three.TextureLoader();
             loader.load(require("../../public/image/door_left.png"), function (texture) {
                 let doorgeometry = new Three.BoxGeometry(width, height, depth);
-                doorgeometry.translate(50, 0, 0);
+                doorgeometry.translate(7.5, 0, 0);
                 let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
                 doormaterial.opacity = 1.0;
                 doormaterial.transparent = true;
@@ -321,6 +409,9 @@ export default {
                 door.position.set(x, y, z);
                 door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
                 door.name = name;
+
+                // let axesHelper = new Three.AxesHelper(30);
+                // door.add(axesHelper);
                 that.scene.add(door);
             });
         },
@@ -331,7 +422,7 @@ export default {
             loader.load(require("../../public/image/door_right.png"), function (texture) {
 
                 let doorgeometry = new Three.BoxGeometry(width, height, depth);
-                doorgeometry.translate(50, 0, 0);
+                doorgeometry.translate(-7.5, 0, 0);
                 let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
                 doormaterial.opacity = 1.0;
                 doormaterial.transparent = true;
@@ -339,11 +430,67 @@ export default {
                 door.position.set(x, y, z);
                 door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
                 door.name = name;
+                // let axesHelper = new Three.AxesHelper(30);
+                // door.add(axesHelper);
                 that.scene.add(door);
             });
         },
+        //创建窗户
+        createWindow(width, height, depth, angle, x, y, z, name) {
+            let that = this;
+            let loader = new Three.TextureLoader();
+            loader.load(require("../../public/image/window.png"), function (texture) {
+                let windowgeometry = new Three.BoxGeometry(width, height, depth);
+                let windowmaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
+                windowmaterial.opacity = 1.0;
+                windowmaterial.transparent = true;
+                let window = new Three.Mesh(windowgeometry, windowmaterial);
+                window.position.set(x, y, z);
+                window.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
+                window.name = name;
+                that.scene.add(window);
+            });
+        },
+        //创建警戒线
+        addAlarmLine(width, height, angle, x, y, z, name, imageUrl) {
+            let that = this;
+            let loader2 = new Three.TextureLoader();
+            loader2.load(require("../../public/image/line.png"), function (texture) {
+                let doorgeometry = new Three.PlaneGeometry(width, height);
+                let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
+                let door = new Three.Mesh(doorgeometry, doormaterial);
+                doormaterial.opacity = 1.0;
+                doormaterial.transparent = true;
+                door.position.set(x, y, z);
+                door.rotation.x = -angle * Math.PI;
+                door.rotation.z = -angle * Math.PI;
+
+                // door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
+                door.name = name;
+                that.scene.add(door);
+            });
+
+        },
+
+        addAlarmLineP(width, height, angle, x, y, z, name, imageUrl) {
+            let that = this;
+            let loader2 = new Three.TextureLoader();
+            loader2.load(require("../../public/image/line2.png"), function (texture) {
+                let doorgeometry = new Three.PlaneGeometry(height, width);
+                let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
+                let door = new Three.Mesh(doorgeometry, doormaterial);
+                doormaterial.opacity = 1.0;
+                doormaterial.transparent = true;
+                door.position.set(x, y, z);
+                door.rotation.x = -angle * Math.PI;
+                door.name = name;
+                that.scene.add(door);
+            });
+
+        },
+
         //获取object的父对象
-        addSelectedObject(object, outlinePass) {
+        addSelectedObject(object, outlinePass, x, y) {
             let selectedObjects = [];
             selectedObjects.push(object);
             let groupName;
@@ -353,7 +500,7 @@ export default {
                 }
                 object = object.parent;
             }
-            console.log(groupName);
+            console.log(object);
             outlinePass.selectedObjects = [object];
             this.groupName = groupName;
         },
@@ -397,6 +544,43 @@ export default {
                 this.labelTop = event.clientY;
                 this.$refs.label.innerText = intersects[0].object.name;
                 outlinePass.selectedObjects = [intersects[0].object];
+
+
+                if (intersects[0].object.name == "左门1") {
+
+                    if (this.door_state_left1) {
+                        new TWEEN.Tween(intersects[0].object.rotation).to({
+                            y: -0.5 * Math.PI
+                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                        }).start();
+                        this.door_state_left1 = false;
+                    } else {
+                        new TWEEN.Tween(intersects[0].object.rotation).to({
+                            y: 0
+                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                        }).start();
+                        this.door_state_left1 = true;
+                    }
+                }
+                else if (intersects[0].object.name == "右门1") {
+                    if (this.door_state_right1) {
+                        new TWEEN.Tween(intersects[0].object.rotation).to({
+                            y: 0.5 * Math.PI
+                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                        }).start();
+                        this.door_state_right1 = false;
+                    } else {
+                        new TWEEN.Tween(intersects[0].object.rotation).to({
+                            y: 0
+                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                        }).start();
+                        this.door_state_right1 = true;
+                    }
+                }
+
+
+
+
                 // this.rollOverMesh.position.copy(intersects[0].point);
                 // this.rollOverMesh.position.divideScalar(5).floor().multiplyScalar(5).addScalar(2.5);
 
@@ -569,7 +753,7 @@ export default {
             //复制多个J1
 
             for (let i = 0, j = 2; i < 6; i++) {
-                z -= 50;
+                z -= this.interval;
                 let copy_J1 = J1.clone();
                 copy_J1.position.z = z;
                 copy_J1.position.x = -x;
@@ -608,14 +792,19 @@ export default {
             this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x += 0.01;
 
         },
+        //转动轴5
         shaftFive() {
             this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z += 0.01;
 
         },
+
+        update() {
+            TWEEN.update();
+        }
     },
     mounted() {
         this.init();
-        this.helper();
+        // this.helper();
         this.animate();
     }
 }
