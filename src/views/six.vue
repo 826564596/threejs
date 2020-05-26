@@ -14,6 +14,7 @@ import * as Three from "three";
 import { OBJLoader, MTLLoader } from 'three-obj-mtl-loader';
 import OrbitControls from "three/examples/js/controls/OrbitControls";
 import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { HDRLoader, HDRCubeTextureLoader } from "three/examples/jsm/loaders/HDRCubeTextureLoader";
 import FirstPersonControls from "three/examples/js/controls/FirstPersonControls";
 import ThreeBSP from "../plugins/ThreeBSP";
@@ -22,6 +23,8 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 import TWEEN from "@tweenjs/tween.js";
+import Stats from "three/examples/js/libs/stats.min.js";
+
 
 
 export default {
@@ -56,6 +59,7 @@ export default {
         init() {
             let that = this;
             this.container = document.getElementById("container");
+            this.stats = this.initStats();
             this.initScene();
             this.initCamera();
             this.initRender();
@@ -194,18 +198,80 @@ export default {
 
         //场景中的内容
         initContent() {
+            let that = this;
             this.createFloor();
             this.createAllCubeWall();
             this.createEnvironment();
-            let that = this;
+
             let mtlLoader = new MTLLoader();
-            mtlLoader.load(`${that.publicPath}/model/a/605.mtl`, function (materials) {
+            mtlLoader.load(`${that.publicPath}/model/a/pt(1).mtl`, function (materials) {
+                let objLoader = new OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.load(`${that.publicPath}/model/a/pt(1).obj`, function (object) {
+
+                    console.log(object);
+                    object.scale.set(0.04, 0.04, 0.04);
+                    object.position.x = 0;
+                    object.position.y = -3;
+                    object.position.z = 0;
+
+                    that.scene.add(object);
+
+                    // that.clone(object);
+                });
+            });
+
+            let mtlLoader2 = new MTLLoader();
+            mtlLoader2.load(`${that.publicPath}/model/a/605.mtl`, function (materials) {
                 let objLoader = new OBJLoader();
                 objLoader.setMaterials(materials);
                 objLoader.load(`${that.publicPath}/model/a/605.obj`, function (object) {
-                    that.clone(object);
+
+                    console.log(object);
+                    object.position.x = -20;
+                    object.position.y = -3;
+                    object.position.z = 0;
+
+                    that.scene.add(object);
+
+                    // that.clone(object);
                 });
             });
+            let mtlLoader3 = new MTLLoader();
+            mtlLoader3.load(`${that.publicPath}/model/a/dabiao03.mtl`, function (materials) {
+                let objLoader = new OBJLoader();
+                objLoader.setMaterials(materials);
+                objLoader.load(`${that.publicPath}/model/a/dabiao03.obj`, function (object) {
+
+                    console.log(object);
+                    object.position.x = -20;
+                    object.position.y = 0;
+                    object.position.z = -30;
+
+                    that.scene.add(object);
+
+                    // that.clone(object);
+                });
+            });
+
+            // let gltfLoader = new GLTFLoader();
+            // gltfLoader.load(`${that.publicPath}/model/a/dabiao03.gltf`, function (object) {
+            //     console.log(object.scene);
+            //     object.scene.position.z = -50;
+
+            //     // that.clone(object.scene);
+
+            //     that.scene.add(object.scene);
+            // });
+        },
+        //初始化性能插件
+        initStats() {
+            let stats = new Stats();
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            this.container.appendChild(stats.domElement);
+            return stats;
         },
         // 动画
         animate() {
@@ -258,7 +324,7 @@ export default {
 
         createAllCubeWall() {
             let that = this;
-            this.createCubeWall(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
+            this.createCubeWall(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0x9cb2d1 }), 0, 25, -350, "墙面3");
 
 
             // this.createCubeWall(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, -150, "墙面1");
@@ -799,12 +865,13 @@ export default {
         },
 
         update() {
+            this.stats.update();
             TWEEN.update();
         }
     },
     mounted() {
         this.init();
-        // this.helper();
+        this.helper();
         this.animate();
     }
 }
