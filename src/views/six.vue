@@ -2,7 +2,14 @@
     <div>
         <div id="container" @click="click($event)" @mousemove.prevent="move($event)" @mousedown.prevent="down($event)" @mouseup.prevent="up($event)">
             <label ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px`"></label>
+            <div class="div-test">
+                <!-- {{this.weather.update_time}} -->
+                {{this.date}}
+
+            </div>
+
         </div>
+
     </div>
 </template>
 
@@ -15,6 +22,7 @@ import { OBJLoader, MTLLoader } from 'three-obj-mtl-loader';
 import OrbitControls from "three/examples/js/controls/OrbitControls";
 import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
 import { HDRLoader, HDRCubeTextureLoader } from "three/examples/jsm/loaders/HDRCubeTextureLoader";
 import FirstPersonControls from "three/examples/js/controls/FirstPersonControls";
 import ThreeBSP from "../plugins/ThreeBSP";
@@ -49,9 +57,13 @@ export default {
             door_state_right1: true, //默认是门是关闭的
             //场景变量
             HEIGHT: 50,
-            WIDTH: 400,
-            LENGTH: 200,
-            interval: 50,
+            WIDTH: 800,
+            LENGTH: 600,
+            interval: 100,
+            screenWidth: document.body.clientWidth,
+
+            date: new Date().toLocaleString()
+
         }
     },
     methods: {
@@ -96,24 +108,6 @@ export default {
             // objects.push( plane );
 
 
-
-
-
-
-            // //设置盒子材质 天空盒
-            // let skyGeometry = new Three.BoxGeometry(500, 500, 500);
-
-            // let materialArray = [];
-            // for (let i = 0; i < 6; i++) {
-            //     materialArray.push(new Three.MeshBasicMaterial({
-            //         map: Three.ImageUtils.loadTexture(require(`../../public/image/timg1.jpg`)),//将图片纹理贴上
-            //         side: Three.BackSide/*镜像翻转，如果设置镜像翻转，那么只会看到黑漆漆的一片，因为你身处在盒子的内部，所以一定要设置镜像翻转。*/
-            //     }));
-            // }
-            // let skyMaterial = new Three.MeshFaceMaterial(materialArray);
-            // let skyBox = new Three.Mesh(skyGeometry, skyMaterial);
-            // this.scene.add(skyBox);
-
         },
         //设置场景
         initScene() {
@@ -122,21 +116,25 @@ export default {
         },
         // 设置相机
         initCamera() {
-            this.camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 1000);
-            this.camera.position.set(0, 30, 30);
+            this.camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10000);
+            this.camera.position.set(0, 250, 500);
+            this.camera.lookAt(0, 50, 50);
         },
         // 渲染器
         initRender() {
-            this.renderer = new Three.WebGLRenderer({ antialias: true });
+            this.renderer = new Three.WebGLRenderer({ antialias: true, alpha: true, });
             this.renderer.setSize(container.clientWidth, container.clientHeight);
+            // this.renderer.setClearColor(0x000000, 1); //设置背景颜色
+            this.renderer.setClearColor(0xFFFFFF, 0.0);
             this.container.appendChild(this.renderer.domElement);
         },
         //灯光
         initLight() {
+
             let ambientLight = new Three.AmbientLight(0xffffff, 1);
             this.scene.add(ambientLight);
             // 平行光
-            let directionalLight = new Three.DirectionalLight(0xffffff, 0.3);
+            let directionalLight = new Three.DirectionalLight(0xffffff, 1);
             directionalLight.position.set(1, 0.75, 0.5).normalize();
             this.scene.add(directionalLight);
 
@@ -153,10 +151,15 @@ export default {
         //控制器
         initControls() {
             this.controls = new Three.OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
+            console.log(this.controls);
+
+
+
+            this.controls.maxZoom = 0.8;
         },
         //设置地面
         helper() {
-            let grid = new Three.GridHelper(200, 40, 0xFF0000, 0x000000);
+            let grid = new Three.GridHelper(800, 160, 0xFF0000, 0x000000);
             grid.material.opacity = 0.1;
             grid.material.transparent = true;
             this.scene.add(grid);
@@ -165,34 +168,79 @@ export default {
         },
         //添加环境
         createEnvironment() {
-            //天空球
-            let geometry = new Three.SphereGeometry(700, 50, 50);
-            let material = new Three.MeshBasicMaterial({
-                map: Three.ImageUtils.loadTexture(require(`../../public/image/timg4.jpg`)),//将图片纹理贴上
-                side: Three.BackSide/*镜像翻转，如果设置镜像翻转，那么只会看到黑漆漆的一片，因为你身处在盒子的内部，所以一定要设置镜像翻转。*/
 
-            });
-            let sphere = new Three.Mesh(geometry, material);
-            this.scene.add(sphere);
+            this.scene.background = new Three.TextureLoader()
+                .load(require("../../public/image/DEMO系统界面.png"));
+
+            // 天空盒
+            // this.scene.background = new Three.CubeTextureLoader()
+            // .load([
+            //     require("../../public/image/1.jpg"),
+            //     require("../../public/image/2.jpg"),
+            //     require("../../public/image/3.jpg"),
+            //     require("../../public/image/4.jpg"),
+            //     require("../../public/image/5.jpg"),
+            //     require("../../public/image/6.jpg"),
+            // ]);
+            // .load([
+            //     require("../../public/image/posx.jpg"),
+            //     require("../../public/image/negx.jpg"),
+            //     require("../../public/image/posy.jpg"),
+            //     require("../../public/image/negy.jpg"),
+            //     require("../../public/image/posz.jpg"),
+            //     require("../../public/image/negz.jpg"),
+            // ]);
 
 
+            // .setPath("public/image/")
+            // .load(['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg', 'negz.jpg',]);
+
+            console.log(this.scene.background);
+            // //天空球
+            // let geometry = new Three.SphereGeometry(1000, 100, 100);
+            // let material = new Three.MeshBasicMaterial({
+            //     map: Three.ImageUtils.loadTexture(require(`../../public/image/timg4.jpg`)),//将图片纹理贴上
+            //     side: Three.BackSide,/*镜像翻转，如果设置镜像翻转，那么只会看到黑漆漆的一片，因为你身处在盒子的内部，所以一定要设置镜像翻转。*/
+            //     opacity: 0.1
+            // });
+            // let sphere = new Three.Mesh(geometry, material);
+            // this.scene.add(sphere);
         },
         //添加地面
         createFloor() {
             let that = this;
-            let loader = new Three.TextureLoader();
-            loader.load(require("../../public/image/timg6.jpg"), function (texture) {
-                texture.wrapS = texture.wrapT = Three.RepeatWrapping;
-                texture.repeat.set(10, 10);
-                let floorGeometry = new Three.BoxGeometry(that.LENGTH, that.WIDTH, 1);
-                let floorMaterial = new Three.MeshBasicMaterial({ map: texture, side: Three.DoubleSide });
-                let floor = new Three.Mesh(floorGeometry, floorMaterial);
-                floor.position.y = -0.5;
-                floor.rotation.x = Math.PI / 2;
-                floor.name = "地面";
-                floor.position.z = -150;
-                that.scene.add(floor);
-            });
+
+            let floorGeometry = new Three.BoxGeometry(that.LENGTH, that.WIDTH, 1);
+            // let floorMaterial = new Three.MeshBasicMaterial({ color: 0x08441f });
+            let floorMaterial = new Three.MeshBasicMaterial({ color: 0x000E2E });
+
+            let floor = new Three.Mesh(floorGeometry, floorMaterial);
+            floor.position.y = -0.5;
+            floor.rotation.x = Math.PI / 2;
+            floor.name = "地面";
+            that.scene.add(floor);
+
+            // let loader = new Three.TextureLoader();
+            // loader.load(require("../../public/image/timg6.jpg"), function (texture) {
+            //     texture.wrapS = texture.wrapT = Three.RepeatWrapping;
+            //     texture.repeat.set(10, 10);
+            //     let floorGeometry = new Three.BoxGeometry(that.LENGTH, that.WIDTH, 1);
+            //     let floorMaterial = new Three.MeshBasicMaterial({ map: texture, side: Three.DoubleSide });
+            //     let floor = new Three.Mesh(floorGeometry, floorMaterial);
+            //     floor.position.y = -0.5;
+            //     floor.rotation.x = Math.PI / 2;
+            //     floor.name = "地面";
+            //     floor.position.z = -150;
+            //     that.scene.add(floor);
+            // });
+
+
+            //安装警戒线
+            // this.addAlarmLine(this.WIDTH, 2, 0.5, -150, 0.1, 0, "线1", "../../public/image/line.png");
+            // this.addAlarmLine(this.WIDTH, 2, 0.5, 150, 0.1, 0, "线2", "../../public/image/line.png");
+
+            // this.addAlarmLineP(this.WIDTH, 2, 0.5, -130, 0.1, 0, "线3");
+            // this.addAlarmLineP(this.WIDTH, 2, 0.5, 130, 0.1, 0, "线4");
         },
 
 
@@ -200,68 +248,103 @@ export default {
         initContent() {
             let that = this;
             this.createFloor();
-            this.createAllCubeWall();
+            // this.createAllCubeWall();
             this.createEnvironment();
 
+            //生成激光打标机
+            let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
+            let a = this.returnWallObject(30, 20, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca }), 10, 45, 0, "墙面4");
+            let arr3 = [];
+            arr3.push(a);
+            let obj2 = this.createResultBspLight(wall, arr3);
+
+
+            // 加载平台
             let mtlLoader = new MTLLoader();
-            mtlLoader.load(`${that.publicPath}/model/a/pt(1).mtl`, function (materials) {
+            mtlLoader.load(`${that.publicPath}/model/a/pt(1).mtl`, function (materials1) {
                 let objLoader = new OBJLoader();
-                objLoader.setMaterials(materials);
-                objLoader.load(`${that.publicPath}/model/a/pt(1).obj`, function (object) {
+                objLoader.setMaterials(materials1);
+                objLoader.load(`${that.publicPath}/model/a/pt(1).obj`, function (pt) {
 
-                    console.log(object);
-                    object.scale.set(0.04, 0.04, 0.04);
-                    object.position.x = 0;
-                    object.position.y = -3;
-                    object.position.z = 0;
+                    pt.scale.set(0.05, 0.05, 0.05);
+                    //加载机械臂
+                    let mtlLoader2 = new MTLLoader();
+                    mtlLoader2.load(`${that.publicPath}/model/a/605(1).mtl`, function (materials) {
+                        let objLoader2 = new OBJLoader();
+                        objLoader2.setMaterials(materials);
+                        objLoader2.load(`${that.publicPath}/model/a/model(1).obj`, function (object) {
 
-                    that.scene.add(object);
+                            console.log(object);
+                            // object.rotation.z = Math.PI;
+                            // object.position.set(0, 16, 0);
+                            // that.scene.add(object);
 
-                    // that.clone(object);
+                            that.clone(object, pt, obj2);
+                        });
+                    });
                 });
             });
 
-            let mtlLoader2 = new MTLLoader();
-            mtlLoader2.load(`${that.publicPath}/model/a/605.mtl`, function (materials) {
-                let objLoader = new OBJLoader();
-                objLoader.setMaterials(materials);
-                objLoader.load(`${that.publicPath}/model/a/605.obj`, function (object) {
 
-                    console.log(object);
-                    object.position.x = -20;
-                    object.position.y = -3;
-                    object.position.z = 0;
 
-                    that.scene.add(object);
+            // let loader = new FBXLoader();
+            // loader.load(`${that.publicPath}/model/a/1341234.FBX`, function (object) {
+            //     console.log(object);
+            //     object.position.set(0, 16, 0);
+            //     object.position.set(0, 16, 0);
+            //     that.scene.add(object);
+            //     console.log(object);
+            //     // that.clone(object);
+            // });
 
-                    // that.clone(object);
-                });
-            });
-            let mtlLoader3 = new MTLLoader();
-            mtlLoader3.load(`${that.publicPath}/model/a/dabiao03.mtl`, function (materials) {
-                let objLoader = new OBJLoader();
-                objLoader.setMaterials(materials);
-                objLoader.load(`${that.publicPath}/model/a/dabiao03.obj`, function (object) {
 
-                    console.log(object);
-                    object.position.x = -20;
-                    object.position.y = 0;
-                    object.position.z = -30;
 
-                    that.scene.add(object);
 
-                    // that.clone(object);
-                });
-            });
+
+            // let loader = new FBXLoader();
+            // loader.load(`${that.publicPath}/model/a/1341234.FBX`, function (object) {
+
+            //     object.position.set(0, 0, 0);
+            //     that.scene.add(object);
+            //     console.log(object);
+            //     // that.clone(object);
+
+
+            // });
+
 
             // let gltfLoader = new GLTFLoader();
-            // gltfLoader.load(`${that.publicPath}/model/a/dabiao03.gltf`, function (object) {
-            //     console.log(object.scene);
-            //     object.scene.position.z = -50;
+            // gltfLoader.load(`${that.publicPath}/model/a/pt.gltf`, function (pt) {
+            //     console.log(pt.scene);
+            //     pt.scene.scale.set(0.05, 0.05, 0.05);
 
-            //     // that.clone(object.scene);
 
-            //     that.scene.add(object.scene);
+            //     // let loader = new FBXLoader();
+            //     // loader.load(`${that.publicPath}/model/a/1341234.FBX`, function (object) {
+            //     //     that.clone(object, pt.scene, obj2);
+            //     // });
+
+
+            //     let gltfLoader1 = new GLTFLoader();
+            //     gltfLoader1.load(`${that.publicPath}/model/a/model.gltf`, (pt2) => {
+            //         that.clone(pt2.scene, pt.scene, obj2);
+            //     })
+
+
+            //     //加载机械臂
+            //     // let mtlLoader2 = new MTLLoader();
+            //     // mtlLoader2.load(`${that.publicPath}/model/a/605(1).mtl`, function (materials) {
+            //     //     let objLoader2 = new OBJLoader();
+            //     //     objLoader2.setMaterials(materials);
+            //     //     objLoader2.load(`${that.publicPath}/model/a/model(1).obj`, function (object) {
+
+            //     //         console.log(object);
+            //     //         that.clone(object, pt.scene, obj2);
+            //     //     });
+            //     // });
+
+
+
             // });
         },
         //初始化性能插件
@@ -320,11 +403,14 @@ export default {
             if (this.five) {
                 this.shaftFive();
             }
+            if (this.six) {
+                this.shaftSix();
+            }
         },
 
         createAllCubeWall() {
             let that = this;
-            this.createCubeWall(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0x9cb2d1 }), 0, 25, -350, "墙面3");
+            this.createCubeWall(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0x9cb2d1 }), 0, 25, -this.WIDTH / 2, "墙面3");
 
 
             // this.createCubeWall(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, -150, "墙面1");
@@ -332,29 +418,28 @@ export default {
 
 
             //有窗户的墙
-            let wall1 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, -150, "墙面1");
+            let wall1 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -this.LENGTH / 2, 25, 0, "墙面1");
             let arr1 = [];
             for (let i = 0; i < 7; i++) {
-                arr1.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, - 50 * i, "墙面1"));
+                arr1.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, "墙面1"));
             }
             this.createResultBsp(wall1, arr1);
 
             //有窗户的墙
-            let wall2 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 100, 25, -150, "墙面2");
+            let wall2 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), this.LENGTH / 2, 25, 0, "墙面2");
             let arr2 = [];
             for (let i = 0; i < 7; i++) {
-                arr2.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 100, 25, - 50 * i, "墙面2"));
+                arr2.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, "墙面2"));
             }
             this.createResultBsp(wall2, arr2);
 
 
             //有门的墙
-            let wall3 = this.returnWallObject(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, 50, "墙面4");
-            let b = this.returnWallObject(30, 40, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 20, 50, "墙面4");
+            let wall3 = this.returnWallObject(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, this.WIDTH / 2, "墙面4");
+            let b = this.returnWallObject(30, 40, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 20, this.WIDTH / 2, "墙面4");
             let arr3 = [];
             arr3.push(b);
             this.createResultBsp(wall3, arr3);
-
 
             // 有字的墙
             // let wall4 = this.returnWallObject(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
@@ -364,13 +449,13 @@ export default {
             // this.createResultBsp(wall4, arr4);
 
             // 安装门
-            this.createDoor_left(15, 40, 1, 0, -15, 20, 50, "左门1");
-            this.createDoor_right(15, 40, 1, 0, 15, 20, 50, "右门1");
+            this.createDoor_left(15, 40, 1, 0, -15, 20, this.WIDTH / 2, "左门1");
+            this.createDoor_right(15, 40, 1, 0, 15, 20, this.WIDTH / 2, "右门1");
 
             //安装窗户
             for (let i = 0; i < 7; i++) {
-                this.createWindow(20, 20, 1, 0.5, -100, 25, -50 * i, `窗户${i + 1}`);
-                this.createWindow(20, 20, 1, 0.5, 100, 25, -50 * i, `窗户${14 - i}`);
+                this.createWindow(20, 20, 1, 0.5, -this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, `窗户${i + 1}`);
+                this.createWindow(20, 20, 1, 0.5, this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, `窗户${14 - i}`);
             }
             //安装字
             let loader = new Three.TextureLoader();
@@ -380,39 +465,14 @@ export default {
                 let door = new Three.Mesh(doorgeometry, doormaterial);
                 doormaterial.opacity = 1.0;
                 doormaterial.transparent = true;
-                door.position.set(0, 25, -349);
+                door.position.set(0, 25, -that.WIDTH / 2 + 1);
                 // door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
                 door.name = "";
                 that.scene.add(door);
             });
-            //安装警戒线
-            let loader2 = new Three.TextureLoader();
-
-            // loader2.load(require("../../public/image/line.png"), function (texture) {
-            //     let doorgeometry = new Three.PlaneGeometry(400, 2);
-            //     let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
-            //     let door = new Three.Mesh(doorgeometry, doormaterial);
-            //     doormaterial.opacity = 1.0;
-            //     doormaterial.transparent = true;
-            //     door.position.set(-50, 0.1, -150);
-            //     door.rotation.x = -0.5 * Math.PI;
-            //     door.rotation.z = -0.5 * Math.PI;
-
-            //     // door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
-            //     door.name = "";
-
-            //     let axesHelper = new Three.AxesHelper(30);
-            //     door.add(axesHelper);
-            //     that.scene.add(door);
-            // });
 
 
-            this.addAlarmLine(400, 2, 0.5, -50, 0.1, -150, "线1", "../../public/image/line.png");
-            this.addAlarmLine(400, 2, 0.5, 50, 0.1, -150, "线2", "../../public/image/line.png");
 
-
-            this.addAlarmLineP(400, 2, 0.5, -30, 0.1, -150, "线3");
-            this.addAlarmLineP(400, 2, 0.5, 30, 0.1, -150, "线4");
 
 
         },
@@ -434,8 +494,26 @@ export default {
             result.name = '墙面4';
 
             this.scene.add(result);
+            return result;
         },
 
+        //创建激光打标机
+        createResultBspLight(bsp, cubeArray) {
+            let material = new Three.MeshPhongMaterial({ color: 0x9cb2d1, specular: 0x9cb2d1, shininess: 30, transparent: true, opacity: 1 });
+            let BSP = new ThreeBSP(bsp);
+            cubeArray.forEach((item, index) => {
+                let bsp = new ThreeBSP(item);
+                BSP = BSP.subtract(bsp);
+            })
+            let result = BSP.toMesh(material);
+            result.material.flatshading = Three.FlatShading;
+            result.geometry.computeFaceNormals();  //重新计算几何体侧面法向量
+            result.geometry.computeVertexNormals();
+            result.material.needsUpdate = true;  //更新纹理
+            result.geometry.buffersNeedUpdate = true;
+            result.geometry.uvsNeedUpdate = true;
+            return result;
+        },
         //创建一面无窗墙
         createCubeWall(width, height, depth, angle, material, x, y, z, name) {
             let that = this;
@@ -694,8 +772,11 @@ export default {
                 case 52: // 4
                     this.four = true;
                     break;
-                case 53: // 4
+                case 53: // 5
                     this.five = true;
+                    break;
+                case 54: // 6
+                    this.six = true;
                     break;
                 case 65: // a
                     this.left = true;
@@ -726,8 +807,11 @@ export default {
                 case 52: // 4
                     this.four = false;
                     break;
-                case 53: // 4
+                case 53: // 5
                     this.five = false;
+                    break;
+                case 54: // 6
+                    this.six = false;
                     break;
                 case 65: // a
                     this.left = false;
@@ -744,36 +828,61 @@ export default {
             }
         },
         //复制obj
-        clone(object) {
-            let z = 0;
-            let x = 60;
+        clone(object, obj, obj2) {
+            let z = 300;
+            let x = 200;
             let J1 = new Three.Group();
             let J2 = new Three.Group();
             let J3 = new Three.Group();
             let J4 = new Three.Group();
             let J5 = new Three.Group();
             let J6 = new Three.Group();
+            let J7 = new Three.Group();
+            let J8 = new Three.Group();
+
+
 
             let J3Box = new Three.Object3D();
             let J4Box = new Three.Object3D();
             let J5Box = new Three.Object3D();
             let J6Box = new Three.Object3D();
+            let J7Box = new Three.Object3D();
+            let J8Box = new Three.Object3D();
+
+
+
+            J7.add(object.getObjectByName('J7_1'));
+            J7.add(object.getObjectByName('J7_2'));
+            J7.add(object.getObjectByName('J7_3'));
+            J7.add(object.getObjectByName('J7_4'));
+            J7.add(object.getObjectByName('J7_5'));
+
+            J7.position.y = -31.6;
+            J7.position.x = 19;
+            J7Box.add(J7);
+            J7Box.name = "J7Box";
+            // let axesHelper = new Three.AxesHelper(30);
+            // J7Box.add(axesHelper);
+
+
 
             J6.add(object.getObjectByName('J6_1'));
             J6.add(object.getObjectByName('J6_2'));
+            J6Box.add(J7Box);
             J6Box.add(J6);
             J6.position.y = -31.6;
-            J6.position.x = -19;
-            // J6.position.y = 0;
-            // J6.position.x = 0;
+            J6.position.x = 19;
             J6Box.position.y = 31.6;
-            J6Box.position.x = 19;
+            J6Box.position.x = -19;
             J6Box.name = "J6Box";
 
-            // let axesHelper = new Three.AxesHelper(30);
-            // J6.add(axesHelper);
+
 
             J5.add(object.getObjectByName('J5_1'));
+            J5.add(object.getObjectByName('J5_2'));
+            J5.add(object.getObjectByName('J5_3'));
+            J5.add(object.getObjectByName('J5_4'));
+            J5.add(object.getObjectByName('J5_5'));
             J5.add(J6Box);
             J5.position.y = -32;
             J5.position.x = -5.7;
@@ -783,6 +892,7 @@ export default {
             J5Box.name = "J5Box";
 
             J4.add(object.getObjectByName('J4_1'));
+            J4.add(object.getObjectByName('J4_2'));
             J4.add(J5Box);
             J4.position.y = -28;
             J4Box.add(J4);
@@ -790,6 +900,8 @@ export default {
             J4Box.name = "J4Box";
 
             J3.add(object.getObjectByName('J3_1'));
+            J3.add(object.getObjectByName('J3_2'));
+
             J3.add(J4Box);
             J3.position.y = -14;
             J3Box.position.y = 14;
@@ -803,30 +915,61 @@ export default {
             let mesh = object;
             J1.add(mesh);
             J1.add(J2);
-            J1.position.z = z;
-            J1.position.x = -x;
-            J1.name = "J01";
+            // J1.position.z = z;
+            // J1.position.x = -x;
 
-            let copy_J1 = J1.clone();
+            J1.scale.set(20, 20, 20);
+            J1.position.set(16 * 20, 18 * 20, 12 * 20);
+
+            // J1.rotateY(0.5 * Math.PI);
+            obj.name = "J01";
+
+            // let copy_J1 = J1.clone();
+            // copy_J1.rotateY(Math.PI);
+            // copy_J1.position.z = z;
+            // copy_J1.position.x = x;
+            // copy_J1.name = "J014";
+            // console.log(obj2);
+            // J8.add(obj2.getObjectByName('墙面4'));
+            // J8Box.add(J8);
+
+            obj2.name = "激光打标机";
+            obj.add(J1);
+
+            obj2.scale.set(20, 20, 20);
+            obj2.rotation.y = 0.5 * Math.PI;
+
+            obj2.position.set(0 * 20, 35 * 20, 60 * 20);
+            obj.add(obj2);
+
+
+            obj.position.z = z;
+            obj.position.x = -x;
+            obj.rotation.y = -0.5 * Math.PI;
+
+            this.scene.add(obj);
+            // this.scene.add(copy_J1);
+
+
+            let copy_J1 = obj.clone();
             copy_J1.rotateY(Math.PI);
             copy_J1.position.z = z;
             copy_J1.position.x = x;
             copy_J1.name = "J014";
-
-            this.scene.add(J1);
             this.scene.add(copy_J1);
+
 
             //复制多个J1
 
             for (let i = 0, j = 2; i < 6; i++) {
                 z -= this.interval;
-                let copy_J1 = J1.clone();
+                let copy_J1 = obj.clone();
                 copy_J1.position.z = z;
                 copy_J1.position.x = -x;
                 copy_J1.name = `J0${j}`;
 
 
-                let copy_J2 = J1.clone();
+                let copy_J2 = obj.clone();
                 copy_J2.rotateY(Math.PI);
                 copy_J2.position.z = z;
                 copy_J2.position.x = x;
@@ -835,10 +978,7 @@ export default {
 
                 this.scene.add(copy_J1);
                 this.scene.add(copy_J2);
-
-
             }
-            console.log(this.scene);
 
         },
         //转动轴1
@@ -863,16 +1003,63 @@ export default {
             this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z += 0.01;
 
         },
+        //转动轴6
+        shaftSix() {
+            console.log(this.scene.getObjectByName(this.groupName).getObjectByName("J7Box"));
+            this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x += 0.01;
 
+        },
+        // 窗口变动触发
+        onWindowResize() {
+            console.log('s');
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+            // this.controls.handleResize();
+        },
+        //插件更新
         update() {
             this.stats.update();
             TWEEN.update();
+            // this.testRotation();
+        },
+        //测试自动旋转
+        testRotation() {
+            for (let i = 1; i <= 14; i++) {
+                this.scene.getObjectByName(`J0${i}`).getObjectByName("J2").rotation.y += 0.01;
+
+            }
+        },
+        //获取免费天气参数
+        getWeather() {
+            this.$axios.get("https://www.tianqiapi.com/free/day?appid=56547279&appsecret=Ka5e7OMY").then(response => {
+                console.log(response);
+                this.weather = response;
+            }).catch(error => {
+                console.log("失败");
+            })
         }
     },
     mounted() {
+        let that = this;
         this.init();
         this.helper();
         this.animate();
+        this.getWeather();
+        window.onresize = () => {
+            return this.onWindowResize();
+        }
+        setInterval(() => {
+            this.date = new Date().toLocaleString();
+        }, 100)
+    },
+    updated() {
+        console.log('更行');
+    },
+    watch: {
+        // date(val) {
+        //     console.log(val);
+        // }
     }
 }
 </script>
@@ -893,5 +1080,11 @@ export default {
     background-color: #fff;
     opacity: 0.5;
     border-radius: 5px;
+}
+.div-test {
+    position: absolute;
+    top: 1%;
+    right: 1%;
+    color: #fff;
 }
 </style>

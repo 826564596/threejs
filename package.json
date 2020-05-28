@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@tweenjs/tween.js": "^18.5.0",
+    "axios": "^0.19.2",
     "core-js": "^3.6.4",
     "stats": "^1.0.0",
     "three": "^0.116.1",

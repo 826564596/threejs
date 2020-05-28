@@ -46,15 +46,14 @@ export default {
             // 执行load方法，加载纹理贴图成功后，返回一个纹理对象Texture
             let that = this;
             textureLoader.load(require('../../public/image/timg.jpg'), function (texture) {
-
                 console.log(texture);
-                var material = new Three.MeshLambertMaterial({
+                let material = new Three.MeshLambertMaterial({
                     // color: 0x0000ff,
                     // 设置颜色纹理贴图：Texture对象作为材质map属性的属性值
                     map: texture,//设置颜色贴图属性值
                 }); //材质对象Material
 
-                var mesh = new Three.Mesh(geometry, material); //网格模型对象Mesh
+                let mesh = new Three.Mesh(geometry, material); //网格模型对象Mesh
                 that.scene.add(mesh); //网格模型添加到场景中
 
             })
