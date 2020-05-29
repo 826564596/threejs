@@ -1,9 +1,12 @@
 import Vue from "vue";
 import App from "./App.vue";
+import echarts from "echarts";
 import router from "./router";
 import store from "./store";
 import axios from "./plugins/axios";
+import "./plugins/element.js";
 
+Vue.prototype.$echarts = echarts;
 Vue.prototype.$axios = axios;
 
 Vue.config.productionTip = false;

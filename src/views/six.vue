@@ -1,14 +1,66 @@
 <template>
-    <div>
+    <div class="div">
+        <!-- 3D场景 -->
         <div id="container" @click="click($event)" @mousemove.prevent="move($event)" @mousedown.prevent="down($event)" @mouseup.prevent="up($event)">
-            <label ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px`"></label>
-            <div class="div-test">
-                <!-- {{this.weather.update_time}} -->
-                {{this.date}}
-
-            </div>
-
         </div>
+
+        <!-- 标题图片 -->
+        <div class="img-title" :style="`height: ${ screenHeight *0.13 }px;width: ${screenWidth}px;`">
+
+            <!-- <div class="weather" :style="`height: ${screenHeight *0.10}px;width: ${screenWidth *0.10}px;`">
+                {{this.date}}
+            </div> -->
+
+            <!-- <div class="login" :style="`height: ${screenHeight *0.10}px;width: ${screenWidth *0.10}px;`">
+                {{this.date}}
+            </div> -->
+        </div>
+        <!-- 天气和登录 -->
+        <div :style="`width:${screenWidth}px; position:absolute;`">
+            <el-row>
+                <el-col :span="5">
+                    <div class="grid-content">
+                        <div><img class="weather-img" src="../../public/image/rain.png" alt=""></div>
+                        <div>{{weather.tem}}℃</div>
+                        <div>{{weather.tem}}℃</div>
+
+                        <div>{{weather.tem}}℃</div>
+
+                    </div>
+                </el-col>
+                <el-col :span="5" :offset="14">
+                    <div class="grid-content">登录</div>
+                </el-col>
+            </el-row>
+        </div>
+
+        <!-- 左侧 -->
+        <div :style="`height:500px; width:360px; border:1px red solid;position:absolute;top:20%;left:1%;`">
+            <el-row>
+                <el-col :span="24">
+                    <div class="grid-content">右侧</div>
+                </el-col>
+            </el-row>
+        </div>
+        <!-- 右侧 -->
+        <div :style="`height:700px; width:360px; border:1px red solid;position:absolute;top:20%;right:1%;`">
+            <el-row>
+                <el-col :span="24">
+                    <div>右侧</div>
+                </el-col>
+            </el-row>
+        </div>
+
+        <!-- 二维码 -->
+        <div :style="`height:200px; width:360px; border:1px red solid;position:absolute;bottom:5%;left:1%;`">
+            <el-row>
+                <el-col :span="24">
+                    <div>二维码</div>
+                </el-col>
+            </el-row>
+        </div>
+        <!-- 点击标识 -->
+        <label v-show="labelTop!= null" ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px`"></label>
 
     </div>
 </template>
@@ -48,10 +100,10 @@ export default {
             container: null,
             controls: null,
             leftPress: null,
-            groupName: "J01",//默认第一个
+            groupName: "J01",
 
-            labelTop: 0,
-            labelLeft: 0,
+            labelTop: null,
+            labelLeft: null,
 
             door_state_left1: true,//默认是门是关闭的
             door_state_right1: true, //默认是门是关闭的
@@ -60,18 +112,24 @@ export default {
             WIDTH: 800,
             LENGTH: 600,
             interval: 100,
-            screenWidth: document.body.clientWidth,
 
-            date: new Date().toLocaleString()
+            screenWidth: window.innerWidth,
+            screenHeight: window.innerHeight,
+
+            date: new Date().toLocaleString(),
+            weather: { tem: 1 },
 
         }
     },
     methods: {
         //初始化
         init() {
+            console.log(window.innerWidth);
+            console.log(window.innerHeight);
+
             let that = this;
             this.container = document.getElementById("container");
-            this.stats = this.initStats();
+            // this.stats = this.initStats();
             this.initScene();
             this.initCamera();
             this.initRender();
@@ -123,7 +181,7 @@ export default {
         // 渲染器
         initRender() {
             this.renderer = new Three.WebGLRenderer({ antialias: true, alpha: true, });
-            this.renderer.setSize(container.clientWidth, container.clientHeight);
+            this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
             // this.renderer.setClearColor(0x000000, 1); //设置背景颜色
             this.renderer.setClearColor(0xFFFFFF, 0.0);
             this.container.appendChild(this.renderer.domElement);
@@ -170,7 +228,8 @@ export default {
         createEnvironment() {
 
             this.scene.background = new Three.TextureLoader()
-                .load(require("../../public/image/DEMO系统界面.png"));
+                .load(require("../../public/image/bg.jpg"));
+
 
             // 天空盒
             // this.scene.background = new Three.CubeTextureLoader()
@@ -361,7 +420,7 @@ export default {
             requestAnimationFrame(this.animate);
             this.renderer.render(this.scene, this.camera);
             this.composer.render();//后期
-            this.update();
+            // this.update();
 
             let vect = this.camera.getWorldDirection(new Three.Vector3());//获取当前视角方向
             //前进
@@ -1012,6 +1071,9 @@ export default {
         // 窗口变动触发
         onWindowResize() {
             console.log('s');
+            this.screenWidth = window.innerWidth;
+            this.screenHeight = window.innerHeight;
+
             this.camera.aspect = window.innerWidth / window.innerHeight;
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -1042,19 +1104,19 @@ export default {
     },
     mounted() {
         let that = this;
+        this.getWeather();
         this.init();
         this.helper();
         this.animate();
-        this.getWeather();
+
         window.onresize = () => {
             return this.onWindowResize();
         }
-        setInterval(() => {
-            this.date = new Date().toLocaleString();
-        }, 100)
+        // setInterval(() => {
+        //     this.date = new Date().toLocaleString();
+        // }, 100)
     },
     updated() {
-        console.log('更行');
     },
     watch: {
         // date(val) {
@@ -1064,7 +1126,11 @@ export default {
 }
 </script>
 
+
 <style>
+.div {
+    font-family: "微软雅黑";
+}
 #container {
     /* height: 100px; */
     height: 100%;
@@ -1081,10 +1147,34 @@ export default {
     opacity: 0.5;
     border-radius: 5px;
 }
-.div-test {
+.weather {
     position: absolute;
     top: 1%;
-    right: 1%;
+    left: 1%;
     color: #fff;
+    border: 1px red solid;
+}
+.login {
+    border: 1px red solid;
+}
+
+.img-title {
+    position: absolute;
+    background-size: 100% 100%;
+    background-image: url("../../public/image/title.png");
+}
+.grid-content {
+    border-radius: 4px;
+    height: auto;
+    border: 1px red solid;
+    position: relative;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.weather-img {
+    height: 30px;
+    width: 30px;
 }
 </style>
