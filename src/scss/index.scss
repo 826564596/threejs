@@ -1,0 +1,282 @@
+.div {
+    font-family: "微软雅黑";
+}
+
+#container {
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+}
+
+.label {
+    position: absolute;
+    height: 20px;
+    width: 50px;
+    background-color: #fff;
+    opacity: 0.5;
+    border-radius: 5px;
+}
+
+.weather {
+    position: absolute;
+    top: 1%;
+    left: 1%;
+    color: #fff;
+}
+
+.login {}
+
+.img-title {
+    position: absolute;
+    background-size: 100% 100%;
+    background-image: url("../../public/image/title.png");
+}
+
+.grid-content {
+    border-radius: 4px;
+    height: auto;
+    min-height: 50px;
+    position: relative;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
+.weather-img {
+    height: 40px;
+    width: 40px;
+    margin-right: 10px;
+}
+
+.date-img {
+    margin-left: 20px;
+    margin-right: 10px;
+    height: 30px;
+    width: 30px;
+}
+
+.information-img {
+    height: 40px;
+    width: 40px;
+    margin-right: 15px;
+    margin-top: 10px;
+}
+
+.triangle-img {
+    margin-left: 15px;
+    width: 25px;
+    height: 15px;
+}
+
+.left-table {
+    height: 500px;
+    width: 360px;
+    position: absolute;
+    top: 17%;
+    color: #fff;
+    font-size: 16px;
+    background: url("../../public/image/装饰框1.png") top left no-repeat;
+}
+
+
+.left-table-single {
+    height: 600px;
+    width: 340px;
+    position: absolute;
+    top: 13%;
+    left: 3%;
+}
+
+.left-table-single-content {
+    height: 680px;
+    background: url("../../public/image/底1.png") no-repeat;
+    background-size: 100% 100%;
+
+
+}
+
+.content-title-font {
+    font-size: 24px;
+    color: rgb(0, 228, 255);
+    font-weight: normal;
+}
+
+.left-table-single-content-number {
+    height: 125px;
+
+    .content-title {
+        @extend .content-title-font;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        // border-bottom: 1px rgb(0, 228, 255) dashed;
+    }
+
+    .content-line {
+        height: 16px;
+        background: url("../../public/image/分割线.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .content-content {
+        height: 45px;
+        @extend .content-title-font;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .content-content-left {
+        background: url("../../public/image/文字框1.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .content-content-left-s {
+        background: url("../../public/image/文字框3.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .content-content-right {
+        font-size: 28px;
+        background: url("../../public/image/文字框2.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+
+}
+
+.left-table-single-title {
+    height: 40px;
+    background: url("../../public/image/小标题.png") no-repeat;
+    color: rgb(14, 252, 255);
+    background-size: 100% 100%;
+    margin: 0 0 10px 0;
+    display: flex;
+    align-items: center;
+
+    font: {
+        size: 22px;
+        family: "微软雅黑";
+        weight: bold;
+    }
+
+    div {
+        margin: 20px;
+    }
+}
+
+.right-table {
+    @extend .left-table;
+    height: 700px;
+    right: 1%;
+    width: 300px;
+    background: url("../../public/image/装饰框2.png") top right no-repeat;
+
+}
+
+.left-table-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 250px;
+    height: 102px;
+    background: url("../../public/image/装饰框3.png") no-repeat;
+
+}
+
+.left-table-content-big {
+    @extend .left-table-content;
+    height: 300px;
+    background: url("../../public/image/小BG.png") no-repeat;
+    background-size: 100% 100%;
+    margin-top: 35px;
+
+}
+
+.right-table-content {
+    @extend .left-table-content;
+}
+
+.right-table-content-new {
+    width: 250px;
+    height: 152px;
+    background: url("../../public/image/小BG.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 18px;
+    color: rgb(100, 223, 227);
+    margin: 10px 0;
+}
+
+.border {
+    border: 1px red solid;
+}
+
+.col_background {
+    background-color: rgb(11, 23, 68);
+    border-radius: 2px;
+}
+
+.col_background_big {
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0E1832;
+    border: 2px solid rgb(80, 100, 149);
+    border-radius: 5px;
+
+    .font-big {
+        font-size: 24px;
+    }
+
+    .font-small {
+        font-size: 16px;
+        color: rgb(80, 100, 149);
+
+    }
+}
+
+.qrcode {
+    height: auto;
+    width: 240px;
+    position: absolute;
+    bottom: 3%;
+    left: 3%;
+
+    .el_content {
+        height: 100px;
+        width: 100px;
+    }
+
+    .el_bg1 {
+        background-image: url("../../public/image/隐藏按钮.png");
+        background-size: 100% 100%;
+
+    }
+
+    .el_bg2 {
+        background-image: url("../../public/image/二维码图标.png");
+        background-size: 100% 100%;
+        justify-content: center;
+        align-items: center;
+        display: flex;
+
+        div {
+            height: 90px;
+            width: 90px;
+            background-image: url("../../public/image/qrcode.png");
+            background-size: 100% 100%;
+        }
+    }
+
+
+}

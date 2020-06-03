@@ -1,64 +1,213 @@
+<!-- 多个器械 -->
 <template>
     <div class="div">
         <!-- 3D场景 -->
         <div id="container" @click="click($event)" @mousemove.prevent="move($event)" @mousedown.prevent="down($event)" @mouseup.prevent="up($event)">
         </div>
 
-        <!-- 标题图片 -->
-        <div class="img-title" :style="`height: ${ screenHeight *0.13 }px;width: ${screenWidth}px;`">
-
-            <!-- <div class="weather" :style="`height: ${screenHeight *0.10}px;width: ${screenWidth *0.10}px;`">
-                {{this.date}}
-            </div> -->
-
-            <!-- <div class="login" :style="`height: ${screenHeight *0.10}px;width: ${screenWidth *0.10}px;`">
-                {{this.date}}
-            </div> -->
-        </div>
-        <!-- 天气和登录 -->
-        <div :style="`width:${screenWidth}px; position:absolute;`">
-            <el-row>
-                <el-col :span="5">
-                    <div class="grid-content">
-                        <div><img class="weather-img" src="../../public/image/rain.png" alt=""></div>
-                        <div>{{weather.tem}}℃</div>
-                        <div>{{weather.tem}}℃</div>
-
-                        <div>{{weather.tem}}℃</div>
-
-                    </div>
-                </el-col>
-                <el-col :span="5" :offset="14">
-                    <div class="grid-content">登录</div>
-                </el-col>
-            </el-row>
-        </div>
+        <!-- 标题图片登陆 -->
+        <titles :screenWidth.sync="screenWidth" :screenHeight.sync="screenHeight"></titles>
 
         <!-- 左侧 -->
-        <div :style="`height:500px; width:360px; border:1px red solid;position:absolute;top:20%;left:1%;`">
+        <div class="left-table">
+            <!-- 第一行 -->
             <el-row>
-                <el-col :span="24">
-                    <div class="grid-content">右侧</div>
+                <el-col :span="18" :offset="6">
+                    <div class="title">机械位置</div>
+                    <div class="left-table-content">
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                纬度
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                经度
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                N2152122
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                E2152122
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                事件时间
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                定位时间
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                2020/06/01
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                2020/06/01
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-col>
+            </el-row>
+            <!-- 第二行 -->
+            <el-row>
+                <el-col :span="18" :offset="6">
+                    <div class="title">机械位置</div>
+                    <div class="left-table-content">
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                纬度
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                经度
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                N2152122
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                E2152122
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                事件时间
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                定位时间
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                2020/06/01
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                2020/06/01
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-col>
+            </el-row>
+            <!-- 第三行 -->
+            <el-row>
+                <el-col :span="18" :offset="6">
+                    <div class="left-table-content-big">
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
+                    </div>
                 </el-col>
             </el-row>
         </div>
         <!-- 右侧 -->
-        <div :style="`height:700px; width:360px; border:1px red solid;position:absolute;top:20%;right:1%;`">
+        <div class="right-table">
+            <!-- 第一行 -->
             <el-row>
-                <el-col :span="24">
-                    <div>右侧</div>
+                <el-col :span="18" :offset="1">
+                    <div class="title">机械位置</div>
+                    <div class="left-table-content">
+                        <el-row class="">
+                            <el-col :span="10" :offset="1">
+                                纬度
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                经度
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                N2152122
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                E2152122
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                事件时间
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                定位时间
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                2020/06/01
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                2020/06/01
+                            </el-col>
+                        </el-row>
+                    </div>
                 </el-col>
             </el-row>
+            <el-row>
+                <el-col :span="18" :offset="1">
+                    <div class="title">柱状图</div>
+                    <div class="right-table-content-new" id="echarts-bar">
+                    </div>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="18" :offset="1">
+                    <div class="title">折线图</div>
+                    <div class="right-table-content-new" id="echarts-line">
+                    </div>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="18" :offset="1">
+                    <div class="title">饼图</div>
+                    <div class="right-table-content-new" id="echarts-pie">
+                    </div>
+                </el-col>
+            </el-row>
+
         </div>
 
         <!-- 二维码 -->
-        <div :style="`height:200px; width:360px; border:1px red solid;position:absolute;bottom:5%;left:1%;`">
-            <el-row>
-                <el-col :span="24">
-                    <div>二维码</div>
-                </el-col>
-            </el-row>
-        </div>
+        <qrcode />
         <!-- 点击标识 -->
         <label v-show="labelTop!= null" ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px`"></label>
 
@@ -89,6 +238,7 @@ import Stats from "three/examples/js/libs/stats.min.js";
 
 export default {
     name: "App",
+
     data() {
         return {
             camera: null,//相机
@@ -98,34 +248,29 @@ export default {
             mesh: null,//网格模型
             publicPath: "http://192.168.1.94:8081",
             container: null,
-            controls: null,
-            leftPress: null,
-            groupName: "J01",
+            controls: null,//控制器
+            leftPress: null,//鼠标按下标志
+            groupName: "J01",//默认机器名称
 
-            labelTop: null,
-            labelLeft: null,
+            labelTop: null,//label位置
+            labelLeft: null,//label位置
 
             door_state_left1: true,//默认是门是关闭的
             door_state_right1: true, //默认是门是关闭的
+
             //场景变量
             HEIGHT: 50,
             WIDTH: 800,
             LENGTH: 600,
             interval: 100,
-
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
-
-            date: new Date().toLocaleString(),
-            weather: { tem: 1 },
 
         }
     },
     methods: {
         //初始化
         init() {
-            console.log(window.innerWidth);
-            console.log(window.innerHeight);
 
             let that = this;
             this.container = document.getElementById("container");
@@ -210,12 +355,9 @@ export default {
         initControls() {
             this.controls = new Three.OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
             console.log(this.controls);
-
-
-
             this.controls.maxZoom = 0.8;
         },
-        //设置地面
+        //设置辅助坐标系
         helper() {
             let grid = new Three.GridHelper(800, 160, 0xFF0000, 0x000000);
             grid.material.opacity = 0.1;
@@ -703,8 +845,22 @@ export default {
                 }
                 object = object.parent;
             }
-            console.log(object);
+
             outlinePass.selectedObjects = [object];
+
+            if (groupName) {
+
+                //删除场景GPU缓存
+                this.scene.children = {};
+
+                this.renderer.dispose();
+
+
+                // cancelAnimationFrame(this.animate());
+                // this.renderer = null;
+                this.$router.push({ name: "seven", params: { groupName: groupName } });
+            }
+
             this.groupName = groupName;
         },
         definedComposer() {
@@ -743,9 +899,9 @@ export default {
                 let selectedObject = intersects[0].object;
                 this.addSelectedObject(selectedObject, outlinePass, evnet.clientX, event.clientY);
                 //给标签赋值
-                this.labelLeft = event.clientX;
-                this.labelTop = event.clientY;
-                this.$refs.label.innerText = intersects[0].object.name;
+                // this.labelLeft = event.clientX;
+                // this.labelTop = event.clientY;
+                // this.$refs.label.innerText = intersects[0].object.name;
                 outlinePass.selectedObjects = [intersects[0].object];
 
 
@@ -1092,19 +1248,159 @@ export default {
 
             }
         },
-        //获取免费天气参数
-        getWeather() {
-            this.$axios.get("https://www.tianqiapi.com/free/day?appid=56547279&appsecret=Ka5e7OMY").then(response => {
-                console.log(response);
-                this.weather = response;
-            }).catch(error => {
-                console.log("失败");
-            })
-        }
+
+        //加载echarts树状图
+        initEchartBar() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-bar'));
+            // 绘制图表
+            myChart.setOption({
+                color: ['#3398DB'],
+                // tooltip: {
+                //     trigger: 'axis',
+                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                //     }
+                // },
+                grid: {
+                    left: '0%',
+                    bottom: '3%',
+                    top: "5%",
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd', // 颜色
+                                width: 1 // 粗细
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        id: 'dataZoomX',
+                        type: 'slider',
+                        start: 0,
+                        end: 30,
+                    }
+                ],
+                yAxis: [
+                    {
+                        show: false,
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: '40%',
+                        data: [10, 52, 200, 334, 390, 330, 220]
+                    }
+                ]
+            });
+        },
+        //加载echart折线图
+        initEchartLine() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-line'));
+            let option = {
+                grid: {
+                    left: '0%',
+                    bottom: '3%',
+                    top: "5%",
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    axisLabel: {
+                        interval: 0,
+                    },
+                    axisTick: {
+                        alignWithLabel: true
+                    },
+
+                    axisLine: {
+                        lineStyle: {
+                            color: '#ddd', // 颜色
+                            width: 1 // 粗细
+                        }
+                    },
+                },
+                yAxis: {
+                    show: false,
+                    type: 'value'
+                },
+                series: [{
+                    data: [820, 932, 901, 934, 1290, 1330, 1320],
+                    type: 'line'
+                }]
+            };
+            myChart.setOption(option);
+        },
+        initEchartPie() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-pie'));
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    orient: 'vertical',
+                    left: 10,
+                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                },
+                series: [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: ['50%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: [
+                            { value: 335, },
+                            { value: 310, },
+                            { value: 234, },
+                            { value: 135, },
+                            { value: 1548, }
+                        ]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+        },
+
     },
     mounted() {
         let that = this;
-        this.getWeather();
+        this.initEchartBar();
+        this.initEchartLine();
+        this.initEchartPie();
+
         this.init();
         this.helper();
         this.animate();
@@ -1112,9 +1408,6 @@ export default {
         window.onresize = () => {
             return this.onWindowResize();
         }
-        // setInterval(() => {
-        //     this.date = new Date().toLocaleString();
-        // }, 100)
     },
     updated() {
     },
@@ -1127,54 +1420,6 @@ export default {
 </script>
 
 
-<style>
-.div {
-    font-family: "微软雅黑";
-}
-#container {
-    /* height: 100px; */
-    height: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-}
-.label {
-    position: absolute;
-    height: 20px;
-    width: 50px;
-    background-color: #fff;
-    opacity: 0.5;
-    border-radius: 5px;
-}
-.weather {
-    position: absolute;
-    top: 1%;
-    left: 1%;
-    color: #fff;
-    border: 1px red solid;
-}
-.login {
-    border: 1px red solid;
-}
-
-.img-title {
-    position: absolute;
-    background-size: 100% 100%;
-    background-image: url("../../public/image/title.png");
-}
-.grid-content {
-    border-radius: 4px;
-    height: auto;
-    border: 1px red solid;
-    position: relative;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.weather-img {
-    height: 30px;
-    width: 30px;
-}
+<style lang='scss'>
+@import "../scss/index.scss";
 </style>
