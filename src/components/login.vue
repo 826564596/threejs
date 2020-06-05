@@ -1,9 +1,9 @@
 <!--  登陆登出 -->
 <template>
     <div class="grid-content">
-        <img class="information-img" src="../../public/image/消息.png" />
+        <img class="information-img" src="../assets/image/消息.png" />
         <div>登出</div>
-        <img class="triangle-img" src="../../public/image/下拉三角.png" />
+        <img class="triangle-img" src="../assets/image/下拉三角.png" />
     </div>
 </template>
 

@@ -1,10 +1,5 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import one from "../views/one.vue";
-import two from "../views/two.vue";
-import three from "../views/three.vue";
-import four from "../views/four.vue";
-import five from "../views/five.vue";
 import six from "../views/six.vue";
 import seven from "../views/seven.vue";
 
@@ -23,9 +18,9 @@ const routes = [
         component: seven,
     },
     {
-        path: "/about",
-        name: "about",
-        component: () => import("../views/about.vue"),
+        path: "/eight",
+        name: "eight",
+        component: () => import("../views/eight.vue"),
     },
 ];
 

@@ -10,6 +10,11 @@
     width: 100%;
 }
 
+.container_bg {
+    background: url("../assets/image/bg.jpg") no-repeat;
+    background-size: 100% 100%;
+}
+
 .label {
     position: absolute;
     height: 20px;
@@ -26,12 +31,12 @@
     color: #fff;
 }
 
-.login {}
+
 
 .img-title {
     position: absolute;
     background-size: 100% 100%;
-    background-image: url("../../public/image/title.png");
+    background-image: url("../assets/image/title.png");
 }
 
 .grid-content {
@@ -79,28 +84,173 @@
     top: 17%;
     color: #fff;
     font-size: 16px;
-    background: url("../../public/image/装饰框1.png") top left no-repeat;
+    background: url("../assets/image/装饰框1.png") top left no-repeat;
 }
 
-
 .left-table-single {
-    height: 600px;
+    height: 680px;
     width: 340px;
     position: absolute;
     top: 13%;
     left: 3%;
 }
 
-.left-table-single-content {
+.right-table-single {
     height: 680px;
-    background: url("../../public/image/底1.png") no-repeat;
+    width: 500px;
+    position: absolute;
+    top: 13%;
+    right: 3%;
+}
+
+.left-table-single-content {
+    height: 600px;
+    background: url("../assets/image/底1.png") no-repeat;
     background-size: 100% 100%;
+}
 
+.right-table-single-content-one {
+    $myheight: 135px;
+    $mywidth: 500px;
 
+    height: $myheight;
+
+    border: 1px rgb(96, 118, 173) solid;
+
+    div {
+        // opacity: 0.5;
+        // height: 100%;
+        // width: 100%;
+        // background-color: rgb(11, 21, 14);
+    }
+
+    img {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+    }
+
+    img:nth-child(1) {
+        top: -1px;
+        left: $mywidth - 15px;
+    }
+
+    img:nth-child(2) {
+        top: $myheight - 13px;
+        left: $mywidth - 14px;
+        transform: rotate(90deg);
+    }
+
+    img:nth-child(3) {
+        top: $myheight - 12px;
+        left: -0px;
+        transform: rotate(180deg);
+    }
+
+    img:nth-child(4) {
+        top: -0px;
+        left: -1px;
+        transform: rotate(270deg);
+    }
+}
+
+.right-table-single-content-two {
+    $myheight: 300px;
+    $mywidth: 500px;
+
+    height: $myheight;
+    border: 1px rgb(96, 118, 173) solid;
+
+    div {
+        opacity: 0.5;
+        height: 100%;
+        width: 100%;
+        background-color: rgb(11, 21, 14);
+    }
+
+    img {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+    }
+
+    img:nth-child(1) {
+        top: -1px;
+        left: $mywidth - 15px;
+    }
+
+    img:nth-child(2) {
+        top: $myheight - 13px;
+        left: $mywidth - 14px;
+        transform: rotate(90deg);
+    }
+
+    img:nth-child(3) {
+        top: $myheight - 12px;
+        left: -0px;
+        transform: rotate(180deg);
+    }
+
+    img:nth-child(4) {
+        top: -0px;
+        left: -1px;
+        transform: rotate(270deg);
+    }
+}
+
+.right-table-single-content-three {
+    $myheight: 200px;
+    $mywidth: 500px;
+
+    height: $myheight;
+
+    border: 1px rgb(96, 118, 173) solid;
+
+    div {
+        opacity: 0.5;
+        height: 100%;
+        width: 100%;
+        background-color: rgb(11, 21, 14);
+    }
+
+    img {
+        width: 15px;
+        height: 15px;
+        position: absolute;
+    }
+
+    img:nth-child(1) {
+        top: -2px;
+        left: $mywidth - 15px;
+    }
+
+    img:nth-child(2) {
+        top: $myheight - 13px;
+        left: $mywidth - 14px;
+        transform: rotate(90deg);
+    }
+
+    img:nth-child(3) {
+        top: $myheight - 12px;
+        left: -0px;
+        transform: rotate(180deg);
+    }
+
+    img:nth-child(4) {
+        top: -0px;
+        left: -1px;
+        transform: rotate(270deg);
+    }
+}
+
+//基础文字
+.base-font {
+    font-size: 16px;
+    color: #ffffff;
 }
 
 .content-title-font {
-    font-size: 24px;
+    font-size: 22px;
     color: rgb(0, 228, 255);
     font-weight: normal;
 }
@@ -118,12 +268,12 @@
 
     .content-line {
         height: 16px;
-        background: url("../../public/image/分割线.png") no-repeat;
+        background: url("../assets/image/分割线.png") no-repeat;
         background-size: 100% 100%;
     }
 
     .content-content {
-        height: 45px;
+        height: 35px;
         @extend .content-title-font;
         display: flex;
         align-items: center;
@@ -131,27 +281,25 @@
     }
 
     .content-content-left {
-        background: url("../../public/image/文字框1.png") no-repeat;
+        background: url("../assets/image/文字框1.png") no-repeat;
         background-size: 100% 100%;
     }
 
     .content-content-left-s {
-        background: url("../../public/image/文字框3.png") no-repeat;
+        background: url("../assets/image/文字框3.png") no-repeat;
         background-size: 100% 100%;
     }
 
     .content-content-right {
-        font-size: 28px;
-        background: url("../../public/image/文字框2.png") no-repeat;
+        font-size: 24px;
+        background: url("../assets/image/文字框2.png") no-repeat;
         background-size: 100% 100%;
     }
-
-
 }
 
 .left-table-single-title {
     height: 40px;
-    background: url("../../public/image/小标题.png") no-repeat;
+    background: url("../assets/image/小标题.png") no-repeat;
     color: rgb(14, 252, 255);
     background-size: 100% 100%;
     margin: 0 0 10px 0;
@@ -174,8 +322,7 @@
     height: 700px;
     right: 1%;
     width: 300px;
-    background: url("../../public/image/装饰框2.png") top right no-repeat;
-
+    background: url("../assets/image/装饰框2.png") top right no-repeat;
 }
 
 .left-table-content {
@@ -184,17 +331,15 @@
     justify-content: space-around;
     width: 250px;
     height: 102px;
-    background: url("../../public/image/装饰框3.png") no-repeat;
-
+    background: url("../assets/image/装饰框3.png") no-repeat;
 }
 
 .left-table-content-big {
     @extend .left-table-content;
     height: 300px;
-    background: url("../../public/image/小BG.png") no-repeat;
+    background: url("../assets/image/小BG.png") no-repeat;
     background-size: 100% 100%;
     margin-top: 35px;
-
 }
 
 .right-table-content {
@@ -204,7 +349,7 @@
 .right-table-content-new {
     width: 250px;
     height: 152px;
-    background: url("../../public/image/小BG.png") no-repeat;
+    background: url("../assets/image/小BG.png") no-repeat;
     background-size: 100% 100%;
 }
 
@@ -230,7 +375,7 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    background-color: #0E1832;
+    background-color: #0e1832;
     border: 2px solid rgb(80, 100, 149);
     border-radius: 5px;
 
@@ -241,7 +386,6 @@
     .font-small {
         font-size: 16px;
         color: rgb(80, 100, 149);
-
     }
 }
 
@@ -258,13 +402,12 @@
     }
 
     .el_bg1 {
-        background-image: url("../../public/image/隐藏按钮.png");
+        background-image: url("../assets/image/隐藏按钮.png");
         background-size: 100% 100%;
-
     }
 
     .el_bg2 {
-        background-image: url("../../public/image/二维码图标.png");
+        background-image: url("../assets/image/二维码图标.png");
         background-size: 100% 100%;
         justify-content: center;
         align-items: center;
@@ -273,8 +416,91 @@
         div {
             height: 90px;
             width: 90px;
-            background-image: url("../../public/image/qrcode.png");
+            background-image: url("../assets/image/qrcode.png");
             background-size: 100% 100%;
+        }
+    }
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.alert-title {
+    height: 40px;
+    @extend .center;
+}
+
+.bottomText {
+    position: absolute;
+    bottom: 1%;
+    left: 50%;
+    margin-left: -300px;
+    height: 55px;
+    width: 600px;
+    font-size: 18px;
+    color: rgb(22, 117, 168);
+    font-weight: bold;
+
+    div {
+        height: 30px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+}
+
+.body-content-left {
+    position: absolute;
+    top: 16%;
+    left: 2%;
+    height: 75%;
+    width: 17%;
+    box-sizing: border-box;
+    background: url("../assets/image/列表框.png") no-repeat;
+    background-size: 100% 100%;
+    @extend .center;
+
+}
+
+.body-content-right {
+    position: absolute;
+    top: 16%;
+    left: 20%;
+    height: 75%;
+    width: 77%;
+    box-sizing: border-box;
+    background: url("../assets/image/通用bg.png") no-repeat;
+    background-size: 100% 100%;
+
+}
+
+.body-content-left-content {
+    height: 90%;
+    width: 80%;
+    margin-top: (110/1080) *100%;
+
+    .s {
+        height: (100% / 7);
+        width: 100%;
+        @extend .center;
+
+        .sa {
+            height: 69%;
+            width: 90%;
+            background: url("../assets/image/选中按钮.png") no-repeat;
+            background-size: 100% 100%;
+            @extend .center;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .as {
+            height: 69%;
+            width: 90%;
         }
     }
 

@@ -9,7 +9,8 @@
 
         <!-- 二维码 -->
         <qrcode />
-
+        <!-- 底部文字 -->
+        <bottomText />
         <!-- 左侧 -->
         <div class="left-table-single ">
             <!-- 第一行 -->
@@ -226,6 +227,97 @@
 
         </div>
 
+        <div class="right-table-single ">
+            <!-- 第一行 -->
+            <el-row>
+                <el-col :span="18">
+                    <div class=" left-table-single-title">
+                        <div>报警系统</div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <div class="right-table-single-content-one ">
+
+                        <img src="../assets/image/框装饰.png" />
+                        <img src="../assets/image/框装饰.png" />
+                        <img src="../assets/image/框装饰.png" />
+                        <img src="../assets/image/框装饰.png" />
+
+                        <el-row>
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当天计数及时长
+                                </div>
+                            </el-col>
+
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当月计数及时长
+                                </div>
+                            </el-col>
+                        </el-row>
+
+                        <el-row>
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当天计数及时长
+                                </div>
+                            </el-col>
+
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当月计数及时长
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-col>
+            </el-row>
+            <!-- 第二行 -->
+            <el-row>
+                <el-col :span="18">
+                    <div class=" left-table-single-title" style="margin-top:10px">
+                        <div>点检设备</div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <div class="right-table-single-content-two ">
+                        <div>
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+
+            <!-- 第三行 -->
+            <el-row>
+                <el-col :span="18">
+                    <div class=" left-table-single-title" style="margin-top:10px">
+                        <div>效率分析</div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <div class="right-table-single-content-three ">
+                        <div>
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+        </div>
+
     </div>
 
 </template>
@@ -328,18 +420,18 @@ export default {
 
             // 加载平台
             let mtlLoader = new MTLLoader();
-            mtlLoader.load(`${that.publicPath}/model/a/pt(1).mtl`, function (materials1) {
+            mtlLoader.load(`${that.publicPath}/model/pt(1).mtl`, function (materials1) {
                 let objLoader = new OBJLoader();
                 objLoader.setMaterials(materials1);
-                objLoader.load(`${that.publicPath}/model/a/pt(1).obj`, function (pt) {
+                objLoader.load(`${that.publicPath}/model/pt(1).obj`, function (pt) {
 
                     pt.scale.set(0.05, 0.05, 0.05);
                     //加载机械臂
                     let mtlLoader2 = new MTLLoader();
-                    mtlLoader2.load(`${that.publicPath}/model/a/605(1).mtl`, function (materials) {
+                    mtlLoader2.load(`${that.publicPath}/model/605(1).mtl`, function (materials) {
                         let objLoader2 = new OBJLoader();
                         objLoader2.setMaterials(materials);
-                        objLoader2.load(`${that.publicPath}/model/a/model(1).obj`, function (object) {
+                        objLoader2.load(`${that.publicPath}/model/model(1).obj`, function (object) {
 
                             console.log(object);
                             // object.rotation.z = Math.PI;
@@ -463,7 +555,7 @@ export default {
         },
         //添加环境
         createEnvironment() {
-            this.scene.background = new Three.TextureLoader().load(require("../../public/image/bg.jpg"));
+            this.scene.background = new Three.TextureLoader().load(require("../assets/image/bg.jpg"));
         },
 
         //返回墙对象
@@ -610,6 +702,8 @@ export default {
 
 
     mounted() {
+        console.log(window);
+        // window.visualViewport.scale = 0.5;
         this.groupName = this.$route.params.groupName;
         this.init();
         this.helper();
@@ -619,6 +713,11 @@ export default {
             return this.onWindowResize();
         }
 
+    },
+    destroyed() {
+        //页面销毁时删除场景
+        this.scene.children = {};
+        this.renderer.dispose();
     },
 
 

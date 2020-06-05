@@ -208,6 +208,8 @@
 
         <!-- 二维码 -->
         <qrcode />
+        <!-- 底部文字 -->
+        <bottomText />
         <!-- 点击标识 -->
         <label v-show="labelTop!= null" ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px`"></label>
 
@@ -370,42 +372,8 @@ export default {
         createEnvironment() {
 
             this.scene.background = new Three.TextureLoader()
-                .load(require("../../public/image/bg.jpg"));
+                .load(require("../assets/image/bg.jpg"));
 
-
-            // 天空盒
-            // this.scene.background = new Three.CubeTextureLoader()
-            // .load([
-            //     require("../../public/image/1.jpg"),
-            //     require("../../public/image/2.jpg"),
-            //     require("../../public/image/3.jpg"),
-            //     require("../../public/image/4.jpg"),
-            //     require("../../public/image/5.jpg"),
-            //     require("../../public/image/6.jpg"),
-            // ]);
-            // .load([
-            //     require("../../public/image/posx.jpg"),
-            //     require("../../public/image/negx.jpg"),
-            //     require("../../public/image/posy.jpg"),
-            //     require("../../public/image/negy.jpg"),
-            //     require("../../public/image/posz.jpg"),
-            //     require("../../public/image/negz.jpg"),
-            // ]);
-
-
-            // .setPath("public/image/")
-            // .load(['posx.jpg', 'negx.jpg', 'posy.jpg', 'negy.jpg', 'posz.jpg', 'negz.jpg',]);
-
-            console.log(this.scene.background);
-            // //天空球
-            // let geometry = new Three.SphereGeometry(1000, 100, 100);
-            // let material = new Three.MeshBasicMaterial({
-            //     map: Three.ImageUtils.loadTexture(require(`../../public/image/timg4.jpg`)),//将图片纹理贴上
-            //     side: Three.BackSide,/*镜像翻转，如果设置镜像翻转，那么只会看到黑漆漆的一片，因为你身处在盒子的内部，所以一定要设置镜像翻转。*/
-            //     opacity: 0.1
-            // });
-            // let sphere = new Three.Mesh(geometry, material);
-            // this.scene.add(sphere);
         },
         //添加地面
         createFloor() {
@@ -422,7 +390,7 @@ export default {
             that.scene.add(floor);
 
             // let loader = new Three.TextureLoader();
-            // loader.load(require("../../public/image/timg6.jpg"), function (texture) {
+            // loader.load(require("../assets/image/timg6.jpg"), function (texture) {
             //     texture.wrapS = texture.wrapT = Three.RepeatWrapping;
             //     texture.repeat.set(10, 10);
             //     let floorGeometry = new Three.BoxGeometry(that.LENGTH, that.WIDTH, 1);
@@ -437,8 +405,8 @@ export default {
 
 
             //安装警戒线
-            // this.addAlarmLine(this.WIDTH, 2, 0.5, -150, 0.1, 0, "线1", "../../public/image/line.png");
-            // this.addAlarmLine(this.WIDTH, 2, 0.5, 150, 0.1, 0, "线2", "../../public/image/line.png");
+            // this.addAlarmLine(this.WIDTH, 2, 0.5, -150, 0.1, 0, "线1", "../assets/image/line.png");
+            // this.addAlarmLine(this.WIDTH, 2, 0.5, 150, 0.1, 0, "线2", "../assets/image/line.png");
 
             // this.addAlarmLineP(this.WIDTH, 2, 0.5, -130, 0.1, 0, "线3");
             // this.addAlarmLineP(this.WIDTH, 2, 0.5, 130, 0.1, 0, "线4");
@@ -462,18 +430,18 @@ export default {
 
             // 加载平台
             let mtlLoader = new MTLLoader();
-            mtlLoader.load(`${that.publicPath}/model/a/pt(1).mtl`, function (materials1) {
+            mtlLoader.load(`${that.publicPath}/model/pt(1).mtl`, function (materials1) {
                 let objLoader = new OBJLoader();
                 objLoader.setMaterials(materials1);
-                objLoader.load(`${that.publicPath}/model/a/pt(1).obj`, function (pt) {
+                objLoader.load(`${that.publicPath}/model/pt(1).obj`, function (pt) {
 
                     pt.scale.set(0.05, 0.05, 0.05);
                     //加载机械臂
                     let mtlLoader2 = new MTLLoader();
-                    mtlLoader2.load(`${that.publicPath}/model/a/605(1).mtl`, function (materials) {
+                    mtlLoader2.load(`${that.publicPath}/model/605(1).mtl`, function (materials) {
                         let objLoader2 = new OBJLoader();
                         objLoader2.setMaterials(materials);
-                        objLoader2.load(`${that.publicPath}/model/a/model(1).obj`, function (object) {
+                        objLoader2.load(`${that.publicPath}/model/model(1).obj`, function (object) {
 
                             console.log(object);
                             // object.rotation.z = Math.PI;
@@ -489,7 +457,7 @@ export default {
 
 
             // let loader = new FBXLoader();
-            // loader.load(`${that.publicPath}/model/a/1341234.FBX`, function (object) {
+            // loader.load(`${that.publicPath}/model/1341234.FBX`, function (object) {
             //     console.log(object);
             //     object.position.set(0, 16, 0);
             //     object.position.set(0, 16, 0);
@@ -503,7 +471,7 @@ export default {
 
 
             // let loader = new FBXLoader();
-            // loader.load(`${that.publicPath}/model/a/1341234.FBX`, function (object) {
+            // loader.load(`${that.publicPath}/model/1341234.FBX`, function (object) {
 
             //     object.position.set(0, 0, 0);
             //     that.scene.add(object);
@@ -515,29 +483,29 @@ export default {
 
 
             // let gltfLoader = new GLTFLoader();
-            // gltfLoader.load(`${that.publicPath}/model/a/pt.gltf`, function (pt) {
+            // gltfLoader.load(`${that.publicPath}/model/pt.gltf`, function (pt) {
             //     console.log(pt.scene);
             //     pt.scene.scale.set(0.05, 0.05, 0.05);
 
 
             //     // let loader = new FBXLoader();
-            //     // loader.load(`${that.publicPath}/model/a/1341234.FBX`, function (object) {
+            //     // loader.load(`${that.publicPath}/model/1341234.FBX`, function (object) {
             //     //     that.clone(object, pt.scene, obj2);
             //     // });
 
 
             //     let gltfLoader1 = new GLTFLoader();
-            //     gltfLoader1.load(`${that.publicPath}/model/a/model.gltf`, (pt2) => {
+            //     gltfLoader1.load(`${that.publicPath}/model/model.gltf`, (pt2) => {
             //         that.clone(pt2.scene, pt.scene, obj2);
             //     })
 
 
             //     //加载机械臂
             //     // let mtlLoader2 = new MTLLoader();
-            //     // mtlLoader2.load(`${that.publicPath}/model/a/605(1).mtl`, function (materials) {
+            //     // mtlLoader2.load(`${that.publicPath}/model/605(1).mtl`, function (materials) {
             //     //     let objLoader2 = new OBJLoader();
             //     //     objLoader2.setMaterials(materials);
-            //     //     objLoader2.load(`${that.publicPath}/model/a/model(1).obj`, function (object) {
+            //     //     objLoader2.load(`${that.publicPath}/model/model(1).obj`, function (object) {
 
             //     //         console.log(object);
             //     //         that.clone(object, pt.scene, obj2);
@@ -660,7 +628,7 @@ export default {
             }
             //安装字
             let loader = new Three.TextureLoader();
-            loader.load(require("../../public/image/biaoyu.png"), function (texture) {
+            loader.load(require("../assets/image/biaoyu.png"), function (texture) {
                 let doorgeometry = new Three.PlaneGeometry(100, 20);
                 let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
                 let door = new Three.Mesh(doorgeometry, doormaterial);
@@ -744,7 +712,7 @@ export default {
         createDoor_left(width, height, depth, angle, x, y, z, name) {
             let that = this;
             let loader = new Three.TextureLoader();
-            loader.load(require("../../public/image/door_left.png"), function (texture) {
+            loader.load(require("../assets/image/door_left.png"), function (texture) {
                 let doorgeometry = new Three.BoxGeometry(width, height, depth);
                 doorgeometry.translate(7.5, 0, 0);
                 let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
@@ -764,7 +732,7 @@ export default {
         createDoor_right(width, height, depth, angle, x, y, z, name) {
             let that = this;
             let loader = new Three.TextureLoader();
-            loader.load(require("../../public/image/door_right.png"), function (texture) {
+            loader.load(require("../assets/image/door_right.png"), function (texture) {
 
                 let doorgeometry = new Three.BoxGeometry(width, height, depth);
                 doorgeometry.translate(-7.5, 0, 0);
@@ -784,7 +752,7 @@ export default {
         createWindow(width, height, depth, angle, x, y, z, name) {
             let that = this;
             let loader = new Three.TextureLoader();
-            loader.load(require("../../public/image/window.png"), function (texture) {
+            loader.load(require("../assets/image/window.png"), function (texture) {
                 let windowgeometry = new Three.BoxGeometry(width, height, depth);
                 let windowmaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
                 windowmaterial.opacity = 1.0;
@@ -800,7 +768,7 @@ export default {
         addAlarmLine(width, height, angle, x, y, z, name, imageUrl) {
             let that = this;
             let loader2 = new Three.TextureLoader();
-            loader2.load(require("../../public/image/line.png"), function (texture) {
+            loader2.load(require("../assets/image/line.png"), function (texture) {
                 let doorgeometry = new Three.PlaneGeometry(width, height);
                 let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
                 let door = new Three.Mesh(doorgeometry, doormaterial);
@@ -820,7 +788,7 @@ export default {
         addAlarmLineP(width, height, angle, x, y, z, name, imageUrl) {
             let that = this;
             let loader2 = new Three.TextureLoader();
-            loader2.load(require("../../public/image/line2.png"), function (texture) {
+            loader2.load(require("../assets/image/line2.png"), function (texture) {
                 let doorgeometry = new Three.PlaneGeometry(height, width);
                 let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
                 let door = new Three.Mesh(doorgeometry, doormaterial);
@@ -849,15 +817,9 @@ export default {
             outlinePass.selectedObjects = [object];
 
             if (groupName) {
-
                 //删除场景GPU缓存
                 this.scene.children = {};
-
                 this.renderer.dispose();
-
-
-                // cancelAnimationFrame(this.animate());
-                // this.renderer = null;
                 this.$router.push({ name: "seven", params: { groupName: groupName } });
             }
 
@@ -1411,6 +1373,13 @@ export default {
     },
     updated() {
     },
+
+    destroyed() {
+        //页面销毁时删除场景
+        this.scene.children = {};
+        this.renderer.dispose();
+    },
+
     watch: {
         // date(val) {
         //     console.log(val);
