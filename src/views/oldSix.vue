@@ -9,10 +9,38 @@
             <!-- 第一行 -->
             <el-row>
                 <el-col :span="18" :offset="6">
-                    <div class=" left-table-content-new">
+                    <div class="title">机械位置</div>
+                    <div class="left-table-content">
                         <el-row>
-                            <el-col>
-                                <div></div>
+                            <el-col :span="10" :offset="1">
+                                纬度
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                经度
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                N2152122
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                E2152122
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                事件时间
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                定位时间
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                2020/06/01
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                2020/06/01
                             </el-col>
                         </el-row>
                     </div>
@@ -21,24 +49,87 @@
             <!-- 第二行 -->
             <el-row>
                 <el-col :span="18" :offset="6">
-                    <div class=" left-table-content-new">
-
+                    <div class="title">机械位置</div>
+                    <div class="left-table-content">
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                纬度
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                经度
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                N2152122
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                E2152122
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                事件时间
+                            </el-col>
+                            <el-col :span="10" :offset="2">
+                                定位时间
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background">
+                                2020/06/01
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background">
+                                2020/06/01
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-col>
             </el-row>
             <!-- 第三行 -->
             <el-row>
                 <el-col :span="18" :offset="6">
-                    <div class=" left-table-content-new">
-
-                    </div>
-                </el-col>
-            </el-row>
-            <!-- 第四行 -->
-            <el-row>
-                <el-col :span="18" :offset="6">
-                    <div class=" left-table-content-new">
-
+                    <div class="left-table-content-big">
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                            <el-col :span="10" :offset="2" class="col_background_big border">
+                                <div class="font-big">12</div>
+                                <div class="font-small">12</div>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-col>
             </el-row>

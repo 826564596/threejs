@@ -30,11 +30,6 @@ export default {
             weather: {},
         };
     },
-
-    components: {},
-
-    computed: {},
-
     mounted() {
         this.getWeather();
         setInterval(() => {

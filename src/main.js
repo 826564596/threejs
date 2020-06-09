@@ -6,17 +6,22 @@ import "lib-flexible/flexible";
 import axios from "./plugins/axios";
 import "./plugins/element.js";
 import "./plugins/echarts.js";
+//组件
 import weather from "@/components/weather";
 import login from "@/components/login";
 import titles from "@/components/title";
 import qrcode from "@/components/qrcode";
 import bottomText from "@/components/bottomText";
+import tarbar from "@/components/tarbar";
+import date from "@/components/date";
 
 Vue.component("weather", weather);
 Vue.component("login", login);
 Vue.component("titles", titles);
 Vue.component("qrcode", qrcode);
 Vue.component("bottomText", bottomText);
+Vue.component("tarbar", tarbar);
+Vue.component("date", date);
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;

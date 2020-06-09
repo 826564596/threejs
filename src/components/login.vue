@@ -14,14 +14,6 @@ export default {
         return {
         };
     },
-
-    components: {},
-
-    computed: {},
-
-    mounted: {},
-
-    methods: {}
 }
 
 </script>

@@ -33,18 +33,6 @@
 <script>
 export default {
     name: "bottomText",
-    data() {
-        return {
-        };
-    },
-
-    components: {},
-
-    computed: {},
-
-    mounted() { },
-
-    methods: {}
 }
 
 </script>

@@ -1,4 +1,4 @@
-<!--  -->
+<!-- 标题 -->
 <template>
     <div>
         <!-- 标题图片 -->
@@ -26,22 +26,7 @@ export default {
         "screenHeight",
 
     ],
-    data() {
-        return {
 
-        };
-    },
-
-    components: {},
-
-    computed: {},
-
-    mounted() {
-    },
-
-    methods: {
-
-    }
 }
 
 </script>

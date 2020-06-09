@@ -15,6 +15,74 @@
     background-size: 100% 100%;
 }
 
+.login_bg {
+    background: url("../assets/image/login_bg.jpg") no-repeat;
+    background-size: 100% 100%;
+    @extend .center;
+}
+
+.login {
+    height: 450px;
+    width: 450px;
+    background: url("../assets//image/弹窗.png") no-repeat;
+    background-size: 100% 100%;
+    @extend .center;
+}
+
+.login_content {
+    width: 350px;
+    height: 320px;
+}
+
+.login_input {
+    height: 50px;
+    margin-top: 40px;
+    display: flex;
+
+    .login_input_picture_username {
+        width: 50px;
+        background: url("../assets/image/用户名.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .login_input_picture_password {
+        width: 50px;
+        background: url("../assets/image/密码.png") no-repeat;
+        background-size: 100% 100%;
+    }
+
+    .login_input_input {
+        width: 300px;
+    }
+
+
+}
+
+.login_input_button {
+    height: 50px;
+    margin-top: 20px;
+    @extend .center;
+    font-size: 20px;
+    color: #fff;
+    cursor: pointer;
+    background: url("../assets/image/登录.png") no-repeat;
+}
+
+
+.thrid {
+    height: 20px;
+    margin-top: 20px;
+}
+
+.forgetPassword {
+    cursor: pointer;
+    @extend .thrid;
+    color: rgb(104, 196, 255);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
 .label {
     position: absolute;
     height: 20px;
@@ -81,7 +149,7 @@
     height: 500px;
     width: 360px;
     position: absolute;
-    top: 17%;
+    top: 13%;
     color: #fff;
     font-size: 16px;
     background: url("../assets/image/装饰框1.png") top left no-repeat;
@@ -263,7 +331,6 @@
         height: 50px;
         display: flex;
         align-items: center;
-        // border-bottom: 1px rgb(0, 228, 255) dashed;
     }
 
     .content-line {
@@ -353,6 +420,14 @@
     background-size: 100% 100%;
 }
 
+.left-table-content-new {
+    width: 250px;
+    height: 160px;
+    background: url("../assets/image/框4.png") no-repeat;
+    background-size: 100% 100%;
+    margin: 10px 0 0 0;
+}
+
 .title {
     font-weight: bold;
     font-size: 18px;
@@ -437,9 +512,9 @@
     position: absolute;
     bottom: 1%;
     left: 50%;
-    margin-left: -300px;
+    margin-left: -(300 / 1920) *100%;
     height: 55px;
-    width: 600px;
+    width: (600 / 1920) *100%;
     font-size: 18px;
     color: rgb(22, 117, 168);
     font-weight: bold;
@@ -501,8 +576,74 @@
         .as {
             height: 69%;
             width: 90%;
+
+            .content-title {
+                color: rgb(0, 179, 253);
+                font-size: 24px;
+            }
+
+            .content-line {
+                margin-top: 10px;
+                height: 16px;
+                background: url("../assets/image/分割线1.png") no-repeat;
+                background-size: 100% 100%;
+            }
         }
     }
+}
 
+.right-button {
+    font-size: 22px;
+    height: 55px;
+    color: rgb(141, 146, 147);
+    @extend .center;
+    background: url("../assets/image/小标题未选中.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.buttonActive {
+    background: url("../assets/image/小标题选中.png") no-repeat;
+    background-size: 100% 100%;
+    color: rgb(240, 242, 249);
+
+}
+
+
+.body-content-right-one {
+    height: 650px;
+    width: 100%;
+    // margin-top: 50px;
+
+}
+
+.quadrangle {}
+
+.dateFrame {
+    $myheight: 40px;
+    $mywidth: 200px;
+
+    margin-top: 20px;
+    margin-right: 30px;
+    width: $mywidth;
+    height: $myheight;
+    position: absolute;
+    // right: 10px;
+    // top: -5px;
+    color: #fff;
+    background: url("../assets/image/日期.png") no-repeat;
+    background-size: 100% 100%;
+}
+
+.dateFrame-data {
+    margin-top: 3px;
+    height: 30px;
+    font-size: 26px;
+    color: #fff;
+    @extend .center;
+}
+
+.dateFrame-icon {
+    @extend .dateFrame-data;
+    background: url('../assets/image/日历.png') no-repeat 100%;
 
 }

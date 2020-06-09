@@ -21,15 +21,9 @@ export default {
         };
     },
 
-    components: {},
-
-    computed: {},
-
-    mounted() { },
-
     methods: {
         route() {
-            this.$router.push({ name: "eight" });
+            this.$router.push({ name: "productionMonitoring" });
         }
     }
 }

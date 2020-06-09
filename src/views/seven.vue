@@ -3,10 +3,6 @@
     <div class="div">
         <div id="container">
         </div>
-
-        <!-- 标题图片登陆 -->
-        <titles :screenWidth.sync="screenWidth" :screenHeight.sync="screenHeight"></titles>
-
         <!-- 二维码 -->
         <qrcode />
         <!-- 底部文字 -->
