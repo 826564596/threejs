@@ -14,6 +14,7 @@ import qrcode from "@/components/qrcode";
 import bottomText from "@/components/bottomText";
 import tarbar from "@/components/tarbar";
 import date from "@/components/date";
+import operatingDay from "@/components/operatingDay";
 
 Vue.component("weather", weather);
 Vue.component("login", login);
@@ -22,6 +23,7 @@ Vue.component("qrcode", qrcode);
 Vue.component("bottomText", bottomText);
 Vue.component("tarbar", tarbar);
 Vue.component("date", date);
+Vue.component("operatingDay", operatingDay);
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;

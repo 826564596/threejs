@@ -344,7 +344,7 @@ export default {
             renderer: null,//渲染器
             composer: null,//后期处理
             mesh: null,//网格模型
-            publicPath: "http://192.168.1.94:8081",
+            publicPath: process.env.VUE_APP_URL,
             container: null,
             controls: null,
             groupName: null,

@@ -11,17 +11,65 @@
                 <el-col :span="18" :offset="6">
                     <div class=" left-table-content-new">
                         <el-row>
-                            <el-col>
-                                <div></div>
+                            <el-col :span="11" :offset="1">
+                                <div class="table-title ">
+                                    当月产量排名
+                                </div>
+                            </el-col>
+                            <el-col :span="9">
+                                <div class="table-picture ">
+
+                                </div>
                             </el-col>
                         </el-row>
+
+                        <div class="right-table-content-new" id="echarts-bar">
+                        </div>
                     </div>
                 </el-col>
             </el-row>
             <!-- 第二行 -->
             <el-row>
                 <el-col :span="18" :offset="6">
-                    <div class=" left-table-content-new">
+                    <div class=" left-table-content-new" style="height:300px;">
+                        <el-row>
+                            <el-col :span="8" :offset="1">
+                                <div class="table-title ">
+                                    运行情况
+                                </div>
+                            </el-col>
+                            <el-col :span="9">
+                                <div class="table-picture ">
+
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="10" :offset="1">
+                                <div class="  online">
+                                    {{onlineNum}}
+                                </div>
+                            </el-col>
+                            <el-col :span="10" :offset="1">
+                                <div class=" outline">
+                                    {{outlineNum}}
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <el-row>
+                            <el-col :span="9" :offset="1">
+                                <div class="table-title ">
+                                    设备在线率
+                                </div>
+                            </el-col>
+                            <el-col :span="9">
+                                <div class="table-picture ">
+
+                                </div>
+                            </el-col>
+                        </el-row>
+                        <div class="right-table-content-new" id="echarts-line">
+                        </div>
 
                     </div>
                 </el-col>
@@ -29,92 +77,192 @@
             <!-- 第三行 -->
             <el-row>
                 <el-col :span="18" :offset="6">
-                    <div class=" left-table-content-new">
+                    <div class=" left-table-content-new" style="height:200px">
+                        <!-- <el-row>
+                            <el-col :span="10" :offset="1">
+                                <div class="table-title ">
+                                    总产量计数
+                                </div>
+                            </el-col>
+                            <el-col :span="9">
+                                <div class="table-picture ">
+
+                                </div>
+                            </el-col>
+                        </el-row> -->
+
+                        <el-carousel height="200px" arrow="never">
+                            <el-carousel-item>
+                                <el-row>
+                                    <el-col :span="10" :offset="1">
+                                        <div class="table-title ">
+                                            总产量计数
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="9">
+                                        <div class="table-picture ">
+
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                                <div class="right-table-content-new" id="echarts-bar1">
+                                </div>
+                            </el-carousel-item>
+
+                            <el-carousel-item>
+                                <el-row>
+                                    <el-col :span="11" :offset="1">
+                                        <div class="table-title ">
+                                            设备加工时常
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="9">
+                                        <div class="table-picture ">
+
+                                        </div>
+                                    </el-col>
+
+                                    <div class="right-table-content-new" id="echarts-bar1">
+                                    </div>
+                                </el-row>
+                            </el-carousel-item>
+                        </el-carousel>
 
                     </div>
                 </el-col>
             </el-row>
             <!-- 第四行 -->
-            <el-row>
+            <!-- <el-row>
                 <el-col :span="18" :offset="6">
                     <div class=" left-table-content-new">
+                        <el-row>
+                            <el-col :span="8" :offset="1">
+                                <div class="table-title ">
+                                    加工时长
+                                </div>
+                            </el-col>
+                            <el-col :span="9">
+                                <div class="table-picture ">
 
+                                </div>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-col>
-            </el-row>
+            </el-row> -->
+
         </div>
         <!-- 右侧 -->
         <div class="right-table">
             <!-- 第一行 -->
             <el-row>
-                <el-col :span="18" :offset="1">
-                    <div class="title">机械位置</div>
-                    <div class="left-table-content">
-                        <el-row class="">
-                            <el-col :span="10" :offset="1">
-                                纬度
-                            </el-col>
-                            <el-col :span="10" :offset="2">
-                                经度
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="10" :offset="1" class="col_background">
-                                N2152122
-                            </el-col>
-                            <el-col :span="10" :offset="2" class="col_background">
-                                E2152122
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="10" :offset="1">
-                                事件时间
-                            </el-col>
-                            <el-col :span="10" :offset="2">
-                                定位时间
-                            </el-col>
-                        </el-row>
-                        <el-row>
-                            <el-col :span="10" :offset="1" class="col_background">
-                                2020/06/01
-                            </el-col>
-                            <el-col :span="10" :offset="2" class="col_background">
-                                2020/06/01
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="18" :offset="1">
-                    <div class="title">柱状图</div>
-                    <div class="right-table-content-new" id="echarts-bar">
-                    </div>
-                </el-col>
-            </el-row>
+                <div class=" left-table-content-new">
+                    <el-row>
+                        <el-col :span="11" :offset="1">
+                            <div class="table-title ">
+                                当月报警排名
+                            </div>
+                        </el-col>
+                        <el-col :span="9">
+                            <div class="table-picture ">
 
-            <el-row>
-                <el-col :span="18" :offset="1">
-                    <div class="title">折线图</div>
-                    <div class="right-table-content-new" id="echarts-line">
-                    </div>
-                </el-col>
-            </el-row>
+                            </div>
+                        </el-col>
+                    </el-row>
 
-            <el-row>
-                <el-col :span="18" :offset="1">
-                    <div class="title">饼图</div>
-                    <div class="right-table-content-new" id="echarts-pie">
+                    <div class="right-table-content-new" id="echarts-bar2">
                     </div>
-                </el-col>
+                </div>
             </el-row>
+            <!-- 第二行 -->
+            <el-row>
+                <div class=" left-table-content-new">
+                    <el-row>
+                        <el-col :span="8" :offset="1">
+                            <div class="table-title ">
+                                报警占比
+                            </div>
+                        </el-col>
+                        <el-col :span="9">
+                            <div class="table-picture ">
 
+                            </div>
+                        </el-col>
+                    </el-row>
+                    <div class="right-table-content-new border" id="echarts-pie">
+                    </div>
+                </div>
+            </el-row>
+            <!-- 第三行 -->
+            <el-row>
+                <div class=" left-table-content-new">
+                    <el-row>
+                        <el-col :span="8" :offset="1">
+                            <div class="table-title ">
+                                报警占比
+                            </div>
+                        </el-col>
+                        <el-col :span="9">
+                            <div class="table-picture ">
+
+                            </div>
+                        </el-col>
+                    </el-row>
+                    <!-- <el-table :data="tableData" border style="width: 100%">
+                        <el-table-column prop="date" label="日期" width="80">
+                        </el-table-column>
+                        <el-table-column prop="name" label="姓名" width="80">
+                        </el-table-column>
+                        <el-table-column prop="address" label="地址">
+                        </el-table-column>
+                    </el-table> -->
+                </div>
+            </el-row>
+            <!-- 第四行 -->
+            <el-row>
+                <div class=" left-table-content-new" style="height:160px;">
+                    <el-row>
+                        <el-col :span="8" :offset="1">
+                            <div class="table-title ">
+                                产线/设备
+                            </div>
+                        </el-col>
+                        <el-col :span="9">
+                            <div class="table-picture ">
+
+                            </div>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="10" :offset="4" class="healthy ">
+                            产线健康评价:
+                        </el-col>
+                        <el-col :span="2" :offset="2" class="healthy ">
+                            <span>A</span>
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="20" :offset="2">
+                            <hr style="color:#000;" />
+                        </el-col>
+                    </el-row>
+                    <el-row>
+                        <el-col :span="10" :offset="4" class="healthy ">
+                            设备健康评价:
+                        </el-col>
+                        <el-col :span="2" :offset="2" class="healthy ">
+                            <span>A</span>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-row>
         </div>
 
         <!-- 二维码 -->
         <qrcode />
         <!-- 底部文字 -->
         <bottomText />
+        <operatingDay />
         <!-- 点击标识 -->
         <label v-show="labelTop!= null" ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px`"></label>
 
@@ -153,7 +301,7 @@ export default {
             renderer: null,//渲染器
             composer: null,//后期处理
             mesh: null,//网格模型
-            publicPath: "http://192.168.1.94:8081",
+            publicPath: process.env.VUE_APP_URL,
             container: null,
             controls: null,//控制器
             leftPress: null,//鼠标按下标志
@@ -172,7 +320,8 @@ export default {
             interval: 100,
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
-
+            onlineNum: 1,//在线设备数
+            outlineNum: 2,//离线设备数
         }
     },
     methods: {
@@ -1116,7 +1265,8 @@ export default {
             }
         },
 
-        //加载echarts树状图
+        //加载echarts第一张树状图
+        //当月生产排名
         initEchartBar() {
             let myChart = this.$echarts.init(document.getElementById('echarts-bar'));
             // 绘制图表
@@ -1176,6 +1326,183 @@ export default {
                 ]
             });
         },
+        // 总产量计数
+        initEchartBar2() {
+            let that = this;
+            let myChart = this.$echarts.init(document.getElementById('echarts-bar1'));
+            // 绘制图表
+            let option = {
+                // color: ['#3398DB'],
+                // tooltip: {
+                //     trigger: 'axis',
+                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                //     }
+                // },
+                grid: {
+                    left: '0%',
+                    bottom: '3%',
+                    top: "5%",
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['总产量计数', '当月总产量', '当天总产量'],
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd', // 颜色
+                                width: 1 // 粗细
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        id: 'dataZoomX',
+                        type: 'slider',
+                        start: 0,
+                        end: 30,
+                    }
+                ],
+                yAxis: [
+                    {
+                        max: function (value) {
+                            return value.max + 200;
+                        },
+                        type: 'value',
+                        axisLabel: {
+                            color: '#fff',
+                            fontSize: 12,
+                        },
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: '40%',
+                        data: [1000, 200, 150],
+                        itemStyle: {
+                            normal: {
+                                color: function (params) {
+                                    // let colorList = [
+                                    //     'rgb(254,153,26)', 'rgb(98,129,227)', 'rgb(254,213,1)'
+                                    // ];
+                                    // return colorList[params.dataIndex]
+
+                                    let colorList = [
+                                        ['rgb(254,153,26)', 'rgb(254,70,26)'],
+                                        ['rgb(98,129,227)', 'rgb(9,136,222)'],
+                                        ['rgb(254,213,1)', 'rgb(252,155,1)'],
+
+                                    ];
+                                    let index = params.dataIndex;
+                                    if (params.dataIndex >= colorList.length) {
+                                        index = params.dataIndex - colorList.length;
+                                    }
+                                    return colorList[index][1];
+                                    // return that.$echarts.graphic.LinearGradient(
+                                    //     0, 0, 0, 1,
+                                    //     [{
+                                    //         offset: 0,
+                                    //         color: colorList[index][0]
+                                    //     },
+                                    //     {
+                                    //         offset: 1,
+                                    //         color: colorList[index][1]
+                                    //     }
+                                    //     ]
+                                    // );
+
+
+
+                                },
+
+                                label: {
+                                    show: true,
+                                    position: 'top',
+                                    formatter: '{c}',
+                                    textStyle: {
+                                        fontWeight: 'normal',
+                                        fontSize: 12,
+                                        color: "#fff"
+                                    }
+                                },
+                            }
+                        }
+                    }
+                ]
+            }
+            myChart.setOption(option);
+        },
+        //当月报警排名
+        initEchartBar3() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-bar2'));
+            // 绘制图表
+            let option = {
+                color: ['#3398DB'],
+                // tooltip: {
+                //     trigger: 'axis',
+                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                //     }
+                // },
+                grid: {
+                    left: '0%',
+                    bottom: '3%',
+                    top: "5%",
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd', // 颜色
+                                width: 1 // 粗细
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                        }
+                    }
+                ],
+                dataZoom: [
+                    {
+                        id: 'dataZoomX',
+                        type: 'slider',
+                        start: 0,
+                        end: 30,
+                    }
+                ],
+                yAxis: [
+                    {
+                        show: false,
+                        type: 'value'
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: '40%',
+                        data: [10, 52, 200, 334, 390, 330, 220]
+                    }
+                ]
+            }
+            myChart.setOption(option);
+        },
         //加载echart折线图
         initEchartLine() {
             let myChart = this.$echarts.init(document.getElementById('echarts-line'));
@@ -1204,11 +1531,18 @@ export default {
                     },
                 },
                 yAxis: {
-                    show: false,
-                    type: 'value'
+                    // show: false,
+                    type: 'value',
+                    axisLabel: {
+                        color: '#fff',
+                        fontSize: 12,
+                        show: true,
+                        interval: "auto",
+                        formatter: "{value}%"
+                    },
                 },
                 series: [{
-                    data: [820, 932, 901, 934, 1290, 1330, 1320],
+                    data: [80, 99, 99, 99, 99, 99, 99],
                     type: 'line'
                 }]
             };
@@ -1224,13 +1558,16 @@ export default {
                     formatter: '{a} <br/>{b}: {c} ({d}%)'
                 },
                 legend: {
+                    show: false,
                     orient: 'vertical',
-                    left: 10,
-                    data: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎']
+                    right: 20,
+                    data: ['设备1', '设备2', '设备3', '设备4', '设备5', "设备6", "设备7", "设备8", "设备9", "设备10", "设备11", "设备12", "设备13", "设备14"]
+                },
+                grid: {
                 },
                 series: [
                     {
-                        name: '访问来源',
+                        name: '设备报警数',
                         type: 'pie',
                         radius: ['50%', '70%'],
                         avoidLabelOverlap: false,
@@ -1249,11 +1586,20 @@ export default {
                             show: false
                         },
                         data: [
-                            { value: 335, },
-                            { value: 310, },
-                            { value: 234, },
-                            { value: 135, },
-                            { value: 1548, }
+                            { value: 335, name: "设备1" },
+                            { value: 310, name: "设备2" },
+                            { value: 234, name: "设备3" },
+                            { value: 135, name: "设备4" },
+                            { value: 148, name: "设备5" },
+                            { value: 335, name: "设备6" },
+                            { value: 310, name: "设备7" },
+                            { value: 234, name: "设备8" },
+                            { value: 135, name: "设备9" },
+                            { value: 158, name: "设备10" },
+                            { value: 335, name: "设备11" },
+                            { value: 310, name: "设备12" },
+                            { value: 234, name: "设备13" },
+                            { value: 135, name: "设备14" },
                         ]
                     }
                 ]
@@ -1266,6 +1612,10 @@ export default {
     mounted() {
         let that = this;
         this.initEchartBar();
+        this.initEchartBar2();
+        this.initEchartBar3();
+
+
         this.initEchartLine();
         this.initEchartPie();
 

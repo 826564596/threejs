@@ -94,7 +94,7 @@ export default {
     color: rgb(211, 229, 238) !important;
     font-size: 16px !important;
     border-radius: 0px !important;
-    border: 1px solid rgb(104, 196, 255) !important;
+    border-color: rgb(109, 215, 255) !important;
 }
 
 .el-checkbox {
@@ -112,7 +112,7 @@ export default {
 .el-checkbox__input.is-checked .el-checkbox__inner,
 .el-checkbox__input.is-indeterminate .el-checkbox__inner,
 .el-button--primary {
-    background-color: rgb(104, 196, 255) !important;
-    border-color: rgb(104, 196, 255) !important;
+    border-color: rgb(109, 215, 255) !important;
+    border-color: rgb(109, 215, 255) !important;
 }
 </style>
