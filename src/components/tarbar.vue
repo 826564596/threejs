@@ -138,7 +138,7 @@
                 </div>
             </div>
             <!-- 七 -->
-            <div class="s " @click="change(6)">
+            <!-- <div class="s " @click="change(6)">
                 <div class="sa " v-if="index == 6">
                     消息管理
                 </div>
@@ -158,7 +158,7 @@
                         </el-col>
                     </el-row>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
@@ -183,7 +183,6 @@ export default {
             index == 3 && this.$router.push({ name: "taskDistribution" });
             index == 4 && this.$router.push({ name: "productionReport" });
             index == 5 && this.$router.push({ name: "systemDevices" });
-            index == 6 && this.$router.push({ name: "messageManagement" });
         }
     }
 }

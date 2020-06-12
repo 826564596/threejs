@@ -1,12 +1,17 @@
 <!-- 运行天数 -->
 <template>
-    <div class="operatingDay"></div>
+    <div class="operatingDay">
+        <div>
+            {{operatingDay}}
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
     data() {
         return {
+            operatingDay: "001"
         };
     },
 
@@ -29,5 +34,15 @@ export default {
     right: 2%;
     background: url("../assets/image/天数线.png") no-repeat;
     background-size: 100% 100%;
+    color: rgb(1, 220, 247);
+    font-family: "方正粗倩简体";
+    font-size: 45px;
+    font-weight: bold;
+
+    div {
+        float: right;
+        margin-top: -12px;
+        margin-right: 10px;
+    }
 }
 </style>

@@ -87,15 +87,6 @@ const routes = [
         },
         component: () => import("../views/systemDevices.vue"),
     },
-    //消息管理
-    {
-        path: "/messageManagement",
-        name: "messageManagement",
-        meta: {
-            keepAlive: true, //导航栏在该页面显示
-        },
-        component: () => import("../views/messageManagement.vue"),
-    },
 ];
 
 const router = new VueRouter({

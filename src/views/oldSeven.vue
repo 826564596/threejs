@@ -9,78 +9,7 @@
         <bottomText />
         <!-- 左侧 -->
         <div class="left-table-single">
-
             <!-- 第一行 -->
-            <el-row>
-                <el-col :span="18">
-                    <div class=" left-table-single-title">
-                        <div>设备状态</div>
-                    </div>
-                </el-col>
-            </el-row>
-            <!-- 第一行 主体 -->
-            <el-row>
-                <el-col :span="24">
-                    <div class="left-table-single-content-new " style="height:185px">
-
-                        <el-row style="padding-top:7px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    设备状态
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    在线
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    坐标
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    1,2,3
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    加速度
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    1m/s2
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    减速度
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    1m/s2
-                                </div>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-            </el-row>
-
-            <!-- 第二行title -->
             <el-row>
                 <el-col :span="18">
                     <div class=" left-table-single-title">
@@ -91,174 +20,295 @@
             <!-- 第二行 主体 -->
             <el-row>
                 <el-col :span="24">
-                    <div class="left-table-single-content-new " style="height:145px">
+                    <div class="left-table-single-content ">
+                        <!-- 第一行 设备状态-->
+                        <el-row>
+                            <el-col :span="24">
+                                <div class="left-table-single-content-number">
+                                    <el-row>
+                                        <el-col :span="20" :offset="1">
+                                            <div class="content-title ">
+                                                设备状态
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                        <el-row style="padding-top:7px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    开机时长
-                                </div>
-                            </el-col>
+                                    <el-row>
+                                        <el-col :span="22" :offset="1">
+                                            <div class="content-line ">
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    20
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left ">
+                                                在线
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                报警
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left-s ">
+                                                在线
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                报警
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </el-col>
                         </el-row>
+                        <!-- 第二行 开机时长 -->
+                        <el-row>
+                            <el-col :span="24">
+                                <div class="left-table-single-content-number ">
+                                    <el-row>
+                                        <el-col :span="20" :offset="1">
+                                            <div class="content-title ">
+                                                开机时长
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    运行时长
-                                </div>
-                            </el-col>
+                                    <el-row>
+                                        <el-col :span="22" :offset="1">
+                                            <div class="content-line ">
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    12
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left ">
+                                                当天
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                10
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left-s ">
+                                                当月
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                301
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </el-col>
                         </el-row>
+                        <!-- 第三行 运行时长 -->
+                        <el-row>
+                            <el-col :span="24">
+                                <div class="left-table-single-content-number ">
+                                    <el-row>
+                                        <el-col :span="20" :offset="1">
+                                            <div class="content-title ">
+                                                运行时长
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    报警时长
-                                </div>
-                            </el-col>
+                                    <el-row>
+                                        <el-col :span="22" :offset="1">
+                                            <div class="content-line ">
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    12
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left ">
+                                                当天
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                10
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left-s ">
+                                                当月
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                301
+                                            </div>
+                                        </el-col>
+                                    </el-row>
                                 </div>
                             </el-col>
                         </el-row>
+                        <!-- 第四行 产量计数 -->
+                        <el-row>
+                            <el-col :span="24">
+                                <div class="left-table-single-content-number ">
+                                    <el-row>
+                                        <el-col :span="20" :offset="1">
+                                            <div class="content-title ">
+                                                产量计数
+                                            </div>
+                                        </el-col>
+                                    </el-row>
 
+                                    <el-row>
+                                        <el-col :span="22" :offset="1">
+                                            <div class="content-line ">
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left ">
+                                                当天
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                10
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+
+                                    <el-row style="margin-top:5px">
+                                        <el-col :span="9" :offset="1">
+                                            <div class="content-content content-content-left-s ">
+                                                当月
+                                            </div>
+                                        </el-col>
+
+                                        <el-col :span="11" :offset="2">
+                                            <div class="content-content content-content-right ">
+                                                301
+                                            </div>
+                                        </el-col>
+                                    </el-row>
+                                </div>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-col>
             </el-row>
-
-            <!-- 第三行title -->
-
-            <el-carousel height="260px" arrow="never">
-                <el-carousel-item>
-                    <!-- 第三行标题 -->
-                    <el-row>
-                        <el-col :span="18">
-                            <div class=" left-table-single-title">
-                                <div>生产统计</div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <!-- 第三行 主体 -->
-                    <el-row>
-                        <el-col :span="24">
-                            <div class="left-table-single-content-new ">
-                                <div style="width:340px;height:180px;" id="echarts-bar1"></div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                </el-carousel-item>
-
-                <el-carousel-item>
-                    <!-- 第三行标题 -->
-                    <el-row>
-                        <el-col :span="18">
-                            <div class=" left-table-single-title">
-                                <div>设备综合雷达图
-                                </div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <!-- 第三行 主体 -->
-                    <el-row>
-                        <el-col :span="24">
-                            <div class="left-table-single-content-new ">
-                                <div style="width:340px;height:180px;" id="echarts-radar"></div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                </el-carousel-item>
-            </el-carousel>
 
         </div>
-        <!-- 右边  -->
+
         <div class="right-table-single ">
-            <!-- 第一行title -->
+            <!-- 第一行 -->
             <el-row>
                 <el-col :span="18">
                     <div class=" left-table-single-title">
-                        <div>报警统计</div>
+                        <div>报警系统</div>
                     </div>
                 </el-col>
             </el-row>
-            <!-- 第一行主体 -->
             <el-row>
                 <el-col :span="24">
-                    <div class="left-table-single-content-new ">
-                        <div class="border" style='overflow:hidden; '>
-                            <div class=" test" style='height:30px; color:#fff;'>
-                                1111111111111111
-                            </div>
-                        </div>
+                    <div class="right-table-single-content-one ">
 
-                    </div>
-                </el-col>
-            </el-row>
+                        <img src="../assets/image/框装饰.png" />
+                        <img src="../assets/image/框装饰.png" />
+                        <img src="../assets/image/框装饰.png" />
+                        <img src="../assets/image/框装饰.png" />
 
-            <!-- 第二行title -->
-            <el-row>
-                <el-col :span="18">
-                    <div class=" left-table-single-title">
-                        <div>故障</div>
-                    </div>
-                </el-col>
-            </el-row>
-            <!-- 第二行 主体 -->
-            <el-row>
-                <el-col :span="24">
-                    <div class="left-table-single-content-new ">
-                    </div>
-                </el-col>
-            </el-row>
-
-            <!-- 第三行title -->
-            <el-row>
-                <el-col :span="18">
-                    <div class=" left-table-single-title">
-                        <div>点检/保养</div>
-                    </div>
-                </el-col>
-            </el-row>
-            <!-- 第三行 主体 -->
-            <el-row>
-                <el-col :span="24">
-                    <div class="left-table-single-content-new ">
-                    </div>
-                </el-col>
-            </el-row>
-
-            <!-- 第四行title -->
-            <el-row>
-                <el-col :span="18">
-                    <div class=" left-table-single-title">
-                        <div>设备健康</div>
-                    </div>
-                </el-col>
-            </el-row>
-            <!-- 第四行 主体 -->
-            <el-row>
-                <el-col :span="24">
-                    <div class="left-table-single-content-new bg-small" style="height:50px;">
                         <el-row>
-                            <el-col :span="10" :offset="4" class="healthy ">
-                                设备健康评价:
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当天计数及时长
+                                </div>
                             </el-col>
-                            <el-col :span="2" :offset="0" class="healthy ">
-                                <span>A</span>
+
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当月计数及时长
+                                </div>
                             </el-col>
                         </el-row>
+
+                        <el-row>
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当天计数及时长
+                                </div>
+                            </el-col>
+
+                            <el-col :span="12">
+                                <div class="base-font alert-title ">
+                                    当月计数及时长
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </el-col>
+            </el-row>
+            <!-- 第二行 -->
+            <el-row>
+                <el-col :span="18">
+                    <div class=" left-table-single-title" style="margin-top:10px">
+                        <div>点检设备</div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <div class="right-table-single-content-two ">
+                        <div>
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                        </div>
+                    </div>
+                </el-col>
+            </el-row>
+
+            <!-- 第三行 -->
+            <el-row>
+                <el-col :span="18">
+                    <div class=" left-table-single-title" style="margin-top:10px">
+                        <div>效率分析</div>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <div class="right-table-single-content-three ">
+                        <div>
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                            <img src="../assets/image/框装饰.png" />
+                        </div>
                     </div>
                 </el-col>
             </el-row>
@@ -300,7 +350,6 @@ export default {
             groupName: null,
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
-            deviceStatus: ["在线", "离线", "空闲", "运行", "停机", "报警"],//设备运行状态
         };
     },
     methods: {
@@ -644,209 +693,14 @@ export default {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
             // this.controls.handleResize();
         },
-        // 总产量计数
-        initEchartBar2() {
-            let that = this;
-            let myChart = this.$echarts.init(document.getElementById('echarts-bar1'));
-            // 绘制图表
-            let option = {
-                // color: ['#3398DB'],
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //     }
-                // },
-                grid: {
-                    left: '0%',
-                    bottom: '3%',
-                    top: "5%",
-                    containLabel: true
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['总产量计数', '当月总产量', '当天总产量'],
-                        axisTick: {
-                            alignWithLabel: true
-                        },
 
-                        axisLine: {
-                            lineStyle: {
-                                color: '#ddd', // 颜色
-                                width: 1 // 粗细
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                        }
-                    }
-                ],
-                // dataZoom: [
-                //     {
-                //         id: 'dataZoomX',
-                //         type: 'slider',
-                //         start: 0,
-                //         end: 30,
-                //     }
-                // ],
-                yAxis: [
-                    {
-                        max: function (value) {
-                            return value.max + 200;
-                        },
-                        type: 'value',
-                        axisLabel: {
-                            color: '#fff',
-                            fontSize: 12,
-                        },
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: '40%',
-                        data: [1000, 200, 150],
-                        itemStyle: {
-                            normal: {
-                                color: function (params) {
-                                    // let colorList = [
-                                    //     'rgb(254,153,26)', 'rgb(98,129,227)', 'rgb(254,213,1)'
-                                    // ];
-                                    // return colorList[params.dataIndex]
-
-                                    let colorList = [
-                                        ['rgb(254,153,26)', 'rgb(254,70,26)'],
-                                        ['rgb(98,129,227)', 'rgb(9,136,222)'],
-                                        ['rgb(254,213,1)', 'rgb(252,155,1)'],
-
-                                    ];
-                                    let index = params.dataIndex;
-                                    if (params.dataIndex >= colorList.length) {
-                                        index = params.dataIndex - colorList.length;
-                                    }
-                                    return colorList[index][1];
-                                    // return that.$echarts.graphic.LinearGradient(
-                                    //     0, 0, 0, 1,
-                                    //     [{
-                                    //         offset: 0,
-                                    //         color: colorList[index][0]
-                                    //     },
-                                    //     {
-                                    //         offset: 1,
-                                    //         color: colorList[index][1]
-                                    //     }
-                                    //     ]
-                                    // );
-
-
-
-                                },
-
-                                label: {
-                                    show: true,
-                                    position: 'top',
-                                    formatter: '{c}',
-                                    textStyle: {
-                                        fontWeight: 'normal',
-                                        fontSize: 12,
-                                        color: "#fff"
-                                    }
-                                },
-                            }
-                        }
-                    }
-                ]
-            }
-            myChart.setOption(option);
-        },
-
-        initEchartRadar() {
-            let myChart = this.$echarts.init(document.getElementById('echarts-radar'));
-            let option = {
-                title: {
-
-                },
-                tooltip: {},
-                // legend: {
-                //     data: ['预算分配（Allocated Budget）', '实际开销（Actual Spending）']
-                // },
-                radar: {
-                    // shape: 'circle',
-                    name: {
-                        textStyle: {
-                            color: 'rgb(0,229,253)',
-                        }
-                    },
-                    radius: "65%",
-                    splitArea: {
-                        areaStyle: {
-                            color: ['rgba(63, 65, 188, 0.1)'],
-                            shadowColor: 'rgba(63, 65, 188, 1)',
-                            shadowBlur: 12
-                        }
-                    },
-                    splitLine: {
-                        lineStyle: {
-                            color: [
-                                'rgba(0,229,253, 0.4)', 'rgba(0,229,253,0.2)',
-                                'rgba(0,229,253,0.4)', 'rgba(0,229,253,0.6)',
-                                'rgba(0,229,253, 0.8)', 'rgba(0,229,253, 0,1)'
-                            ].reverse()
-                        }
-                    },
-                    axisLine: {
-                        lineStyle: {
-                            color: 'rgba(0,229,253, 1)'
-                        }
-                    },
-                    indicator: [
-                        { name: '销售', max: 6500 },
-                        { name: '管理', max: 16000 },
-                        { name: '信息技术', max: 30000 },
-                        { name: '客服', max: 38000 },
-                        { name: '研发', max: 52000 },
-                        { name: '市场', max: 25000 }
-                    ]
-                },
-                series: [{
-                    name: '',
-                    type: 'radar',
-                    lineStyle: {
-                        normal: {
-                            width: 1,
-                            opacity: 0.5
-                        },
-                    },
-                    symbol: 'none',
-                    itemStyle: {
-                        color: "rgb(1,109,229)"
-                    },
-                    areaStyle: {
-                        opacity: 0.45
-                    },
-                    data: [
-                        {
-                            value: [5000, 14000, 28000, 31000, 42000, 21000],
-                            name: '实际开销'
-                        }
-                    ],
-
-                }]
-            };
-            myChart.setOption(option);
-
-        }
     },
 
 
     mounted() {
-
         console.log(window);
         // window.visualViewport.scale = 0.5;
         this.groupName = this.$route.params.groupName;
-        this.initEchartBar2();
-        this.initEchartRadar();
         this.init();
         this.helper();
         this.animate();

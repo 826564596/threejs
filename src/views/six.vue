@@ -121,10 +121,10 @@
 
                                         </div>
                                     </el-col>
-
-                                    <div class="right-table-content-new" id="echarts-bar1">
-                                    </div>
                                 </el-row>
+
+                                <div class="right-table-content-new" id="echarts-bar3">
+                                </div>
                             </el-carousel-item>
                         </el-carousel>
 
@@ -178,9 +178,9 @@
             <el-row>
                 <div class=" left-table-content-new">
                     <el-row>
-                        <el-col :span="8" :offset="1">
+                        <el-col :span="11" :offset="1">
                             <div class="table-title ">
-                                报警占比
+                                报警类型占比
                             </div>
                         </el-col>
                         <el-col :span="9">
@@ -189,17 +189,17 @@
                             </div>
                         </el-col>
                     </el-row>
-                    <div class="right-table-content-new border" id="echarts-pie">
+                    <div class="right-table-content-new " id="echarts-pie">
                     </div>
                 </div>
             </el-row>
             <!-- 第三行 -->
             <el-row>
-                <div class=" left-table-content-new">
+                <div class=" left-table-content-new" style="height:250px">
                     <el-row>
-                        <el-col :span="8" :offset="1">
+                        <el-col :span="11" :offset="1">
                             <div class="table-title ">
-                                报警占比
+                                实时报警信息
                             </div>
                         </el-col>
                         <el-col :span="9">
@@ -208,19 +208,76 @@
                             </div>
                         </el-col>
                     </el-row>
-                    <!-- <el-table :data="tableData" border style="width: 100%">
-                        <el-table-column prop="date" label="日期" width="80">
+
+                    <el-row>
+                        <el-col :span="24">
+                            <div class="timeText-bg ">
+
+                                <el-row v-for="item in 4" :key="item">
+                                    <el-col :span="7" :offset="1">
+                                        <div class="timeText ">
+                                            14:20:30
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="15" :offset="0">
+                                        <div class="timeText ">
+                                            <div class="timeTexts ">
+                                                阿斯兰的卡爱上大声地1111
+
+                                            </div>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                    <el-row>
+                        <el-col :span="20" :offset="2">
+                            <div class="dividingLine"></div>
+                        </el-col>
+                    </el-row>
+
+                    <el-row>
+                        <el-col :span="8" :offset="1">
+                            <div class="table-title ">
+                                报警设备
+                            </div>
+                        </el-col>
+                        <el-col :span="9">
+                            <div class="table-picture ">
+
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                    <el-row>
+                        <el-col :span="9" :offset="2">
+                            <div class="deviceId border">
+                                工位号
+                            </div>
+                        </el-col>
+
+                        <el-col :span="9" :offset="2">
+                            <div class="deviceName border">
+                                1
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                    <!-- <el-table :data="tableData" size="mini" header-row-class-name="rowNames" row-class-name="rowName">
+                        <el-table-column prop="deviceName" label="设备名" width="80">
                         </el-table-column>
-                        <el-table-column prop="name" label="姓名" width="80">
+                        <el-table-column prop="time" label="报警时间" width="80">
                         </el-table-column>
-                        <el-table-column prop="address" label="地址">
+                        <el-table-column prop="content" label="报警内容" width="180">
                         </el-table-column>
                     </el-table> -->
                 </div>
             </el-row>
             <!-- 第四行 -->
             <el-row>
-                <div class=" left-table-content-new" style="height:160px;">
+                <div class=" left-table-content-new" style="height:90px;">
                     <el-row>
                         <el-col :span="8" :offset="1">
                             <div class="table-title ">
@@ -241,7 +298,7 @@
                             <span>A</span>
                         </el-col>
                     </el-row>
-                    <el-row>
+                    <!-- <el-row>
                         <el-col :span="20" :offset="2">
                             <hr style="color:#000;" />
                         </el-col>
@@ -253,7 +310,7 @@
                         <el-col :span="2" :offset="2" class="healthy ">
                             <span>A</span>
                         </el-col>
-                    </el-row>
+                    </el-row> -->
                 </div>
             </el-row>
         </div>
@@ -322,9 +379,17 @@ export default {
             screenHeight: window.innerHeight,
             onlineNum: 1,//在线设备数
             outlineNum: 2,//离线设备数
+
+
+            tableData: [{
+                deviceName: '工位11',
+                time: '2020-02-06 18:20:20',
+                content: '主板烧了'
+            },]
         }
     },
     methods: {
+
         //初始化
         init() {
 
@@ -1303,14 +1368,14 @@ export default {
                         }
                     }
                 ],
-                dataZoom: [
-                    {
-                        id: 'dataZoomX',
-                        type: 'slider',
-                        start: 0,
-                        end: 30,
-                    }
-                ],
+                // dataZoom: [
+                //     {
+                //         id: 'dataZoomX',
+                //         type: 'slider',
+                //         start: 0,
+                //         end: 30,
+                //     }
+                // ],
                 yAxis: [
                     {
                         show: false,
@@ -1364,14 +1429,14 @@ export default {
                         }
                     }
                 ],
-                dataZoom: [
-                    {
-                        id: 'dataZoomX',
-                        type: 'slider',
-                        start: 0,
-                        end: 30,
-                    }
-                ],
+                // dataZoom: [
+                //     {
+                //         id: 'dataZoomX',
+                //         type: 'slider',
+                //         start: 0,
+                //         end: 30,
+                //     }
+                // ],
                 yAxis: [
                     {
                         max: function (value) {
@@ -1479,14 +1544,75 @@ export default {
                         }
                     }
                 ],
-                dataZoom: [
+                // dataZoom: [
+                //     {
+                //         id: 'dataZoomX',
+                //         type: 'slider',
+                //         start: 0,
+                //         end: 30,
+                //     }
+                // ],
+                yAxis: [
                     {
-                        id: 'dataZoomX',
-                        type: 'slider',
-                        start: 0,
-                        end: 30,
+                        show: false,
+                        type: 'value'
                     }
                 ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: '40%',
+                        data: [10, 52, 200, 334, 390, 330, 220]
+                    }
+                ]
+            }
+            myChart.setOption(option);
+        },
+        //加工时长
+        initEchartBar4() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-bar3'));
+            // 绘制图表
+            let option = {
+                color: ['#3398DB'],
+                // tooltip: {
+                //     trigger: 'axis',
+                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                //     }
+                // },
+                grid: {
+                    left: '0%',
+                    bottom: '3%',
+                    top: "5%",
+                    containLabel: true
+                },
+                xAxis: [
+                    {
+                        type: 'category',
+                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd', // 颜色
+                                width: 1 // 粗细
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                        }
+                    }
+                ],
+                // dataZoom: [
+                //     {
+                //         id: 'dataZoomX',
+                //         type: 'slider',
+                //         start: 0,
+                //         end: 30,
+                //     }
+                // ],
                 yAxis: [
                     {
                         show: false,
@@ -1558,9 +1684,17 @@ export default {
                     formatter: '{a} <br/>{b}: {c} ({d}%)'
                 },
                 legend: {
-                    show: false,
+                    // show: true,
+                    type: 'scroll',
                     orient: 'vertical',
-                    right: 20,
+                    right: 0,
+                    textStyle: { color: " #fff" },
+                    pageIconColor: '#fff',
+                    pageIconSize: 12,
+                    pageTextStyle: {
+                        color: "#fff",
+                        fontSize: 12
+                    },
                     data: ['设备1', '设备2', '设备3', '设备4', '设备5', "设备6", "设备7", "设备8", "设备9", "设备10", "设备11", "设备12", "设备13", "设备14"]
                 },
                 grid: {
@@ -1569,22 +1703,23 @@ export default {
                     {
                         name: '设备报警数',
                         type: 'pie',
-                        radius: ['50%', '70%'],
+                        radius: ['30%', '50%'],
+                        // radius: "50%",
                         avoidLabelOverlap: false,
                         label: {
                             show: false,
-                            position: 'center'
+                            position: 'left'
                         },
                         emphasis: {
                             label: {
                                 show: true,
-                                fontSize: '30',
+                                fontSize: '16',
                                 fontWeight: 'bold'
                             }
                         },
-                        labelLine: {
-                            show: false
-                        },
+                        // labelLine: {
+                        //     show: false
+                        // },
                         data: [
                             { value: 335, name: "设备1" },
                             { value: 310, name: "设备2" },
@@ -1614,6 +1749,8 @@ export default {
         this.initEchartBar();
         this.initEchartBar2();
         this.initEchartBar3();
+        this.initEchartBar4();
+
 
 
         this.initEchartLine();
@@ -1641,6 +1778,6 @@ export default {
 </script>
 
 
-<style lang='scss'>
+<style lang='scss' scoped>
 @import "../scss/index.scss";
 </style>

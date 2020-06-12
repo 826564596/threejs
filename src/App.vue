@@ -43,7 +43,7 @@ export default {
     }
 }
 </script>
-<style lang="scss">
+<style>
 .img-title {
     z-index: 1;
     position: absolute;

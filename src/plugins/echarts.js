@@ -1,15 +1,17 @@
 import Vue from "vue";
 
-const echarts = require("echarts/lib/echarts");
+// const echarts = require("echarts/lib/echarts");
 
-require("echarts/lib/chart/bar");
-require("echarts/lib/chart/line");
-require("echarts/lib/chart/pie");
+// require("echarts/lib/chart/bar");
+// require("echarts/lib/chart/line");
+// require("echarts/lib/chart/pie");
 
-// 引入提示框和title组件，图例
-require("echarts/lib/component/graphic");
-require("echarts/lib/component/tooltip");
-require("echarts/lib/component/title");
-require("echarts/lib/component/legend");
+// // 引入提示框和title组件，图例
+// require("echarts/lib/component/graphic");
+// require("echarts/lib/component/tooltip");
+// require("echarts/lib/component/title");
+// require("echarts/lib/component/legend");
+
+import echarts from "echarts";
 
 Vue.prototype.$echarts = echarts;
