@@ -7,14 +7,14 @@
             <!-- 一 -->
             <div class="s " @click="change(0)">
                 <div class="sa " v-if="index == 0">
-                    生产监控
+                    设备监控
                 </div>
 
                 <div class="as" v-else>
                     <el-row>
                         <el-col :span="24" :offset="1">
                             <div class="content-title ">
-                                生产监控
+                                设备监控
                             </div>
                         </el-col>
                     </el-row>
@@ -30,13 +30,13 @@
             <!-- 二 -->
             <div class="s " @click="change(1)">
                 <div class="sa " v-if="index == 1">
-                    设备状态
+                    设备管理
                 </div>
                 <div class="as" v-else>
                     <el-row>
                         <el-col :span="24" :offset="1">
                             <div class="content-title ">
-                                设备状态
+                                设备管理
                             </div>
                         </el-col>
                     </el-row>
@@ -52,13 +52,13 @@
             <!-- 三 -->
             <div class="s " @click="change(2)">
                 <div class="sa " v-if="index == 2">
-                    工艺文件
+                    工艺管理
                 </div>
                 <div class="as" v-else>
                     <el-row>
                         <el-col :span="24" :offset="1">
                             <div class="content-title ">
-                                工艺文件
+                                工艺管理
                             </div>
                         </el-col>
                     </el-row>
@@ -118,13 +118,13 @@
             <!-- 六 -->
             <div class="s " @click="change(5)">
                 <div class="sa " v-if="index == 5">
-                    系统设备
+                    系统设置
                 </div>
                 <div class="as" v-else>
                     <el-row>
                         <el-col :span="24" :offset="1">
                             <div class="content-title ">
-                                系统设备
+                                系统设置
                             </div>
                         </el-col>
                     </el-row>
@@ -176,18 +176,18 @@ export default {
     methods: {
         change(index) {
             // this.index = index;
-            console.log(index);
+            // console.log(index);
             index == 0 && this.$router.push({ name: "productionMonitoring" });
             index == 1 && this.$router.push({ name: "deviceManagement" });
             index == 2 && this.$router.push({ name: "processDocuments" });
             index == 3 && this.$router.push({ name: "taskDistribution" });
             index == 4 && this.$router.push({ name: "productionReport" });
-            index == 5 && this.$router.push({ name: "systemDevices" });
+            index == 5 && this.$router.push({ name: "systemSetting" });
         }
     }
 }
 
 </script>
 <style lang="scss">
-@import "../scss/index.scss";
+// @import "../scss/index.scss";
 </style>

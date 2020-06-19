@@ -5,7 +5,8 @@
             <div style="margin-top:10px; width:100%"></div>
             <!-- 底部文字 -->
             <bottomText />
-
+            <!-- 返回键 -->
+            <backToHome />
             <!-- 左侧菜单 -->
             <tarbar :index.sync="index" />
 
@@ -28,5 +29,5 @@ export default {
 
 </script>
 <style lang="scss">
-@import "../scss/index.scss";
+// @import "../scss/index.scss";
 </style>

@@ -14,10 +14,6 @@ const service = axios.create({
 //request请求拦截器
 service.interceptors.request.use(
     (config) => {
-        // if (store.getters.token) {
-        // config.headers['Authorization'] = getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
-        // }
-        // config.headers["Access-Control-Allow-Origin"] = "*";
         // console.log(config);
         return config;
     },
@@ -31,7 +27,9 @@ service.interceptors.request.use(
 // response响应拦截器
 service.interceptors.response.use(
     (response) => {
-        console.log(response);
+        if (typeof response.data == "string") {
+            response.data = JSON.parse(response.data);
+        }
         return response.data;
     },
     (error) => {

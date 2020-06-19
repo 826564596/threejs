@@ -15,6 +15,8 @@ import bottomText from "@/components/bottomText";
 import tarbar from "@/components/tarbar";
 import date from "@/components/date";
 import operatingDay from "@/components/operatingDay";
+import calendar from "@/components/calendar";
+import backToHome from "@/components/backToHome";
 
 Vue.component("weather", weather);
 Vue.component("login", login);
@@ -24,6 +26,8 @@ Vue.component("bottomText", bottomText);
 Vue.component("tarbar", tarbar);
 Vue.component("date", date);
 Vue.component("operatingDay", operatingDay);
+Vue.component("calendar", calendar);
+Vue.component("backToHome", backToHome);
 
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;

@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import { mapState, mapActions, mapGetters } from 'vuex';
 export default {
     name: "weather",
     props: {
@@ -39,6 +40,10 @@ export default {
 
     methods: {
         getWeather() {
+            // this.$store.dispatch("getWeather");
+            // this.weather = this.$store.getters.weather;
+            // this.weather = this.$store.state.weather;
+
             this.$axios.get("https://www.tianqiapi.com/free/day?appid=56547279&appsecret=Ka5e7OMY").then(response => {
                 console.log(response);
                 this.weather = response;

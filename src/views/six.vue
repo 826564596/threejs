@@ -1742,10 +1742,21 @@ export default {
             myChart.setOption(option);
 
         },
+        //获取设备当前页面需要数据
+        getData() {
+            this.$axios.post("/api/DDC/DeviceWorkStatic/OnLineStat?mac=wuji").then(res => {
+                this.onlineNum = res[0].onlinenum;
+                this.outlineNum = res[0].offlinenum;
+            }).catch(error => {
+
+            })
+        },
+
 
     },
     mounted() {
         let that = this;
+        this.getData();
         this.initEchartBar();
         this.initEchartBar2();
         this.initEchartBar3();
@@ -1764,8 +1775,6 @@ export default {
             return this.onWindowResize();
         }
     },
-    updated() {
-    },
 
     destroyed() {
         //页面销毁时删除场景
@@ -1779,5 +1788,5 @@ export default {
 
 
 <style lang='scss' scoped>
-@import "../scss/index.scss";
+// @import "../scss/index.scss";
 </style>

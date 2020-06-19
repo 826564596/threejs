@@ -80,12 +80,12 @@ const routes = [
     },
     //系统设备
     {
-        path: "/systemDevices",
-        name: "systemDevices",
+        path: "/systemSetting",
+        name: "systemSetting",
         meta: {
             keepAlive: true, //导航栏在该页面显示
         },
-        component: () => import("../views/systemDevices.vue"),
+        component: () => import("../views/systemSetting.vue"),
     },
 ];
 

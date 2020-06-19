@@ -1,13 +1,18 @@
 <template>
-    <div id="app">
+
+    <!-- <div id="app"> -->
+    <div id="app" :style="` width: ${width}px; height: ${height}px; `">
+
         <!-- 标题图片登陆 -->
         <!-- 根据shouTitle参数判断login页是否要显示标题 -->
 
-        <div v-if="$route.meta.keepAlive">
+        <div v-if=" $route.meta.keepAlive">
             <titles :screenWidth.sync="screenWidth" :screenHeight.sync="screenHeight"></titles>
             <router-view />
         </div>
-        <router-view v-if="!$route.meta.keepAlive" />
+        <div>
+            <router-view v-if="!$route.meta.keepAlive" />
+        </div>
 
     </div>
 </template>
@@ -17,9 +22,16 @@ export default {
         return {
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
+            width: 1899.8,
+            height: 953.31,
+            proportion: 1,
         }
     },
     mounted() {
+        console.log(window.innerWidth);
+        console.log(window.innerHeight);
+
+        console.log(window);
         this.path = this.$route.path;
         window.onresize = () => {
             return this.onWindowResize();
@@ -27,17 +39,19 @@ export default {
     },
     //监听路由变化
     watch: {
-        $route(to, from) {
-            this.path = to.path;
-        }
+
     },
 
     methods: {
-
         // 窗口变动触发
         onWindowResize() {
+            console.log(window.innerWidth);
+            console.log(window.innerHeight);
+
             this.screenWidth = window.innerWidth;
             this.screenHeight = window.innerHeight;
+            this.width = window.innerWidth;
+            this.height = window.innerHeight;
 
         },
     }
@@ -82,6 +96,8 @@ export default {
     color: #2c3e50;
     margin: 0;
     padding: 0;
+
+    /* transform: scaleX(0.5); */
 }
 
 #nav {

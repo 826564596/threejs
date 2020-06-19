@@ -55,19 +55,16 @@ module.exports = {
         https: false,
         hotOnly: false,
         before: (app) => {},
-        //跨域--代理
-        // proxy: {
-        //     "/api": {
-        //         // target: "http://192.168.1.65:8886/", // 域名
-        //         target: "http://192.168.1.77:8666/", // 域名
-
-        //         // target: "http://17e245o364.imwork.net:49415/", // 域名
-        //         changeOrigin: true,
-        //         pathRewrite: {
-        //             "^/api": "/api", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
-        //         },
-        //     },
-        // },
+        // 跨域--代理
+        proxy: {
+            "/api": {
+                target: "http://27.150.173.9:9002/", // 域名
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/api": "/", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
+                },
+            },
+        },
         // proxy: null,
     },
     //把px换成rem

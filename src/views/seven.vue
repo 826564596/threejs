@@ -7,9 +7,10 @@
         <qrcode />
         <!-- 底部文字 -->
         <bottomText />
+        <!-- 返回键 -->
+        <backToHome />
         <!-- 左侧 -->
         <div class="left-table-single">
-
             <!-- 第一行 -->
             <el-row>
                 <el-col :span="18">
@@ -18,6 +19,7 @@
                     </div>
                 </el-col>
             </el-row>
+
             <!-- 第一行 主体 -->
             <el-row>
                 <el-col :span="24">
@@ -88,6 +90,7 @@
                     </div>
                 </el-col>
             </el-row>
+
             <!-- 第二行 主体 -->
             <el-row>
                 <el-col :span="24">
@@ -140,7 +143,6 @@
             </el-row>
 
             <!-- 第三行title -->
-
             <el-carousel height="260px" arrow="never">
                 <el-carousel-item>
                     <!-- 第三行标题 -->
@@ -197,47 +199,176 @@
             <el-row>
                 <el-col :span="24">
                     <div class="left-table-single-content-new ">
-                        <div class="border" style='overflow:hidden; '>
+                        <!-- <div class="border" style='overflow:hidden; '>
                             <div class=" test" style='height:30px; color:#fff;'>
                                 1111111111111111
                             </div>
-                        </div>
+                        </div> -->
+                        <el-row>
+                            <el-col :span="12">
+                                <div style='height:180px' class="" id="echarts-pie">
 
-                    </div>
-                </el-col>
-            </el-row>
+                                </div>
+                            </el-col>
 
-            <!-- 第二行title -->
-            <el-row>
-                <el-col :span="18">
-                    <div class=" left-table-single-title">
-                        <div>故障</div>
+                            <el-col :span="12">
+                                <div style='height:180px;' class="first-right ">
+                                    <div style="height:50px" class="first-right-title ">
+                                        报警信息
+                                    </div>
+                                    <div class="first-right-content ">
+                                        阿凡达发声伽师瓜跨省伽师瓜十多个客户说看过后上课给客户
+
+                                    </div>
+                                </div>
+                            </el-col>
+                        </el-row>
                     </div>
                 </el-col>
             </el-row>
-            <!-- 第二行 主体 -->
-            <el-row>
-                <el-col :span="24">
-                    <div class="left-table-single-content-new ">
-                    </div>
-                </el-col>
-            </el-row>
+            <el-carousel height="420px" arrow="never">
+                <el-carousel-item>
+                    <!-- 第二行title -->
+                    <el-row>
+                        <el-col :span="18">
+                            <div class=" left-table-single-title">
+                                <div>点检</div>
+                            </div>
+                        </el-col>
+                    </el-row>
+                    <!-- 第二行 主体 -->
+                    <el-row>
+                        <el-col :span="24">
+                            <div class="left-table-single-content-new-e " style="height:auto ">
+                                <el-row>
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colorone">
+                                            </div>
+                                            <div class="text">
+                                                未执行
+                                            </div>
+                                        </div>
+                                    </el-col>
+
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colortwo">
+                                            </div>
+                                            <div class="text">
+                                                已完成
+                                            </div>
+                                        </div>
+                                    </el-col>
+
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colorthree">
+                                            </div>
+                                            <div class="text">
+                                                未完成
+                                            </div>
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colorfour">
+                                            </div>
+                                            <div class="text">
+                                                计划中
+                                            </div>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                                <div style="padding-bottom:10px">
+                                    <calendar />
+                                </div>
+
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                </el-carousel-item>
+
+                <el-carousel-item>
+                    <!-- 第二行title -->
+                    <el-row>
+                        <el-col :span="18">
+                            <div class=" left-table-single-title">
+                                <div>保养</div>
+                            </div>
+                        </el-col>
+                    </el-row>
+                    <!-- 第二行 主体 -->
+                    <el-row>
+                        <el-col :span="24">
+                            <div class="left-table-single-content-new-e " style="height:auto ">
+                                <el-row>
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colorone">
+                                            </div>
+                                            <div class="text">
+                                                未执行
+                                            </div>
+                                        </div>
+                                    </el-col>
+
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colortwo">
+                                            </div>
+                                            <div class="text">
+                                                已完成
+                                            </div>
+                                        </div>
+                                    </el-col>
+
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colorthree">
+                                            </div>
+                                            <div class="text">
+                                                未完成
+                                            </div>
+                                        </div>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <div class="explain ">
+                                            <div class="colorfour">
+                                            </div>
+                                            <div class="text">
+                                                计划中
+                                            </div>
+                                        </div>
+                                    </el-col>
+                                </el-row>
+                                <div style="padding-bottom:10px">
+                                    <calendar />
+                                </div>
+
+                            </div>
+                        </el-col>
+                    </el-row>
+
+                </el-carousel-item>
+            </el-carousel>
 
             <!-- 第三行title -->
-            <el-row>
+            <!-- <el-row>
                 <el-col :span="18">
                     <div class=" left-table-single-title">
-                        <div>点检/保养</div>
+                        <div>保养</div>
                     </div>
                 </el-col>
-            </el-row>
+            </el-row> -->
             <!-- 第三行 主体 -->
-            <el-row>
+            <!-- <el-row>
                 <el-col :span="24">
                     <div class="left-table-single-content-new ">
                     </div>
                 </el-col>
-            </el-row>
+            </el-row> -->
 
             <!-- 第四行title -->
             <el-row>
@@ -263,7 +394,6 @@
                 </el-col>
             </el-row>
         </div>
-
     </div>
 
 </template>
@@ -286,6 +416,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
+
 export default {
     data() {
         return {
@@ -356,7 +487,7 @@ export default {
             let that = this;
             this.createFloor();
             this.createEnvironment();
-
+            this.createTable();
 
             //生成激光打标机
             let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
@@ -534,7 +665,118 @@ export default {
             result.geometry.uvsNeedUpdate = true;
             return result;
         },
+        // makeTextSprite(message, parameters) {
 
+        //     if (parameters === undefined) parameters = {};
+
+        //     let fontface = parameters.hasOwnProperty("fontface") ?
+        //         parameters["fontface"] : "Arial";
+
+        //     /* 字体大小 */
+        //     let fontsize = parameters.hasOwnProperty("fontsize") ?
+        //         parameters["fontsize"] : 18;
+
+        //     /* 边框厚度 */
+        //     let borderThickness = parameters.hasOwnProperty("borderThickness") ?
+        //         parameters["borderThickness"] : 4;
+
+        //     /* 边框颜色 */
+        //     let borderColor = parameters.hasOwnProperty("borderColor") ?
+        //         parameters["borderColor"] : { r: 0, g: 0, b: 0, a: 1.0 };
+
+        //     /* 背景颜色 */
+        //     let backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
+        //         parameters["backgroundColor"] : { r: 255, g: 255, b: 255, a: 1.0 };
+
+        //     /* 创建画布 */
+        //     let canvas = document.createElement('canvas');
+        //     let context = canvas.getContext('2d');
+
+        //     /* 字体加粗 */
+        //     context.font = "Bold " + fontsize + "px " + fontface;
+
+        //     /* 获取文字的大小数据，高度取决于文字的大小 */
+        //     let metrics = context.measureText(message);
+        //     let textWidth = metrics.width;
+
+        //     /* 背景颜色 */
+        //     context.fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
+        //         + backgroundColor.b + "," + backgroundColor.a + ")";
+
+        //     /* 边框的颜色 */
+        //     context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
+        //         + borderColor.b + "," + borderColor.a + ")";
+        //     context.lineWidth = borderThickness;
+
+        //     /* 绘制圆角矩形 */
+        //     this.roundRect(context, borderThickness / 2, borderThickness / 2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
+
+        //     /* 字体颜色 */
+        //     context.fillStyle = "rgba(0, 0, 0, 1.0)";
+        //     context.fillText(message, borderThickness, fontsize + borderThickness);
+
+        //     /* 画布内容用于纹理贴图 */
+        //     let texture = new Three.Texture(canvas);
+        //     texture.needsUpdate = true;
+
+        //     let spriteMaterial = new Three.SpriteMaterial({ map: texture });
+        //     let sprite = new Three.Sprite(spriteMaterial);
+
+        //     console.log(sprite.spriteMaterial);
+
+        //     /* 缩放比例 */
+        //     sprite.scale.set(150, 150, 1);
+
+        //     return sprite;
+        // },
+
+
+        // roundRect(ctx, x, y, w, h, r) {
+
+        //     ctx.beginPath();
+        //     ctx.moveTo(x + r, y);
+        //     ctx.lineTo(x + w - r, y);
+        //     ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+        //     ctx.lineTo(x + w, y + h - r);
+        //     ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+        //     ctx.lineTo(x + r, y + h);
+        //     ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+        //     ctx.lineTo(x, y + r);
+        //     ctx.quadraticCurveTo(x, y, x + r, y);
+        //     ctx.closePath();
+        //     ctx.fill();
+        //     ctx.stroke();
+
+        // },
+
+        //添加图表
+        createTable() {
+
+            let spriteMap = new Three.TextureLoader().load(require("../assets/image/底框.png"));
+            let spriteMaterial = new Three.SpriteMaterial({
+                transparent: true,
+                map: spriteMap,
+                side: Three.DoubleSide
+            });
+
+            let sprite = new Three.Sprite(spriteMaterial);
+            sprite.scale.set(50, 50, 1)
+            sprite.position.set(100, 50, 0);
+            this.scene.add(sprite);
+
+            // let spriteX = this.makeTextSprite("X",
+            //     {
+            //         fontsize: 20,
+            //         borderColor: { r: 255, g: 0, b: 0, a: 0.4 },/* 边框黑色 */
+            //         backgroundColor: { r: 255, g: 255, b: 255, a: 0.9 }/* 背景颜色 */
+            //     });
+            // spriteX.center = new Three.Vector2(0, 0);
+            // spriteX.position.set(10, 10, 10);
+            // this.scene.add(spriteX);
+
+
+
+        },
         //添加地面
         createFloor() {
             let that = this;
@@ -801,12 +1043,12 @@ export default {
                         }
                     },
                     indicator: [
-                        { name: '销售', max: 6500 },
-                        { name: '管理', max: 16000 },
-                        { name: '信息技术', max: 30000 },
-                        { name: '客服', max: 38000 },
-                        { name: '研发', max: 52000 },
-                        { name: '市场', max: 25000 }
+                        { name: '报警', max: 6500 },
+                        { name: '维修', max: 16000 },
+                        { name: '点检', max: 30000 },
+                        { name: '保养', max: 38000 },
+                        { name: '产量', max: 52000 },
+                        { name: '运行时长', max: 25000 }
                     ]
                 },
                 series: [{
@@ -836,7 +1078,76 @@ export default {
             };
             myChart.setOption(option);
 
-        }
+        },
+
+        //加载二charts饼图
+        initEchartPie() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-pie'));
+
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    show: false,
+                    type: 'scroll',
+                    orient: 'vertical',
+                    right: 0,
+                    textStyle: { color: " #fff" },
+                    pageIconColor: '#fff',
+                    pageIconSize: 12,
+                    pageTextStyle: {
+                        color: "#fff",
+                        fontSize: 12
+                    },
+                    data: ['设备1', '设备2', '设备3', '设备4', '设备5', "设备6", "设备7", "设备8", "设备9", "设备10", "设备11", "设备12", "设备13", "设备14"]
+                },
+                grid: {
+                },
+                series: [
+                    {
+                        name: '设备报警数',
+                        type: 'pie',
+                        radius: ['40%', '50%'],
+                        // radius: "50%",
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'left'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '16',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        // labelLine: {
+                        //     show: false
+                        // },
+                        data: [
+                            { value: 335, name: "设备1" },
+                            { value: 310, name: "设备2" },
+                            { value: 234, name: "设备3" },
+                            { value: 135, name: "设备4" },
+                            { value: 148, name: "设备5" },
+                            { value: 335, name: "设备6" },
+                            { value: 310, name: "设备7" },
+                            { value: 234, name: "设备8" },
+                            { value: 135, name: "设备9" },
+                            { value: 158, name: "设备10" },
+                            { value: 335, name: "设备11" },
+                            { value: 310, name: "设备12" },
+                            { value: 234, name: "设备13" },
+                            { value: 135, name: "设备14" },
+                        ]
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+        },
     },
 
 
@@ -847,6 +1158,7 @@ export default {
         this.groupName = this.$route.params.groupName;
         this.initEchartBar2();
         this.initEchartRadar();
+        this.initEchartPie();
         this.init();
         this.helper();
         this.animate();
@@ -867,5 +1179,5 @@ export default {
 
 </script>
 <style lang="scss">
-@import "../scss/index.scss";
+// @import "../scss/index.scss";
 </style>
