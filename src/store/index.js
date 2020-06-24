@@ -22,6 +22,9 @@ export default new Vuex.Store({
             "dev_wuji_6c78c0147c6b4885b0759bf74c66039f",
             "dev_wuji_585de886ce0a4a8795bb1260e389273e",
         ],
+        a: 1,
+        websocket: null, //websocket变量
+        websocketData: null, //onmessage 返回的数据
     },
     //可以用来像页面传递异步数据
     //页面通过 this.$store.getters.weather获取
@@ -29,26 +32,41 @@ export default new Vuex.Store({
         weather(state) {
             return state.weather;
         },
+        STAFF_UPDATE(state) {
+            return state.websocket;
+        },
     },
     //存放同步函数方法
     mutations: {
-        setWeather(state, weather) {
-            return (state.weather = weather);
+        WEBSOCKET_INIT(state, websocket) {
+            state.websocket = websocket;
+        },
+        //将接收到的数据赋值
+        WEBSOCKET_REIVE(state, data) {
+            state.websocketData = data;
         },
     },
     //存放异步函数方法
-
     actions: {
         //存放天气函数避免每个页面重复访问
-        getWeather({ commit }) {
-            axios
-                .get("https://www.tianqiapi.com/free/day?appid=56547279&appsecret=Ka5e7OMY")
-                .then((response) => {
-                    commit("setWeather", response);
-                })
-                .catch((error) => {
-                    console.log("失败");
-                });
+
+        STAFF_WEBSOCKET({ commit }) {
+            // console.log(state.a);
+            const wsuri = "ws://27.150.173.9:9002/ws/ParaQry";
+            commit("WEBSOCKET_INIT", new WebSocket(wsuri));
+            this.state.websocket.onopen = function() {
+                console.log("连接成功！");
+            };
+            this.state.websocket.οnerrοr = function(e) {
+                //错误
+                console.log("ws错误!");
+                console.log(e);
+            };
+            //websocket与后端链接的数据，为异步链接的方式！
+            this.state.websocket.onmessage = function(callBack) {
+                console.log(callBack);
+                commit("WEBSOCKET_REIVE", callBack.websocketData);
+            };
         },
     },
     modules: {},

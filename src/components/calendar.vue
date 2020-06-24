@@ -35,7 +35,7 @@ export default {
         return {
             calendarHeader: ["日", "一", "二", "三", "四", "五", "六"],
             selectedYear: new Date().getFullYear(),
-            selectedMonth: new Date().getMonth(),
+            selectedMonth: new Date().getMonth() + 1,
             selectedDate: new Date().getDate()
         };
     },
@@ -145,6 +145,7 @@ export default {
                 this.selectedDate = Number(item.content)
             }
         },
+        //上个月
         handlePreMonth() {
             if (this.selectedMonth === 0) {
                 this.selectedYear = this.selectedYear - 1
@@ -155,6 +156,7 @@ export default {
                 this.selectedDate = 1
             }
         },
+        //下个月
         handleNextMonth() {
             if (this.selectedMonth === 11) {
                 this.selectedYear = this.selectedYear + 1
@@ -164,8 +166,16 @@ export default {
                 this.selectedMonth = this.selectedMonth + 1
                 this.selectedDate = 1
             }
-        }
+        },
+
+    },
+    mounted() {
+        console.log(new Date());
+        console.log(this.selectedMonth);
+        console.log(this.selectedDate);
+
     }
+
 };
 </script>
 

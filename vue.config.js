@@ -61,6 +61,7 @@ module.exports = {
             "/api": {
                 target: "http://27.150.173.9:9002/", // 域名
                 changeOrigin: true,
+                ws: true,
                 pathRewrite: {
                     "^/api": "/", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
                 },

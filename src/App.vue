@@ -30,7 +30,7 @@ export default {
     mounted() {
         // console.log(window.innerWidth);
         // console.log(window.innerHeight);
-        // console.log(window);
+
         this.path = this.$route.path;
         window.onresize = () => {
             return this.onWindowResize();

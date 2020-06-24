@@ -47,7 +47,6 @@ const getDay = (num) => {
     //num是正数表示之后的时间，num负数表示之前的时间，0表示今天
     let time2 = date2.getFullYear() + "-" + ((date2.getMonth() + 1).toString().length == 1 ? "0" + (date2.getMonth() + 1) : date2.getMonth() + 1) + "-" + (date2.getDate().toString().length == 1 ? "0" + date2.getDate() : date2.getDate());
 
-    console.log((date1.getMonth() + 1).toString().length == 1 ? "0" + (date1.getMonth() + 1) : date1.getMonth() + 1);
     return num >= 0 ? [time1, time2] : [time2, time1];
 };
 module.exports = {

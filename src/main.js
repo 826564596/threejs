@@ -5,9 +5,10 @@ import store from "./store";
 import "lib-flexible/flexible";
 import $axios from "./plugins/axios";
 import axios from "axios";
-
+import socketApi from "./plugins/webScoket";
 import "./plugins/element.js";
 import "./plugins/echarts.js";
+
 //组件
 import weather from "@/components/weather";
 import login from "@/components/login";
@@ -32,9 +33,9 @@ Vue.component("calendar", calendar);
 Vue.component("backToHome", backToHome);
 
 Vue.prototype.$axios = $axios;
+Vue.prototype.$socketApi = socketApi;
 
 Vue.prototype.axios = axios;
-
 Vue.config.productionTip = false;
 
 new Vue({

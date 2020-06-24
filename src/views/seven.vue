@@ -219,7 +219,7 @@
                                         报警信息
                                     </div>
                                     <div class="first-right-content ">
-                                        阿凡达发声伽师瓜跨省伽师瓜十多个客户说看过后上课给客户
+                                        {{LstWarnListStr != "" ? LstWarnListStr :'暂无'}}
 
                                     </div>
                                 </div>
@@ -243,7 +243,7 @@
                         <el-col :span="24">
                             <div class="left-table-single-content-new-e " style="height:auto ">
                                 <el-row>
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="explain ">
                                             <div class="colorone">
                                             </div>
@@ -253,7 +253,7 @@
                                         </div>
                                     </el-col>
 
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="explain ">
                                             <div class="colortwo">
                                             </div>
@@ -263,7 +263,7 @@
                                         </div>
                                     </el-col>
 
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="explain ">
                                             <div class="colorthree">
                                             </div>
@@ -272,15 +272,7 @@
                                             </div>
                                         </div>
                                     </el-col>
-                                    <el-col :span="6">
-                                        <div class="explain ">
-                                            <div class="colorfour">
-                                            </div>
-                                            <div class="text">
-                                                计划中
-                                            </div>
-                                        </div>
-                                    </el-col>
+
                                 </el-row>
                                 <div style="padding-bottom:10px">
                                     <calendar />
@@ -306,7 +298,7 @@
                         <el-col :span="24">
                             <div class="left-table-single-content-new-e " style="height:auto ">
                                 <el-row>
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="explain ">
                                             <div class="colorone">
                                             </div>
@@ -316,7 +308,7 @@
                                         </div>
                                     </el-col>
 
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="explain ">
                                             <div class="colortwo">
                                             </div>
@@ -326,21 +318,12 @@
                                         </div>
                                     </el-col>
 
-                                    <el-col :span="6">
+                                    <el-col :span="8">
                                         <div class="explain ">
                                             <div class="colorthree">
                                             </div>
                                             <div class="text">
                                                 未完成
-                                            </div>
-                                        </div>
-                                    </el-col>
-                                    <el-col :span="6">
-                                        <div class="explain ">
-                                            <div class="colorfour">
-                                            </div>
-                                            <div class="text">
-                                                计划中
                                             </div>
                                         </div>
                                     </el-col>
@@ -386,15 +369,35 @@
                     <div class="left-table-single-content-new bg-small" style="height:50px;">
                         <el-row>
                             <el-col :span="10" :offset="4" class="healthy ">
-                                设备健康评价:
+                                设备稼动率:
                             </el-col>
                             <el-col :span="2" :offset="0" class="healthy ">
-                                <span>A</span>
+                                <span>{{ACTRATE}}%</span>
                             </el-col>
                         </el-row>
                     </div>
                 </el-col>
             </el-row>
+        </div>
+
+        <!-- 位置坐标 -->
+        <div class="location ">
+            <div v-for="(item,index) in locationArray" :key="index" class="location-div">
+                <el-row style="margin-top:5px">
+                    <el-col :span="9" :offset="1">
+                        <div class="content-content content-content-left ">
+                            轴{{index + 1}}
+                        </div>
+                    </el-col>
+
+                    <el-col :span="11" :offset="2">
+                        <div class="content-content content-content-right ">
+                            {{parseFloat(item).toFixed(4)}}°
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
+
         </div>
     </div>
 
@@ -419,6 +422,8 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 import utils from "../assets/utils/utils";
+// import socketApi from "../plugins/webScoket";
+
 
 
 export default {
@@ -438,6 +443,11 @@ export default {
             screenHeight: window.innerHeight,
             deviceStatus: ["在线", "离线", "空闲", "运行", "停机", "报警"],//设备运行状态
             operation: [],//运行情况
+            LstWarnListStr: "",//设备实时报警信息
+            ACTRATE: 0,//设备稼动率
+            locationArray: [],//轴坐标数组
+
+
         };
     },
     methods: {
@@ -451,6 +461,14 @@ export default {
             this.initLight();
             this.initControls();
             this.initContent();
+            document.onkeydown = function (event) {
+                that.keyboardDown(event);
+            };
+            document.onkeyup = function (event) {
+                that.keyboardUp(event);
+            };
+
+
         },
         //设置场景
         initScene() {
@@ -567,6 +585,8 @@ export default {
             J6.position.x = 19;
             J6Box.position.y = 31.6;
             J6Box.position.x = -19;
+            // J6Box.rotation.z += Math.PI / 2;////////////////////////////
+
             J6Box.name = "J6Box";
 
             J5.add(object.getObjectByName('J5_1'));
@@ -580,7 +600,11 @@ export default {
             J5Box.add(J5);
             J5Box.position.y = 32;
             J5Box.position.x = 5.7;
+
+
             J5Box.name = "J5Box";
+
+
 
             J4.add(object.getObjectByName('J4_1'));
             J4.add(object.getObjectByName('J4_2'));
@@ -671,116 +695,23 @@ export default {
             result.geometry.uvsNeedUpdate = true;
             return result;
         },
-        // makeTextSprite(message, parameters) {
-
-        //     if (parameters === undefined) parameters = {};
-
-        //     let fontface = parameters.hasOwnProperty("fontface") ?
-        //         parameters["fontface"] : "Arial";
-
-        //     /* 字体大小 */
-        //     let fontsize = parameters.hasOwnProperty("fontsize") ?
-        //         parameters["fontsize"] : 18;
-
-        //     /* 边框厚度 */
-        //     let borderThickness = parameters.hasOwnProperty("borderThickness") ?
-        //         parameters["borderThickness"] : 4;
-
-        //     /* 边框颜色 */
-        //     let borderColor = parameters.hasOwnProperty("borderColor") ?
-        //         parameters["borderColor"] : { r: 0, g: 0, b: 0, a: 1.0 };
-
-        //     /* 背景颜色 */
-        //     let backgroundColor = parameters.hasOwnProperty("backgroundColor") ?
-        //         parameters["backgroundColor"] : { r: 255, g: 255, b: 255, a: 1.0 };
-
-        //     /* 创建画布 */
-        //     let canvas = document.createElement('canvas');
-        //     let context = canvas.getContext('2d');
-
-        //     /* 字体加粗 */
-        //     context.font = "Bold " + fontsize + "px " + fontface;
-
-        //     /* 获取文字的大小数据，高度取决于文字的大小 */
-        //     let metrics = context.measureText(message);
-        //     let textWidth = metrics.width;
-
-        //     /* 背景颜色 */
-        //     context.fillStyle = "rgba(" + backgroundColor.r + "," + backgroundColor.g + ","
-        //         + backgroundColor.b + "," + backgroundColor.a + ")";
-
-        //     /* 边框的颜色 */
-        //     context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + ","
-        //         + borderColor.b + "," + borderColor.a + ")";
-        //     context.lineWidth = borderThickness;
-
-        //     /* 绘制圆角矩形 */
-        //     this.roundRect(context, borderThickness / 2, borderThickness / 2, textWidth + borderThickness, fontsize * 1.4 + borderThickness, 6);
-
-        //     /* 字体颜色 */
-        //     context.fillStyle = "rgba(0, 0, 0, 1.0)";
-        //     context.fillText(message, borderThickness, fontsize + borderThickness);
-
-        //     /* 画布内容用于纹理贴图 */
-        //     let texture = new Three.Texture(canvas);
-        //     texture.needsUpdate = true;
-
-        //     let spriteMaterial = new Three.SpriteMaterial({ map: texture });
-        //     let sprite = new Three.Sprite(spriteMaterial);
-
-        //     console.log(sprite.spriteMaterial);
-
-        //     /* 缩放比例 */
-        //     sprite.scale.set(150, 150, 1);
-
-        //     return sprite;
-        // },
 
 
-        // roundRect(ctx, x, y, w, h, r) {
-
-        //     ctx.beginPath();
-        //     ctx.moveTo(x + r, y);
-        //     ctx.lineTo(x + w - r, y);
-        //     ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-        //     ctx.lineTo(x + w, y + h - r);
-        //     ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-        //     ctx.lineTo(x + r, y + h);
-        //     ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-        //     ctx.lineTo(x, y + r);
-        //     ctx.quadraticCurveTo(x, y, x + r, y);
-        //     ctx.closePath();
-        //     ctx.fill();
-        //     ctx.stroke();
-
-        // },
 
         //添加图表
         createTable() {
 
-            let spriteMap = new Three.TextureLoader().load(require("../assets/image/底框.png"));
-            let spriteMaterial = new Three.SpriteMaterial({
-                transparent: true,
-                map: spriteMap,
-                side: Three.DoubleSide
-            });
+            // let spriteMap = new Three.TextureLoader().load(require("../assets/image/底框.png"));
+            // let spriteMaterial = new Three.SpriteMaterial({
+            //     transparent: true,
+            //     map: spriteMap,
+            //     side: Three.DoubleSide
+            // });
 
-            let sprite = new Three.Sprite(spriteMaterial);
-            sprite.scale.set(50, 50, 1)
-            sprite.position.set(100, 50, 0);
-            this.scene.add(sprite);
-
-            // let spriteX = this.makeTextSprite("X",
-            //     {
-            //         fontsize: 20,
-            //         borderColor: { r: 255, g: 0, b: 0, a: 0.4 },/* 边框黑色 */
-            //         backgroundColor: { r: 255, g: 255, b: 255, a: 0.9 }/* 背景颜色 */
-            //     });
-            // spriteX.center = new Three.Vector2(0, 0);
-            // spriteX.position.set(10, 10, 10);
-            // this.scene.add(spriteX);
-
-
+            // let sprite = new Three.Sprite(spriteMaterial);
+            // sprite.scale.set(50, 50, 1)
+            // sprite.position.set(100, 50, 0);
+            // this.scene.add(sprite);
 
         },
         //添加地面
@@ -823,7 +754,7 @@ export default {
                 this.camera.position.z += vect.dot(new Three.Vector3(0, 0, 15)) * 0.01;
                 this.camera.position.x += vect.dot(new Three.Vector3(15, 0, 0)) * 0.01;
             }
-            // //转轴1
+
             if (this.one) {
                 this.shaftOne();
             }
@@ -841,6 +772,85 @@ export default {
             }
             if (this.six) {
                 this.shaftSix();
+            }
+            //轴4和轴6是跟rotation相反
+            // let a = ["0.659891", "-131.469000", "222.603000", "179.977000", "93.137600", "-46.173900"];
+            // this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = 0.659891;
+            // this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = -131.469000;
+            // this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = 222.603000;
+            // this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -179.977000;
+            // this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = 93.137600;
+            // this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = 46.173900;
+        },
+
+        //键盘按下事件
+        keyboardDown(event) {
+            switch (event.keyCode) {
+                case 49: // 1
+                    this.one = true;
+                    break;
+                case 50: // 2
+                    this.two = true;
+                    break;
+                case 51: // 3
+                    this.three = true;
+                    break;
+                case 52: // 4
+                    this.four = true;
+                    break;
+                case 53: // 5
+                    this.five = true;
+                    break;
+                case 54: // 6
+                    this.six = true;
+                    break;
+                case 65: // a
+                    this.left = true;
+                    break;
+                case 68: // d
+                    this.right = true;
+                    break;
+                case 83: // s
+                    this.back = true;
+                    break;
+                case 87: // w
+                    this.front = true;
+                    break;
+            }
+        },
+        //键盘收起事件
+        keyboardUp(event) {
+            switch (event.keyCode) {
+                case 49: // 1
+                    this.one = false;
+                    break;
+                case 50: // 2
+                    this.two = false;
+                    break;
+                case 51: // 3
+                    this.three = false;
+                    break;
+                case 52: // 4
+                    this.four = false;
+                    break;
+                case 53: // 5
+                    this.five = false;
+                    break;
+                case 54: // 6
+                    this.six = false;
+                    break;
+                case 65: // a
+                    this.left = false;
+                    break;
+                case 68: // d
+                    this.right = false;
+                    break;
+                case 83: // s
+                    this.back = false;
+                    break;
+                case 87: // w
+                    this.front = false;
+                    break;
             }
         },
         //转动轴1
@@ -867,7 +877,6 @@ export default {
         },
         //转动轴6
         shaftSix() {
-            console.log(this.scene.getObjectByName(this.groupName).getObjectByName("J7Box"));
             this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x += 0.01;
 
         },
@@ -1071,17 +1080,16 @@ export default {
 
         },
 
-        //加载二charts饼图
+        //报警类型占比
         initEchartPie() {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie'));
-
             let option = {
                 tooltip: {
                     trigger: 'item',
                     formatter: '{a} <br/>{b}: {c} ({d}%)'
                 },
                 legend: {
-                    show: false,
+                    // show: true,
                     type: 'scroll',
                     orient: 'vertical',
                     right: 0,
@@ -1092,7 +1100,7 @@ export default {
                         color: "#fff",
                         fontSize: 12
                     },
-                    data: ['设备1', '设备2', '设备3', '设备4', '设备5', "设备6", "设备7", "设备8", "设备9", "设备10", "设备11", "设备12", "设备13", "设备14"]
+                    data: []
                 },
                 grid: {
                 },
@@ -1100,7 +1108,7 @@ export default {
                     {
                         name: '设备报警数',
                         type: 'pie',
-                        radius: ['40%', '50%'],
+                        radius: ['30%', '50%'],
                         // radius: "50%",
                         avoidLabelOverlap: false,
                         label: {
@@ -1117,29 +1125,45 @@ export default {
                         // labelLine: {
                         //     show: false
                         // },
-                        data: [
-                            { value: 335, name: "设备1" },
-                            { value: 310, name: "设备2" },
-                            { value: 234, name: "设备3" },
-                            { value: 135, name: "设备4" },
-                            { value: 148, name: "设备5" },
-                            { value: 335, name: "设备6" },
-                            { value: 310, name: "设备7" },
-                            { value: 234, name: "设备8" },
-                            { value: 135, name: "设备9" },
-                            { value: 158, name: "设备10" },
-                            { value: 335, name: "设备11" },
-                            { value: 310, name: "设备12" },
-                            { value: 234, name: "设备13" },
-                            { value: 135, name: "设备14" },
-                        ]
+                        data: []
                     }
                 ]
             };
             myChart.setOption(option);
 
-        },
+            let obj = {
+                mac: "wuji",
+                datestr: utils.getDay(0)[0],
+                deviceid: this.deviceId
+            }
+            myChart.showLoading();
+            this.$axios.post("/api/DDC/DeviceWorkStatic/DayWarnDis" + utils.formatQueryStr(obj)).then(res => {
+                myChart.hideLoading();
+                let data1 = [];
+                let data2 = [];
+                res.forEach((item, index) => {
+                    data1.push(item.F_ERRORN);
+                    data2.push({
+                        value: item.F_ERRORC,
+                        name: item.F_ERRORN
+                    })
+                })
+                myChart.setOption({
+                    legend: {
+                        data: data1
+                    },
+                    series: [
+                        {
+                            data: data2
+                        }
+                    ]
+                });
 
+
+            }).catch(error => { }
+            )
+
+        },
 
         //获取设备当前页面需要数据
         getData() {
@@ -1153,9 +1177,14 @@ export default {
             this.axios.all([
                 this.$axios.post('/api/DDC/DeviceWorkStatic/DayWorkLoadRank' + utils.formatQueryStr(obj)),
                 this.$axios.post('/api/DDC/DeviceWorkStatic/LstWarnList' + utils.formatQueryStr(obj)),
+                this.$axios.post('/api/DDC/DeviceWorkStatic/DayDevActRank' + utils.formatQueryStr(obj)),
 
-            ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList) {
-                console.log(LstWarnList);
+
+
+
+            ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList, DayDevActRank) {
+                console.log(DayDevActRank);
+                that.ACTRATE = DayDevActRank[0].ACTRATE;
                 that.operation = DayWorkLoadRank;
             })).catch(error => {
 
@@ -1163,12 +1192,12 @@ export default {
 
 
         },
+
     },
 
 
     mounted() {
-
-        // window.visualViewport.scale = 0.5;
+        let that = this;
         this.groupName = this.$route.params.groupName;
         this.deviceId = this.$route.params.deviceId;
         this.getData();
@@ -1182,12 +1211,15 @@ export default {
         window.onresize = () => {
             return this.onWindowResize();
         }
-
+        this.$socketApi.sendSock((res) => {
+            this.locationArray = JSON.parse(res[this.deviceId][0].value);
+        });
     },
     destroyed() {
         //页面销毁时删除场景
         this.scene.children = {};
         this.renderer.dispose();
+        // socketApi.websock.close();
     },
 
 

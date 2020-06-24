@@ -351,6 +351,8 @@ import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 import TWEEN from "@tweenjs/tween.js";
 import Stats from "three/examples/js/libs/stats.min.js";
 import utils from "../assets/utils/utils";
+// import socketApi from "../plugins/webScoket";
+
 
 
 
@@ -1926,7 +1928,6 @@ export default {
             this.initEchartLine();
             this.initEchartPie();
         })
-
         this.init();
         this.helper();
         this.animate();
@@ -1934,12 +1935,18 @@ export default {
         window.onresize = () => {
             return this.onWindowResize();
         }
+        this.$socketApi.sendSock((res) => {
+            console.log(6);
+            // this.locationArray = JSON.parse(res[this.deviceId][0].value);
+        });
     },
 
     destroyed() {
         //页面销毁时删除场景
         this.scene.children = {};
         this.renderer.dispose();
+        // socketApi.websock.close();
+
     },
 
 
