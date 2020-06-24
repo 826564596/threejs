@@ -549,6 +549,28 @@
     }
 }
 
+
+@keyframes mymove {
+    0% {
+        transform: scale(1);
+        /*开始为原始大小*/
+    }
+
+    25% {
+        transform: scale(1.1);
+        /*放大1.1倍*/
+    }
+
+    50% {
+        transform: scale(1);
+    }
+
+    75% {
+        transform: scale(1.1);
+    }
+
+}
+
 .qrcode {
     height: auto;
     width: 240px;
@@ -559,6 +581,15 @@
     .el_content {
         height: 100px;
         width: 100px;
+    }
+
+    .el_contents {
+        height: 100px;
+        width: 100px;
+    }
+
+    .el_content:hover {
+        animation: mymove 2s infinite;
     }
 
     .el_bg1 {

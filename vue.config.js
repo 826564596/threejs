@@ -47,6 +47,7 @@ module.exports = {
     configureWebpack: {},
     // 对内部的 webpack 配置（比如修改、增加Loader选项）(链式操作)
     chainWebpack: (config) => {},
+
     devServer: {
         // open: false,
         disableHostCheck: true,

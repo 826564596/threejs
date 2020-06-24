@@ -3,7 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import "lib-flexible/flexible";
-import axios from "./plugins/axios";
+import $axios from "./plugins/axios";
+import axios from "axios";
+
 import "./plugins/element.js";
 import "./plugins/echarts.js";
 //组件
@@ -29,7 +31,10 @@ Vue.component("operatingDay", operatingDay);
 Vue.component("calendar", calendar);
 Vue.component("backToHome", backToHome);
 
-Vue.prototype.$axios = axios;
+Vue.prototype.$axios = $axios;
+
+Vue.prototype.axios = axios;
+
 Vue.config.productionTip = false;
 
 new Vue({

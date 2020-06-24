@@ -28,25 +28,18 @@ export default {
         }
     },
     mounted() {
-        console.log(window.innerWidth);
-        console.log(window.innerHeight);
-
-        console.log(window);
+        // console.log(window.innerWidth);
+        // console.log(window.innerHeight);
+        // console.log(window);
         this.path = this.$route.path;
         window.onresize = () => {
             return this.onWindowResize();
         }
     },
-    //监听路由变化
-    watch: {
-
-    },
 
     methods: {
         // 窗口变动触发
         onWindowResize() {
-            console.log(window.innerWidth);
-            console.log(window.innerHeight);
 
             this.screenWidth = window.innerWidth;
             this.screenHeight = window.innerHeight;

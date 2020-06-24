@@ -105,7 +105,9 @@
 
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
-                                    20
+
+                                    <div v-if="operation.length>0"> {{operation[0].F_RUNDURA + operation[0].F_FREEDURA + operation[0].F_WARNDURA}}</div>
+
                                 </div>
                             </el-col>
                         </el-row>
@@ -119,7 +121,7 @@
 
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
-                                    12
+                                    <div v-if="operation.length>0"> {{operation[0].F_RUNDURA}}</div>
                                 </div>
                             </el-col>
                         </el-row>
@@ -133,7 +135,7 @@
 
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
-                                    12
+                                    <div v-if="operation.length>0"> {{operation[0].F_WARNDURA}}</div>
                                 </div>
                             </el-col>
                         </el-row>
@@ -416,6 +418,8 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
+import utils from "../assets/utils/utils";
+
 
 export default {
     data() {
@@ -429,9 +433,11 @@ export default {
             container: null,
             controls: null,
             groupName: null,
+            deviceId: null,
             screenWidth: window.innerWidth,
             screenHeight: window.innerHeight,
             deviceStatus: ["在线", "离线", "空闲", "运行", "停机", "报警"],//设备运行状态
+            operation: [],//运行情况
         };
     },
     methods: {
@@ -886,19 +892,14 @@ export default {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
             // this.controls.handleResize();
         },
+
+
         // 总产量计数
         initEchartBar2() {
             let that = this;
             let myChart = this.$echarts.init(document.getElementById('echarts-bar1'));
             // 绘制图表
             let option = {
-                // color: ['#3398DB'],
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //     }
-                // },
                 grid: {
                     left: '0%',
                     bottom: '3%',
@@ -908,7 +909,7 @@ export default {
                 xAxis: [
                     {
                         type: 'category',
-                        data: ['总产量计数', '当月总产量', '当天总产量'],
+                        data: ['当月总产量', '当周总产量', "当天总产量"],
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -924,14 +925,6 @@ export default {
                         }
                     }
                 ],
-                // dataZoom: [
-                //     {
-                //         id: 'dataZoomX',
-                //         type: 'slider',
-                //         start: 0,
-                //         end: 30,
-                //     }
-                // ],
                 yAxis: [
                     {
                         max: function (value) {
@@ -948,15 +941,10 @@ export default {
                     {
                         type: 'bar',
                         barWidth: '40%',
-                        data: [1000, 200, 150],
+                        data: [],
                         itemStyle: {
                             normal: {
                                 color: function (params) {
-                                    // let colorList = [
-                                    //     'rgb(254,153,26)', 'rgb(98,129,227)', 'rgb(254,213,1)'
-                                    // ];
-                                    // return colorList[params.dataIndex]
-
                                     let colorList = [
                                         ['rgb(254,153,26)', 'rgb(254,70,26)'],
                                         ['rgb(98,129,227)', 'rgb(9,136,222)'],
@@ -968,21 +956,6 @@ export default {
                                         index = params.dataIndex - colorList.length;
                                     }
                                     return colorList[index][1];
-                                    // return that.$echarts.graphic.LinearGradient(
-                                    //     0, 0, 0, 1,
-                                    //     [{
-                                    //         offset: 0,
-                                    //         color: colorList[index][0]
-                                    //     },
-                                    //     {
-                                    //         offset: 1,
-                                    //         color: colorList[index][1]
-                                    //     }
-                                    //     ]
-                                    // );
-
-
-
                                 },
 
                                 label: {
@@ -1001,6 +974,24 @@ export default {
                 ]
             }
             myChart.setOption(option);
+            let obj = {
+                mac: 'wuji',
+                deviceid: this.deviceId
+            }
+            myChart.showLoading();
+            this.$axios.post("/api/DDC/DeviceWorkStatic/WorkLoadView" + utils.formatQueryStr(obj)).then(res => {
+                myChart.hideLoading();
+                console.log(res);
+                myChart.setOption({
+                    series: [{
+                        data: [res.month, res.week, res.today]
+                    }]
+                })
+            }).catch(error => {
+
+            })
+
+
         },
 
         initEchartRadar() {
@@ -1148,14 +1139,39 @@ export default {
             myChart.setOption(option);
 
         },
+
+
+        //获取设备当前页面需要数据
+        getData() {
+            let that = this;
+
+            let obj = {
+                mac: "wuji",
+                datestr: utils.getDay(0)[0],
+                deviceid: this.deviceId,
+            }
+            this.axios.all([
+                this.$axios.post('/api/DDC/DeviceWorkStatic/DayWorkLoadRank' + utils.formatQueryStr(obj)),
+                this.$axios.post('/api/DDC/DeviceWorkStatic/LstWarnList' + utils.formatQueryStr(obj)),
+
+            ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList) {
+                console.log(LstWarnList);
+                that.operation = DayWorkLoadRank;
+            })).catch(error => {
+
+            });
+
+
+        },
     },
 
 
     mounted() {
 
-        console.log(window);
         // window.visualViewport.scale = 0.5;
         this.groupName = this.$route.params.groupName;
+        this.deviceId = this.$route.params.deviceId;
+        this.getData();
         this.initEchartBar2();
         this.initEchartRadar();
         this.initEchartPie();

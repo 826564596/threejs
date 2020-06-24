@@ -45,7 +45,6 @@ export default {
             // this.weather = this.$store.state.weather;
 
             this.$axios.get("https://www.tianqiapi.com/free/day?appid=56547279&appsecret=Ka5e7OMY").then(response => {
-                console.log(response);
                 this.weather = response;
             }).catch(error => {
                 console.log("失败");

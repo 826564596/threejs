@@ -7,7 +7,7 @@
 
                 </div>
             </el-col>
-            <el-col :span="11" :offset="2" class="el_content el_bg2">
+            <el-col :span="11" :offset="2" class="el_contents el_bg2">
                 <div></div>
             </el-col>
         </el-row>
@@ -24,6 +24,7 @@ export default {
     methods: {
         route() {
             this.$router.push({ name: "productionMonitoring" });
+
         }
     }
 }
