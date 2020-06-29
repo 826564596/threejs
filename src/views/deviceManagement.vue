@@ -32,39 +32,32 @@
                             设备保养
                         </div>
                     </el-col>
-                    <el-col :span="3">
-                        <div :class="` right-button ${buttonActive == 4 ? 'buttonActive':''} `" @click="changeButton(4)">
-                            易损件管理
-                        </div>
-                    </el-col>
-
                 </el-row>
                 <!-- 设备档案 -->
                 <div v-if="buttonActive == 0">
-                    <!-- 按钮 -->
-                    <div class=" buttonAndText">
-                        <div class="border" style="width:100px;">
-                            1
-                        </div>
-                        <div class="">
-                            <button class="buttonAndText-button">搜索</button>
-                        </div>
-                        <div class="">
-                            <button class="buttonAndText-button">编辑</button>
-                        </div>
-                        <div class="">
-                            <button class="buttonAndText-button">删除</button>
-                        </div>
-                    </div>
+
+                    <dropdown />
                     <!-- 表格 -->
                     <div class="pm_content-two" style="height:582px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
                             <el-table :data="tableData" style="width: 100%; " max-height="581" border>
-                                <el-table-column prop="date" label="配件信息" width="480">
+                                <el-table-column prop="F_NAME" label="设备名称" width="170">
                                 </el-table-column>
-                                <el-table-column prop="name" label="供应商信息" width="480">
+                                <el-table-column prop="F_TERMINALNAME" label="终端名称" width="180">
                                 </el-table-column>
-                                <el-table-column prop="address" label="库存信息" width="480">
+                                <el-table-column prop="f_scadaname" label="采集名称" width="180">
+                                </el-table-column>
+                                <el-table-column prop="F_ONLINE" label="运行状态" width="100">
+                                </el-table-column>
+                                <el-table-column prop="F_STAT" label="设备状态" width="100">
+                                </el-table-column>
+                                <el-table-column prop="F_CONNSTR" label="连接配置串" width="180">
+                                </el-table-column>
+                                <el-table-column prop="F_VERSION" label="版本" width="180">
+                                </el-table-column>
+                                <el-table-column prop="F_DEVICESDKNAME" label="设备SDK名称" width="180">
+                                </el-table-column>
+                                <el-table-column prop="F_DEVICEID" label="设备ID" width="180">
                                 </el-table-column>
                             </el-table>
                         </div>
@@ -76,25 +69,11 @@
                 </div>
                 <!-- 设备点检 -->
                 <div v-if="buttonActive == 2">
-
+                    <dropdown url="/DDC/DeviceChk/QueryChkRecdList" :tableData.sync="tableData3" />
                 </div>
                 <!-- 设备保养 -->
                 <div v-if="buttonActive == 3">
-                    <!-- 按钮 -->
-                    <div class=" buttonAndText">
-                        <div class="border" style="width:100px;">
-                            1
-                        </div>
-                        <div class="">
-                            <button class="buttonAndText-button">搜索</button>
-                        </div>
-                        <div class="">
-                            <button class="buttonAndText-button">编辑</button>
-                        </div>
-                        <div class="">
-                            <button class="buttonAndText-button">删除</button>
-                        </div>
-                    </div>
+                    <dropdown url="/DDC/DeviceWorkStatic/DeviceMTRecd" :tableData.sync="tableData4" />
 
                     <div class="maintain ">
 
@@ -110,87 +89,7 @@
                                 <button>删除</button>
                             </div>
                         </div>
-
-                        <!-- <div class="maintain-item ">
-                            <div class="pm_content-one-title ">
-                                故障统计
-                            </div>
-                            <div class="maintain-item-content border">
-                            </div>
-
-                            <div class="maintain-item-button">
-                                <button>保养</button>
-                                <button>删除</button>
-                            </div>
-                        </div>
-                        <div class="maintain-item ">
-
-                            <div class="pm_content-one-title ">
-                                故障统计
-                            </div>
-                            <div class="maintain-item-content border">
-                            </div>
-
-                            <div class="maintain-item-button">
-                                <button>保养</button>
-                                <button>删除</button>
-                            </div>
-
-                        </div>
-                        <div class="maintain-item ">
-                            <div class="pm_content-one-title ">
-                                故障统计
-                            </div>
-                            <div class="maintain-item-content border">
-                            </div>
-
-                            <div class="maintain-item-button">
-                                <button>保养</button>
-                                <button>删除</button>
-                            </div>
-                        </div>
-
-                        <div class="maintain-item2 ">
-                            <div class="pm_content-one-title ">
-                                故障统计
-                            </div>
-                            <div class="maintain-item-content border">
-                            </div>
-
-                            <div class="maintain-item-button">
-                                <button>保养</button>
-                                <button>删除</button>
-                            </div>
-                        </div>
-                        <div class="maintain-item2 ">
-                            <div class="pm_content-one-title ">
-                                故障统计
-                            </div>
-                            <div class="maintain-item-content border">
-                            </div>
-
-                            <div class="maintain-item-button">
-                                <button>保养</button>
-                                <button>删除</button>
-                            </div>
-                        </div>
-                        <div class="maintain-item2 ">
-                            <div class="pm_content-one-title ">
-                                故障统计
-                            </div>
-                            <div class="maintain-item-content border">
-                            </div>
-
-                            <div class="maintain-item-button">
-                                <button>保养</button>
-                                <button>删除</button>
-                            </div>
-                        </div> -->
                     </div>
-                </div>
-                <!-- 易损件管理 -->
-                <div v-if="buttonActive == 4">
-
                 </div>
             </div>
 
@@ -199,78 +98,51 @@
 </template>
 
 <script>
+import utils from "../assets/utils/utils";
+
 export default {
     data() {
         return {
             index: 1,
             buttonActive: 0,
-            tableData: [{
-                date: '2016-05-04,2016-05-042016-05-04',
-                name: '王小虎sss',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
-            {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
+            tableData: [],//表格信息
+            tableData2: [],//表格信息
+            tableData3: [],//表格信息
+            tableData4: [],//表格信息
 
-            {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
-            {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
-            ]
+
+
         };
     },
     methods: {
         changeButton(item) {
             this.buttonActive = item;
-        }
+        },
+        //获取信息
+        getData() {
+            let that = this;
+            let obj = {
+                MAC: "wuji",
+                pagesize: 15
+            }
+            this.$axios.post('api//DDC/Terminal/DeviceList' + utils.formatQueryStr(obj)).then((res) => {
+                console.log(res.Rows);
+                for (let i of res.Rows) {
+                    i.F_STAT = i.F_STAT == "1" ? '启用' : "未启用";
+                }
+                that.tableData = res.Rows;
+
+            }).catch(error => {
+
+            })
+
+        },
     },
     mounted() {
-        console.log(Math.floor(4 / 3))
+        this.getData();
+    },
+    updated() {
+        console.log(this.tableData4);
     }
 }
 

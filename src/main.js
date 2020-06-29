@@ -20,6 +20,7 @@ import date from "@/components/date";
 import operatingDay from "@/components/operatingDay";
 import calendar from "@/components/calendar";
 import backToHome from "@/components/backToHome";
+import dropdown from "@/components/dropdown";
 
 Vue.component("weather", weather);
 Vue.component("login", login);
@@ -31,6 +32,7 @@ Vue.component("date", date);
 Vue.component("operatingDay", operatingDay);
 Vue.component("calendar", calendar);
 Vue.component("backToHome", backToHome);
+Vue.component("dropdown", dropdown);
 
 Vue.prototype.$axios = $axios;
 Vue.prototype.$socketApi = socketApi;

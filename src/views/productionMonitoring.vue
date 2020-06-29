@@ -39,14 +39,14 @@
                                         <div class="pm_content-one-title ">
                                             设备状态统计
                                         </div>
-                                        <div class="pm_content-one-content " id='echarts-bar1'>
+                                        <div class="pm_content-one-content " id="echarts-pie">
                                         </div>
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="pm_content-one-title ">
-                                            报警统计
+                                            报警类型统计
                                         </div>
-                                        <div class="pm_content-one-content " id='echarts-bar2'>
+                                        <div class="pm_content-one-content " id='echarts-pie2'>
 
                                         </div>
                                     </el-col>
@@ -115,6 +115,7 @@
 </template>
 
 <script>
+import utils from "../assets/utils/utils";
 export default {
     data() {
         return {
@@ -185,6 +186,188 @@ export default {
             this.buttonActive = item;
 
         },
+        getData() {
+            let that = this;
+
+            let obj = {
+                mac: "wuji",
+                datestr: utils.getDay(0)[0],
+                deviceid: this.deviceId,
+            }
+            this.axios.all([
+                this.$axios.post('/api/DDC/DeviceWorkStatic/DayWorkLoadRank' + utils.formatQueryStr(obj)),
+            ]).then(this.axios.spread(function () {
+
+            })).catch(error => {
+
+            });
+
+
+        },
+        //报警类型占比
+        initEchartPie() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-pie'));
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    // show: true,
+                    type: 'scroll',
+                    orient: 'vertical',
+                    right: 0,
+                    textStyle: { color: " #fff" },
+                    pageIconColor: '#fff',
+                    pageIconSize: 12,
+                    pageTextStyle: {
+                        color: "#fff",
+                        fontSize: 12
+                    },
+                    data: ['在线', '离线']
+                },
+                grid: {
+                },
+                series: [
+                    {
+                        name: '设备报警数',
+                        type: 'pie',
+                        radius: ['30%', '50%'],
+                        // radius: "50%",
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'left'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '16',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        // labelLine: {
+                        //     show: false
+                        // },
+                        data: []
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+            let obj = {
+                mac: "wuji",
+            }
+            myChart.showLoading();
+            this.$axios.post("/api/DDC/DeviceWorkStatic/OnLineStat" + utils.formatQueryStr(obj)).then(res => {
+                myChart.hideLoading();
+                console.log(res);
+                let data2 = [];
+                data2.push({
+                    value: res.onlinenum,
+                    name: "在线"
+                });
+
+                data2.push({
+                    value: res.offlinenum,
+                    name: "离线"
+                });
+                myChart.setOption({
+                    series: [
+                        {
+                            data: data2
+                        }
+                    ]
+                });
+
+
+            }).catch(error => { }
+            )
+
+        },
+        initEchartPie2() {
+            let myChart = this.$echarts.init(document.getElementById('echarts-pie2'));
+            let option = {
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                },
+                legend: {
+                    // show: true,
+                    type: 'scroll',
+                    orient: 'vertical',
+                    right: 0,
+                    textStyle: { color: " #fff" },
+                    pageIconColor: '#fff',
+                    pageIconSize: 12,
+                    pageTextStyle: {
+                        color: "#fff",
+                        fontSize: 12
+                    },
+                    data: []
+                },
+                grid: {
+                },
+                series: [
+                    {
+                        name: '设备报警数',
+                        type: 'pie',
+                        radius: ['30%', '50%'],
+                        // radius: "50%",
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'left'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '16',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        // labelLine: {
+                        //     show: false
+                        // },
+                        data: []
+                    }
+                ]
+            };
+            myChart.setOption(option);
+
+            let obj = {
+                mac: "wuji",
+                datestr: utils.getDay(0)[0],
+            }
+            myChart.showLoading();
+            this.$axios.post("/api/DDC/DeviceWorkStatic/DayWarnDis" + utils.formatQueryStr(obj)).then(res => {
+                myChart.hideLoading();
+                let data1 = [];
+                let data2 = [];
+                res.forEach((item, index) => {
+                    data1.push(item.F_ERRORN);
+                    data2.push({
+                        value: item.F_ERRORC,
+                        name: item.F_ERRORN
+                    })
+                })
+                myChart.setOption({
+                    legend: {
+                        data: data1
+                    },
+                    series: [
+                        {
+                            data: data2
+                        }
+                    ]
+                });
+
+
+            }).catch(error => { }
+            )
+
+        },
+
 
         //加载echart折线图
         initEchartLine() {
@@ -339,124 +522,7 @@ export default {
             };
             myChart.setOption(option);
         },
-        initEchartBar1() {
-            let myChart = this.$echarts.init(document.getElementById('echarts-bar1'));
-            // 绘制图表
-            myChart.setOption({
-                color: ['#3398DB'],
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //     }
-                // },
-                grid: {
-                    left: '0%',
-                    bottom: '3%',
-                    top: "5%",
-                    containLabel: true
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                        axisTick: {
-                            alignWithLabel: true
-                        },
 
-                        axisLine: {
-                            lineStyle: {
-                                color: '#ddd', // 颜色
-                                width: 1 // 粗细
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                        }
-                    }
-                ],
-                // dataZoom: [
-                //     {
-                //         id: 'dataZoomX',
-                //         type: 'slider',
-                //         start: 0,
-                //         end: 30,
-                //     }
-                // ],
-                yAxis: [
-                    {
-                        show: false,
-                        type: 'value'
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: '40%',
-                        data: [10, 52, 200, 334, 390, 330, 220]
-                    }
-                ]
-            });
-        },
-        initEchartBar2() {
-            let myChart = this.$echarts.init(document.getElementById('echarts-bar2'));
-            // 绘制图表
-            myChart.setOption({
-                color: ['#3398DB'],
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //     }
-                // },
-                grid: {
-                    left: '0%',
-                    bottom: '3%',
-                    top: "5%",
-                    containLabel: true
-                },
-                xAxis: [
-                    {
-                        type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                        axisTick: {
-                            alignWithLabel: true
-                        },
-
-                        axisLine: {
-                            lineStyle: {
-                                color: '#ddd', // 颜色
-                                width: 1 // 粗细
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                        }
-                    }
-                ],
-                // dataZoom: [
-                //     {
-                //         id: 'dataZoomX',
-                //         type: 'slider',
-                //         start: 0,
-                //         end: 30,
-                //     }
-                // ],
-                yAxis: [
-                    {
-                        show: false,
-                        type: 'value'
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: '40%',
-                        data: [10, 52, 200, 334, 390, 330, 220]
-                    }
-                ]
-            });
-        },
         initEchartBar3() {
             let myChart = this.$echarts.init(document.getElementById('echarts-bar3'));
             // 绘制图表
@@ -585,8 +651,8 @@ export default {
         }
         else {
             this.$nextTick(() => {
-                this.initEchartBar1();
-                this.initEchartBar2();
+                this.initEchartPie();
+                this.initEchartPie2();
                 this.initEchartBar3();
                 this.initEchartBar4();
 
@@ -600,8 +666,8 @@ export default {
 
         }
         else {
-            this.initEchartBar1();
-            this.initEchartBar2();
+            this.initEchartPie();
+            this.initEchartPie2();
             this.initEchartBar3();
             this.initEchartBar4();
         }

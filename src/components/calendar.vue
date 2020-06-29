@@ -19,8 +19,8 @@
                     {{item}}
                 </div>
 
-                <div :class="`main__block ${(item.type === 'pre' || item.type === 'next') ? 'main__block-not' : ''} ${(item.content === selectedDate && item.type === 'normal') && 'main__block-warn'}`" @click="handleDayClick(item)"
-                    v-for="(item, index) in displayDaysPerMonthT(selectedYear)[selectedMonth]" :key="item.type + item.content + `${index}`">
+                <div :class="`main__block ${(item.type === 'pre' || item.type === 'next') ? 'main__block-not' : ''} ${( item.newType === '2') && 'main__block-warn'} ${( item.newType === '0') && 'main__block-success'} ${( item.newType === '1') && 'main__block-unsuccess '}`"
+                    v-for="(item, index) in mouthData" :key="item.type + item.content + `${index}`">
                     {{item.content}}
                 </div>
             </div>
@@ -29,63 +29,22 @@
 </template>
 
 <script>
+import utils from "../assets/utils/utils";
+
 export default {
     name: "calendar",
     data() {
         return {
             calendarHeader: ["日", "一", "二", "三", "四", "五", "六"],
             selectedYear: new Date().getFullYear(),
-            selectedMonth: new Date().getMonth() + 1,
-            selectedDate: new Date().getDate()
+            selectedMonth: new Date().getMonth(),
+            selectedDate: new Date().getDate(),
+            mouthData: [],//月份数据
+
         };
     },
-    props: ['data'],
+    props: ['data', "url", "deviceId"],
     methods: {
-        displayDaysPerMonth(year, month) {
-            //定义每个月的天数，如果是闰年第二月改为29天
-            let daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            if ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0) {
-                daysInMonth[1] = 29;
-            }
-            let targetDay = new Date(year, month, 1).getDay();
-            let total_calendar_list = [];
-            let preNum = targetDay;
-            let nextNum = 0;
-            if (targetDay > 0) {
-                for (let i = 0; i < preNum; i++) {
-                    let obj = {
-                        type: "pre",
-                        content: ""
-                    };
-                    total_calendar_list.push(obj);
-                }
-            }
-            for (let i = 0; i < daysInMonth[month]; i++) {
-                let obj = {
-                    type: "normal",
-                    content: i + 1
-                };
-                total_calendar_list.push(obj);
-            }
-            // if (total_calendar_list.length > 35) {
-            //   nextNum = 42 - total_calendar_list.length;
-            // } else {
-            //   nextNum = 35 - total_calendar_list.length;
-            // }
-            // if (month === 1 && new Date(year, month, 0).getDay() === 6) {
-            //   nextNum = 0
-            // }
-            nextNum = 6 - new Date(year, month + 1, 0).getDay();
-
-            for (let i = 0; i < nextNum; i++) {
-                let obj = {
-                    type: "next",
-                    content: ""
-                };
-                total_calendar_list.push(obj);
-            }
-            return total_calendar_list;
-        },
         displayDaysPerMonthT(year) {
             //定义每个月的天数，如果是闰年第二月改为29天
             let daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -134,7 +93,6 @@ export default {
                         monthDate.push(obj);
                     }
 
-
                     return monthDate;
                 });
             return total_calendar_list;
@@ -142,38 +100,70 @@ export default {
         handleDayClick(item) {
             if (item.type === 'normal') {
                 // do anything...
-                this.selectedDate = Number(item.content)
+                this.selectedDate = Number(item.content);
             }
         },
         //上个月
         handlePreMonth() {
+            //判断是否是1月，是年减一，月份置为12月
             if (this.selectedMonth === 0) {
-                this.selectedYear = this.selectedYear - 1
-                this.selectedMonth = 11
-                this.selectedDate = 1
+                this.selectedYear = this.selectedYear - 1;
+                this.selectedMonth = 11;
+                this.selectedDate = 1;
+                let firstAndLast = utils.getAnyMouthFirstAndLast(this.selectedYear, this.selectedMonth);
+                this.getData(firstAndLast);
+
             } else {
-                this.selectedMonth = this.selectedMonth - 1
-                this.selectedDate = 1
+                this.selectedMonth = this.selectedMonth - 1;
+                this.selectedDate = 1;
+                let firstAndLast = utils.getAnyMouthFirstAndLast(this.selectedYear, this.selectedMonth);
+                this.getData(firstAndLast);
+
             }
         },
         //下个月
         handleNextMonth() {
+            //判断是否是12月，是年加一，月份置为一月
             if (this.selectedMonth === 11) {
-                this.selectedYear = this.selectedYear + 1
-                this.selectedMonth = 0
-                this.selectedDate = 1
+                this.selectedYear = this.selectedYear + 1;
+                this.selectedMonth = 0;
+                this.selectedDate = 1;
+                let firstAndLast = utils.getAnyMouthFirstAndLast(this.selectedYear, this.selectedMonth);
+                this.getData(firstAndLast);
             } else {
-                this.selectedMonth = this.selectedMonth + 1
-                this.selectedDate = 1
+                this.selectedMonth = this.selectedMonth + 1;
+                this.selectedDate = 1;
+                let firstAndLast = utils.getAnyMouthFirstAndLast(this.selectedYear, this.selectedMonth);
+                this.getData(firstAndLast);
             }
         },
+        getData(arr) {
+            let that = this;
+            let obj = {
+                deviceid: this.deviceId,
+                begindate: arr[0],
+                enddate: arr[1],
+            }
+            this.$axios.post("api" + this.url + utils.formatQueryStr(obj)).then(res => {
+                let mouthData = that.displayDaysPerMonthT(that.selectedYear)[that.selectedMonth];
+
+                for (let i = 0, j = 0, len = mouthData.length; i < len; i++) {
+                    if (mouthData[i].type == "normal") {
+                        mouthData[i].newType = res[j].F_CHKSTAT;
+                        j++;
+                    }
+                }
+                that.mouthData = mouthData;
+            }).catch(error => {
+
+            })
+        }
 
     },
     mounted() {
-        console.log(new Date());
-        console.log(this.selectedMonth);
-        console.log(this.selectedDate);
-
+        console.log(this.url);
+        let firstAndLast = utils.CurrentMonthFirstAndLast();
+        this.getData(firstAndLast);
     }
 
 };

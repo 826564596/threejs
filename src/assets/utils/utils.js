@@ -49,8 +49,46 @@ const getDay = (num) => {
 
     return num >= 0 ? [time1, time2] : [time2, time1];
 };
+
+//获取指定月份的第一天和最后一天
+const getAnyMouthFirstAndLast = (year, mouth) => {
+    let monthStartDate = new Date(year, mouth, 1);
+    //本月的结束时间
+    let monthEndDate = new Date(year, mouth + 1, 0);
+
+    //getMinutes: 获取 Date 对象的分钟(0~59)
+    //getTimezoneOffset: 获取本地时间与 UTC 时间的分钟差
+    //setMinutes: date.getMinutes() - 90 表示设置 date 为 90 分钟之前的时间
+
+    monthStartDate.setMinutes(monthStartDate.getMinutes() - monthStartDate.getTimezoneOffset());
+    monthEndDate.setMinutes(monthEndDate.getMinutes() - monthEndDate.getTimezoneOffset());
+    let arr = [];
+    arr[0] = monthStartDate
+        .toJSON()
+        .substr(0, 19)
+        .replace("T", " ")
+        .split(" ")[0];
+    arr[1] = monthEndDate
+        .toJSON()
+        .substr(0, 19)
+        .replace("T", " ")
+        .split(" ")[0];
+    return arr;
+};
+
+//输入new Date(),装换yyyy-mm-dd
+const dateToDay = (date) => {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date
+        .toJSON()
+        .substr(0, 19)
+        .replace("T", " ")
+        .split(" ")[0];
+};
 module.exports = {
     CurrentMonthFirstAndLast: CurrentMonthFirstAndLast,
     formatQueryStr: formatQueryStr,
     getDay: getDay,
+    getAnyMouthFirstAndLast: getAnyMouthFirstAndLast,
+    dateToDay: dateToDay,
 };

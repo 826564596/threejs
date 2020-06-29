@@ -86,8 +86,9 @@ export default {
 }
 
 </script>
-<style lang="scss">
-.el-input__inner {
+<style lang="scss" >
+input[placeholder="请输入密码"].el-input__inner,
+input[placeholder="请输入内容"].el-input__inner {
     height: 50px !important;
     line-height: 50px;
     background-color: rgba(1, 1, 1, 0.1) !important;

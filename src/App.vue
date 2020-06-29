@@ -6,7 +6,7 @@
         <!-- 标题图片登陆 -->
         <!-- 根据shouTitle参数判断login页是否要显示标题 -->
 
-        <div v-if=" $route.meta.keepAlive">
+        <div v-if="$route.meta.keepAlive">
             <titles :screenWidth.sync="screenWidth" :screenHeight.sync="screenHeight"></titles>
             <router-view />
         </div>
@@ -40,7 +40,6 @@ export default {
     methods: {
         // 窗口变动触发
         onWindowResize() {
-
             this.screenWidth = window.innerWidth;
             this.screenHeight = window.innerHeight;
             this.width = window.innerWidth;

@@ -213,18 +213,17 @@
                         <el-col :span="24">
                             <div class="timeText-bg ">
                                 <div v-if="alarmInformation.length > 0">
-                                    <div v-for="index in 4" :key="index" @click="chooseAlarm(index)">
+                                    <div v-for="(item,index) in alarmInformation" :key="index" @click="chooseAlarm(index)">
                                         <el-row>
                                             <el-col :span="7" :offset="1">
                                                 <div class="timeText ">
-
-                                                    {{alarmInformation[index].time}}
+                                                    {{item.time}}
                                                 </div>
                                             </el-col>
                                             <el-col :span="15" :offset="0">
                                                 <div class="timeText ">
                                                     <div class="timeTexts ">
-                                                        {{alarmInformation[index].alarmContent}}
+                                                        {{item.alarmContent}}
 
                                                     </div>
                                                 </div>
@@ -954,7 +953,7 @@ export default {
                     name: "seven",
                     params: {
                         groupName: groupName,
-                        deviceId: this.$store.state.deviceIdArr[groupName.substr(2, groupName.length - 1)]
+                        deviceId: this.$store.state.deviceIdArr[groupName.substr(2, groupName.length - 1)].deviceId
                     }
                 });
             }
@@ -1895,7 +1894,13 @@ export default {
                     alarmInformation[index].name = item.f_name.substr(10, item.f_name.length - 1);
 
                 })
-                that.alarmInformation = alarmInformation;
+                if (alarmInformation.length > 4) {
+                    that.alarmInformation = alarmInformation.slice(0, 3);
+                }
+                else {
+                    that.alarmInformation = alarmInformation;
+                }
+
                 let averageYield = 0;
 
                 DayDevActRank.forEach((item, index) => {

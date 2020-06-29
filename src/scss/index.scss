@@ -736,7 +736,7 @@
 
 .dateFrame {
     $myheight: 40px;
-    $mywidth: 200px;
+    $mywidth: 220px;
 
     margin-top: 20px;
     margin-right: 30px;
@@ -960,7 +960,7 @@
 }
 
 .buttonAndText {
-    width: 500px;
+    width: 1200px;
     height: 40px;
     margin-left: 40px;
     margin-top: 10px;
@@ -982,9 +982,11 @@
     }
 
     .buttonAndText-button:focus {
+        outline: none;
         color: rgb(92, 214, 254);
         background-color: rgb(1, 88, 119);
         border: 1px solid rgb(92, 214, 254);
+
     }
 
 
@@ -1300,4 +1302,77 @@ $color: #00bdfc;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    border: 1px solid rgb(1, 88, 119);
+    color: rgb(92, 214, 254);
+    font-size: 20px;
+    text-align: center;
+    line-height: 30px;
+    width: 300px;
+    height: 30px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: rgba(1, 88, 119, 0.8);
+    border: 1px solid rgb(92, 214, 254);
+    min-width: 300px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    // padding: 12px 16px;
+    z-index: 3;
+    top: 30px;
+    // background: url("../assets/image/下拉框.png") no-repeat;
+    // background-size: 100% 100%;
+    @extend .center;
+}
+
+.dropdown-content {
+    div {
+        margin: 5px 0;
+        color: #fff;
+    }
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+    font-size: 16px;
+    transition: 300px .1s ease-in;
+    transform-origin: 50% 0;
+    animation: slide-down 0.2s ease-in-out;
+}
+
+.dropdown:hover {
+    border: 1px solid rgb(92, 214, 254);
+}
+
+.dropdown-content div:hover {
+    color: rgb(92, 214, 254);
+    background-color: rgba(1, 88, 119, 1);
+}
+
+@keyframes slide-down {
+    0% {
+        transform: scale(1, 0);
+    }
+
+    25% {
+        transform: scale(1, 0.25);
+    }
+
+    50% {
+        transform: scale(1, 0.5);
+    }
+
+    75% {
+        transform: scale(1, 0.75);
+    }
+
+    100% {
+        transform: scale(1, 1);
+    }
 }

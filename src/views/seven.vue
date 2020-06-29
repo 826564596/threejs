@@ -275,7 +275,7 @@
 
                                 </el-row>
                                 <div style="padding-bottom:10px">
-                                    <calendar />
+                                    <calendar :deviceId="deviceId" :url="`/DDC/DeviceChk/DeviceDayChkStat`" />
                                 </div>
 
                             </div>
@@ -284,8 +284,7 @@
 
                 </el-carousel-item>
 
-                <el-carousel-item>
-                    <!-- 第二行title -->
+                <!-- <el-carousel-item>
                     <el-row>
                         <el-col :span="18">
                             <div class=" left-table-single-title">
@@ -293,7 +292,6 @@
                             </div>
                         </el-col>
                     </el-row>
-                    <!-- 第二行 主体 -->
                     <el-row>
                         <el-col :span="24">
                             <div class="left-table-single-content-new-e " style="height:auto ">
@@ -329,14 +327,14 @@
                                     </el-col>
                                 </el-row>
                                 <div style="padding-bottom:10px">
-                                    <calendar />
+                                    <calendar :deviceId="deviceId" :url="`/DDC/DeviceWorkStatic/DeviceMTRecd`" />
                                 </div>
 
                             </div>
                         </el-col>
                     </el-row>
 
-                </el-carousel-item>
+                </el-carousel-item> -->
             </el-carousel>
 
             <!-- 第三行title -->
@@ -899,7 +897,6 @@ export default {
             this.camera.aspect = window.innerWidth / window.innerHeight;
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
-            // this.controls.handleResize();
         },
 
 
@@ -1002,8 +999,9 @@ export default {
 
 
         },
-
+        //设备6维雷达图
         initEchartRadar() {
+            let that = this;
             let myChart = this.$echarts.init(document.getElementById('echarts-radar'));
             let option = {
                 title: {
@@ -1043,12 +1041,12 @@ export default {
                         }
                     },
                     indicator: [
-                        { name: '报警', max: 6500 },
-                        { name: '维修', max: 16000 },
-                        { name: '点检', max: 30000 },
-                        { name: '保养', max: 38000 },
-                        { name: '产量', max: 52000 },
-                        { name: '运行时长', max: 25000 }
+                        { name: '稼动率', max: 100 },
+                        { name: '产能', max: 100 },
+                        { name: '保养', max: 100 },
+                        { name: '在线率', max: 100 },
+                        { name: '开机率', max: 100 },
+                        { name: '开动率', max: 100 }
                     ]
                 },
                 series: [{
@@ -1069,14 +1067,41 @@ export default {
                     },
                     data: [
                         {
-                            value: [5000, 14000, 28000, 31000, 42000, 21000],
-                            name: '实际开销'
+                            value: [],
+
                         }
                     ],
 
                 }]
             };
             myChart.setOption(option);
+            let obj = {
+                deviceid: this.deviceId
+            }
+            myChart.showLoading();
+            this.$axios.post("/api/DDC/DeviceWorkStatic/DeviceSixD" + utils.formatQueryStr(obj)).then(res => {
+                myChart.hideLoading();
+                console.log(res);
+                myChart.setOption({
+                    series: [{
+                        data: [
+                            {
+                                value: [
+                                    res.actrate,
+                                    res.avgworkload,
+                                    res.maintenance,
+                                    res.onlinerate,
+                                    res.poweronrate,
+                                    res.tstrate],
+
+                            }
+                        ],
+                    }]
+                });
+
+
+            }).catch(error => { }
+            )
 
         },
 
@@ -1178,12 +1203,12 @@ export default {
                 this.$axios.post('/api/DDC/DeviceWorkStatic/DayWorkLoadRank' + utils.formatQueryStr(obj)),
                 this.$axios.post('/api/DDC/DeviceWorkStatic/LstWarnList' + utils.formatQueryStr(obj)),
                 this.$axios.post('/api/DDC/DeviceWorkStatic/DayDevActRank' + utils.formatQueryStr(obj)),
+                this.$axios.post("/api/DDC/DeviceWorkStatic/ProductMonthRpt" + utils.formatQueryStr(obj)),
 
 
 
-
-            ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList, DayDevActRank) {
-                console.log(DayDevActRank);
+            ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList, DayDevActRank, ProductMonthRpt) {
+                console.log(ProductMonthRpt);
                 that.ACTRATE = DayDevActRank[0].ACTRATE;
                 that.operation = DayWorkLoadRank;
             })).catch(error => {
@@ -1195,11 +1220,12 @@ export default {
 
     },
 
-
+    created() {
+        this.deviceId = this.$route.params.deviceId;
+        this.groupName = this.$route.params.groupName;
+    },
     mounted() {
         let that = this;
-        this.groupName = this.$route.params.groupName;
-        this.deviceId = this.$route.params.deviceId;
         this.getData();
         this.initEchartBar2();
         this.initEchartRadar();
@@ -1212,7 +1238,9 @@ export default {
             return this.onWindowResize();
         }
         this.$socketApi.sendSock((res) => {
-            this.locationArray = JSON.parse(res[this.deviceId][0].value);
+            // console.log(res);
+            res[this.deviceId][0].value && (this.locationArray = JSON.parse(res[this.deviceId][0].value));
+
         });
     },
     destroyed() {

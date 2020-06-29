@@ -1,54 +1,79 @@
-<!-- 日期 -->
+<!-- 下拉菜单 -->
 <template>
-    <div class="dateFrame " :style="`top:${top}px;right:${right}px;`">
-        <el-row>
-            <el-col :span="17" :offset="1">
-                <div class="dateFrame-data">
-                    <el-date-picker v-model="value1" type="date" placeholder="选择日期">
-                    </el-date-picker>
-                </div>
-            </el-col>
+    <div class=" buttonAndText">
+        <div class="dropdown">
+            {{this.$store.state.deviceIdArr[index].deviceName}}
+            <div class="dropdown-content">
+                <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
+            </div>
+        </div>
+        <div>
+            <el-date-picker v-model="value2" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+            </el-date-picker>
+        </div>
+        <div div="">点检大类:</div>
+        <div class="dropdown">
+            <div class="dropdown-content">
+                <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
+            </div>
+        </div>
 
-            <el-col :span="4" style="margin-left:5px">
-                <div class="dateFrame-icon ">
+        <div class="">
+            <button class="buttonAndText-button" @click="search">搜索</button>
+        </div>
 
-                </div>
-            </el-col>
-        </el-row>
     </div>
 </template>
 
 <script>
+import utils from "../assets/utils/utils";
 export default {
-    name: 'date',
-    props: [
-        "top",
-        "right",
-        "url",
-        "data",
-    ],
+    name: "dropdown",
+    props: ["url", "tableData", "isNeedDate"],
     data() {
         return {
-            date: "",
-            value1: "",
+            index: 0,
+            arr: [],
+            startDate: '',//开始时间
+            endDate: '',//结束时间
+            value2: "",
         };
     },
+
     mounted() {
-        this.date = new Date().toLocaleString().split(" ")[0].replace(/\//g, "-");
+        this.arr = this.$store.state.deviceIdArr;
+
     },
+    methods: {
+        choseItem(index) {
+            this.index = index;
+        },
+        search() {
+            let that = this;
+            let startDate = utils.dateToDay(this.value2[0]);
+            let endDate = utils.dateToDay(this.value2[1]);
+            let obj = {
+                deviceid: this.$store.state.deviceIdArr[this.index].deviceId,
+                begindate: startDate,
+                enddate: endDate
+            }
+            this.$axios.post("api/" + this.url + utils.formatQueryStr(obj)).then(res => {
+                this.$emit("update:tableData", res);
+            }).catch(error => {
+
+            })
+        },
+    }
 }
 
 </script>
 <style  lang="scss">
 .el-input__inner {
     height: 32px !important;
-    font-size: 18px;
+    background-color: rgba(1, 1, 1, 0) !important;
     border: 1px solid rgb(1, 88, 119) !important;
 }
 
-input[placeholder="选择日期" i].el-input__inner {
-    color: rgb(69, 204, 248) !important;
-}
 .el-picker-panel__icon-btn {
     font-size: 17px !important;
 }
@@ -143,17 +168,5 @@ input[placeholder="选择日期" i].el-input__inner {
 
 .el-date-range-picker__content.is-left {
     border-right: 1px solid rgb(69, 204, 248) !important;
-}
-.el-date-picker__header-label {
-    color: #fff !important;
-}
-.el-input__icon {
-    line-height: 31px;
-    color: rgb(69, 204, 248) !important;
-}
-
-.el-date-table td.current:not(.disabled) span {
-    color: #fff;
-    background-color: rgb(69, 204, 248) !important;
 }
 </style>

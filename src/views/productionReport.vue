@@ -12,21 +12,7 @@
 
             <div class="body-content-right ">
                 <!-- 按钮 -->
-                <div class=" buttonAndText">
-                    <div class="border" style="width:100px;">
-                        1
-                    </div>
-                    <div class="">
-                        <button class="buttonAndText-button">搜索</button>
-                    </div>
-                    <div class="">
-                        <button class="buttonAndText-button">编辑</button>
-                    </div>
-                    <div class="">
-                        <button class="buttonAndText-button">删除</button>
-                    </div>
-                </div>
-
+                <dropdown />
                 <div class="productionReport-content ">
                     <!-- 第一行 -->
                     <el-row>

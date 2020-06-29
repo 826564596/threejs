@@ -13,24 +13,10 @@
             <div class="body-content-right ">
 
                 <!-- 按钮 -->
-                <div class=" buttonAndText">
-                    <div class="border" style="width:100px;">
-                        1
-                    </div>
-                    <div class="">
-                        <button class="buttonAndText-button">搜索</button>
-                    </div>
-                    <div class="">
-                        <button class="buttonAndText-button">编辑</button>
-                    </div>
-                    <div class="">
-                        <button class="buttonAndText-button">删除</button>
-                    </div>
-                </div>
+                <dropdown />
                 <div class="processDocuments ">
                     <div class="processDocuments-content " v-for="index of 13" :key="index">
                         <div class="top-picture ">
-
                         </div>
                         <div class="top-text ">
                             工艺管理
