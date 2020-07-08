@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { Message, Col, Row, Button, Input, Checkbox, Table, TableColumn, Carousel, CarouselItem, DatePicker } from "element-ui";
+import { Message, Col, Row, Button, Input, Checkbox, Table, TableColumn, Carousel, CarouselItem, DatePicker, Alert, MessageBox } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import "element-ui/lib/theme-chalk/display.css";
 Vue.use(Col);
@@ -12,6 +12,13 @@ Vue.use(TableColumn);
 Vue.use(Carousel);
 Vue.use(CarouselItem);
 Vue.use(DatePicker);
+// Vue.use(Alert);
+// Vue.use(MessageBox);
+// Vue.use(Message);
+
+Vue.prototype.$alert = Alert;
+Vue.prototype.$message = Message;
+Vue.prototype.$messageBox = MessageBox;
 
 // Vue.use(Message);
 

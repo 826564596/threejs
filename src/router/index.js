@@ -13,6 +13,7 @@ const routes = [
         component: login,
         meta: {
             keepAlive: false, //导航栏在该页面显示
+            requireLogin: false, //是否需要登陆
         },
     },
     {
@@ -21,6 +22,7 @@ const routes = [
         component: six,
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
     },
 
@@ -30,6 +32,7 @@ const routes = [
         component: seven,
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
     },
 
@@ -39,6 +42,7 @@ const routes = [
         name: "productionMonitoring",
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
         component: () => import("../views/productionMonitoring.vue"),
     },
@@ -48,6 +52,7 @@ const routes = [
         name: "deviceManagement",
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
         component: () => import("../views/deviceManagement.vue"),
     },
@@ -57,6 +62,7 @@ const routes = [
         name: "processDocuments",
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
         component: () => import("../views/processDocuments.vue"),
     },
@@ -66,6 +72,7 @@ const routes = [
         name: "taskDistribution",
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
         component: () => import("../views/taskDistribution.vue"),
     },
@@ -75,6 +82,7 @@ const routes = [
         name: "productionReport",
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
         component: () => import("../views/productionReport.vue"),
     },
@@ -84,6 +92,7 @@ const routes = [
         name: "systemSetting",
         meta: {
             keepAlive: true, //导航栏在该页面显示
+            requireLogin: true, //是否需要登陆
         },
         component: () => import("../views/systemSetting.vue"),
     },

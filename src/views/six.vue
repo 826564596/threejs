@@ -953,7 +953,7 @@ export default {
                     name: "seven",
                     params: {
                         groupName: groupName,
-                        deviceId: this.$store.state.deviceIdArr[groupName.substr(2, groupName.length - 1)].deviceId
+                        deviceId: this.$store.state.deviceIdArr[groupName.substr(2, groupName.length - 1) - 1].deviceId
                     }
                 });
             }
@@ -972,10 +972,6 @@ export default {
             outlinePass.visibleEdgeColor.set('#ffffff');//包围线颜色
             outlinePass.hiddenEdgeColor.set('#190a05');//被遮挡的边界线颜色
             this.composer.addPass(outlinePass);
-            // let effectFXAA = new ShaderPass(Three.FXAAShader);
-            // effectFXAA.uniforms['resolution'].value.set(1 / window.innerWidth, 1 / window.innerHeight);
-            // effectFXAA.renderToScreen = true;
-            // this.composer.addPass(effectFXAA);
 
             return outlinePass;
 
@@ -1636,12 +1632,12 @@ export default {
             // 绘制图表
             let option = {
                 color: ['#3398DB'],
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //     }
-                // },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
                 grid: {
                     left: '0%',
                     bottom: '3%',
@@ -1664,7 +1660,12 @@ export default {
                         },
                         axisLabel: {
                             interval: 0,
-                        }
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                            rotate: 300 //倾斜角度
+                        },
                     }
                 ],
                 // dataZoom: [
@@ -1677,8 +1678,14 @@ export default {
                 // ],
                 yAxis: [
                     {
-                        show: false,
-                        type: 'value'
+                        show: true,
+                        type: 'value',
+                        axisLabel: {
+                            interval: 0,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                        }
                     }
                 ],
                 series: [
@@ -1690,6 +1697,47 @@ export default {
                 ]
             }
             myChart.setOption(option);
+
+
+            myChart.showLoading();
+
+
+            this.$axios.post("/newApi/wuji/Device/AvgWorkDuration",
+                {
+
+                    "device": {
+                        "id": "wuji"
+                    },
+                    "date_period": {
+                        "start_date": "2020-06-06",
+                        "end_date": "2020-07-06"
+                    }
+
+                }).then(res => {
+                    myChart.hideLoading();
+                    res.sort((a, b) => {
+                        return b["avg_workduration"] - a["avg_workduration"];
+                    })
+
+                    let data1 = [];
+                    let data2 = [];
+                    for (let i = 0; i < 7; i++) {
+                        data1.push(res[i].name.substr(8, res[i].name.length - 1));
+                        data2.push(res[i].avg_workduration);
+                    }
+                    myChart.setOption({
+                        xAxis: {
+                            data: data1
+                        },
+                        series: [{
+                            data: data2
+                        }]
+                    })
+
+
+                }).catch(error => {
+
+                })
         },
         //设备在线率
         initEchartLine() {

@@ -85,10 +85,53 @@ const dateToDay = (date) => {
         .replace("T", " ")
         .split(" ")[0];
 };
+//计算两个日期之间的日期差
+const differDate = (dateString1, dateString2) => {
+    let startDate = Date.parse(dateString1);
+    let endDate = Date.parse(dateString2);
+    let days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
+    return days;
+};
+//计算两个日期之间所有日期
+const getAllAroundDay = (begin, end) => {
+    // 开始日期和结束日期
+    if (!begin || !end) {
+        // 去除空的可能性
+        console.log("有时间为空");
+        return false;
+    }
+    // 在时间Date的原型中定义一个format方法
+    Date.prototype.format = function() {
+        let s = ""; // 定义一个字符串，目的，要时间格式按照我们的要求拼接
+        let month = this.getMonth() + 1;
+        let day = this.getDate();
+        s += this.getFullYear() + "-";
+        s += month + "-";
+        s += day;
+        return s; // 得到的格式如 "2018-11-20"
+    };
+    let ab = begin.split("-"); // 把日期参数分割，注意，如果以'/'连接，则分割'/'
+    let ae = end.split("-");
+    let db = new Date();
+    db.setUTCFullYear(ab[0], ab[1] - 1, ab[2]); // 返回符合UTC的时间格式
+    let de = new Date();
+    de.setUTCFullYear(ae[0], ae[1] - 1, ae[2]);
+    let unixDb = db.getTime();
+    let unixDe = de.getTime();
+    let arr = [];
+    for (let k = unixDb; k <= unixDe; ) {
+        arr.push(new Date(parseInt(k)).format());
+        k = k + 24 * 60 * 60 * 1000;
+    }
+    return arr; // 返回两个日期之间的所有日期数组。
+};
+
 module.exports = {
     CurrentMonthFirstAndLast: CurrentMonthFirstAndLast,
     formatQueryStr: formatQueryStr,
     getDay: getDay,
     getAnyMouthFirstAndLast: getAnyMouthFirstAndLast,
     dateToDay: dateToDay,
+    differDate: differDate,
+    getAllAroundDay: getAllAroundDay,
 };

@@ -143,25 +143,28 @@ export default {
                 deviceid: this.deviceId,
                 begindate: arr[0],
                 enddate: arr[1],
+
             }
             this.$axios.post("api" + this.url + utils.formatQueryStr(obj)).then(res => {
                 let mouthData = that.displayDaysPerMonthT(that.selectedYear)[that.selectedMonth];
-
-                for (let i = 0, j = 0, len = mouthData.length; i < len; i++) {
-                    if (mouthData[i].type == "normal") {
-                        mouthData[i].newType = res[j].F_CHKSTAT;
-                        j++;
+                if (res.length > 0) {
+                    for (let i = 0, j = 0, len = mouthData.length; i < len; i++) {
+                        if (mouthData[i].type == "normal") {
+                            mouthData[i].newType = res[j].F_CHKSTAT;
+                            j++;
+                        }
                     }
                 }
                 that.mouthData = mouthData;
             }).catch(error => {
+                let mouthData = that.displayDaysPerMonthT(that.selectedYear)[that.selectedMonth];
+                that.mouthData = mouthData;
 
             })
         }
 
     },
     mounted() {
-        console.log(this.url);
         let firstAndLast = utils.CurrentMonthFirstAndLast();
         this.getData(firstAndLast);
     }

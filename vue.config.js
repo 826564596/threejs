@@ -66,6 +66,13 @@ module.exports = {
                     "^/api": "/", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
                 },
             },
+            "/newApi": {
+                target: "http://27.150.173.9:9696/", //域名
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/newApi": "", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
+                },
+            },
         },
         // proxy: null,
     },

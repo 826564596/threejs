@@ -960,7 +960,7 @@
 }
 
 .buttonAndText {
-    width: 1200px;
+    width: 1400px;
     height: 40px;
     margin-left: 40px;
     margin-top: 10px;
@@ -1236,10 +1236,9 @@ $color: #00bdfc;
 }
 
 .productionReport-content {
-    t: 20px;
     width: 97%;
-    height: 87%;
-    margin: 20px auto;
+    height: 77%;
+    margin: 10px auto;
     background: url("../assets/image/数据框2.png") no-repeat;
     background-size: 100% 100%;
 }
@@ -1268,7 +1267,7 @@ $color: #00bdfc;
 }
 
 .productionReport-content-bottom {
-    height: 400px;
+    height: 380px;
 }
 
 .title-height {
@@ -1302,6 +1301,11 @@ $color: #00bdfc;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+}
+
+.location-new {
+    background: url("../assets/image/底框.png") no-repeat;
+    background-size: 100% 100%;
 }
 
 .dropdown {
@@ -1346,14 +1350,19 @@ $color: #00bdfc;
     animation: slide-down 0.2s ease-in-out;
 }
 
+
+
 .dropdown:hover {
     border: 1px solid rgb(92, 214, 254);
 }
+
+
 
 .dropdown-content div:hover {
     color: rgb(92, 214, 254);
     background-color: rgba(1, 88, 119, 1);
 }
+
 
 @keyframes slide-down {
     0% {

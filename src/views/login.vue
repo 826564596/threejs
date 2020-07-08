@@ -63,30 +63,68 @@
 </template>
 
 <script>
+import utils from "../assets/utils/utils";
 export default {
     data() {
         return {
-            userName: 'admin',
-            password: 'admin',
+            userName: 'wuji',
+            password: '123456',
             checked: true,
         };
     },
 
-
-
-    mounted() { },
-
     methods: {
         login() {
-            if (this.userName == 'admin' && this.password == "admin") {
-                this.$router.push({ name: "six" });
+            let that = this;
+            let obj = {
+                USERNAME: this.userName,
+                PASSWD: this.password
             }
+
+            this.$axios.post("/api/DDC/User/Login" + utils.formatQueryStr(obj)).then(res => {
+                console.log(res);
+                if (res.success == true) {
+                    this.$router.push({ name: "six" });
+                    // that.deleteUserInfo();
+                    that.setUserInfo();
+                }
+                else {
+                    this.$messageBox('账户名或密码有误，请重新输入', '提示', {
+                        confirmButtonText: '确定',
+                    });
+                }
+            }).catch(error => {
+
+            })
+
+            // this.$axios.post("/newApi/wuji/Device/WorkloadRank",
+            //     {
+            //         data: {
+            //             "start_date": "2020-06-02",
+            //             "end_date": "2020-07-02"
+            //         }
+            //     }
+            // ).then(res => {
+            //     console.log(res);
+            // })
+
+        },
+        setUserInfo() {
+            this.$cookies.set("userName", this.userName, 60 * 60 * 24);
+            this.$cookies.set("password", this.password, 60 * 60 * 24);
+
+
+        },
+        deleteUserInfo() {
+            // this.$cookies.delete("userName");
+            // this.$cookies.delete("password");
+
         }
     }
-}
 
+}
 </script>
-<style lang="scss" >
+<style  lang="scss" >
 input[placeholder="请输入密码"].el-input__inner,
 input[placeholder="请输入内容"].el-input__inner {
     height: 50px !important;
@@ -110,8 +148,8 @@ input[placeholder="请输入内容"].el-input__inner {
 //     border-color: rgb(104, 196, 255) !important;
 // }
 
-.el-checkbox__input.is-checked .el-checkbox__inner,
-.el-checkbox__input.is-indeterminate .el-checkbox__inner,
+.el-checkbox__input.is-checked.el-checkbox__inner,
+.el-checkbox__input.is-indeterminate.el-checkbox__inner,
 .el-button--primary {
     border-color: rgb(109, 215, 255) !important;
     border-color: rgb(109, 215, 255) !important;

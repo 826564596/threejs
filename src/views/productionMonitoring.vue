@@ -19,19 +19,31 @@
                     </el-col>
                     <el-col :span="3">
                         <div :class="` right-button ${buttonActive == 1 ? 'buttonActive':''} `" @click="changeButton(1)">
-                            生产统计
+                            报警统计
                         </div>
                     </el-col>
                 </el-row>
                 <div v-if="buttonActive == 0">
                     <!-- 日期 -->
-                    <date top="-5" right="10" />
+                    <!-- <date top="-5" right="10" /> -->
+
+                    <div class=" buttonAndText" style="width:420px">
+                        <div>
+                            <el-date-picker v-model="value2" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                            </el-date-picker>
+                        </div>
+
+                        <div class="">
+                            <button class="buttonAndText-button" @click="search">搜索</button>
+                        </div>
+                    </div>
                     <div class="body-content-right-one " id="echarts-line">
                     </div>
+
                 </div>
                 <div v-if="buttonActive == 1">
                     <el-row style="margin-top:10px;">
-                        <el-col :span="18" class="" style="margin-left:30px;">
+                        <el-col :span="23" class="" style="margin-left:30px;">
 
                             <div class="pm_content-one">
                                 <el-row>
@@ -52,7 +64,7 @@
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="pm_content-one-title ">
-                                            运行情况
+                                            报警次数（排名）
                                         </div>
                                         <div class="pm_content-one-content " id='echarts-bar3'>
 
@@ -60,7 +72,7 @@
                                     </el-col>
                                     <el-col :span="6">
                                         <div class="pm_content-one-title ">
-                                            故障统计
+                                            报警趋势
                                         </div>
                                         <div class="pm_content-one-content " id='echarts-bar4'>
 
@@ -71,15 +83,15 @@
                             <div class="pm_content-two">
                                 <div style="margin-bottom:10px;height:100%;width:100%">
                                     <el-table :data="tableData" style="width: 100%; " max-height="333" border>
-                                        <el-table-column prop="date" label="当前设备" width="90">
+                                        <el-table-column prop="date" label="报警时间" width="90">
                                         </el-table-column>
-                                        <el-table-column prop="name" label="当前状态" width="90">
+                                        <el-table-column prop="name" label="设备ID" width="90">
                                         </el-table-column>
-                                        <el-table-column prop="address" label="运行时长" width="90">
+                                        <el-table-column prop="address" label="报警类型" width="90">
                                         </el-table-column>
-                                        <el-table-column prop="address" label="计划产量" width="90">
+                                        <el-table-column prop="address" label="报警内容" width="90">
                                         </el-table-column>
-                                        <el-table-column prop="address" label="当前产量" width="90">
+                                        <el-table-column prop="address" label="报警时长" width="90">
                                         </el-table-column>
                                         <el-table-column prop="address" label=" 报警数">
                                         </el-table-column>
@@ -87,7 +99,7 @@
                                 </div>
                             </div>
                         </el-col>
-                        <el-col :span="4" style="margin-left:30px;height:700px">
+                        <!-- <el-col :span="4" style="margin-left:30px;height:700px">
                             <el-row>
                                 <el-col :span="24">
                                     <date top="-70" right="-10" />
@@ -105,7 +117,7 @@
                                 </el-table>
                             </div>
 
-                        </el-col>
+                        </el-col> -->
                     </el-row>
                 </div>
             </div>
@@ -121,63 +133,12 @@ export default {
         return {
             index: 0,
             buttonActive: 0,
+            value2: "",
             tableData: [{
                 date: '2016-05-04,2016-05-042016-05-04',
                 name: '王小虎sss',
                 address: '上海市普陀区金沙江路 1518 弄'
-            }, {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
-            {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
-
-            {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
-            {
-                date: '2016-05-04',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1517 弄'
-            }, {
-                date: '2016-05-01',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1519 弄'
-            }, {
-                date: '2016-05-03',
-                name: '王小虎',
-                address: '上海市普陀区金沙江路 1516 弄'
-            },
+            }
             ]
         };
     },
@@ -185,6 +146,55 @@ export default {
         changeButton(item) {
             this.buttonActive = item;
 
+        },
+        choseItem(index) {
+            this.index = index;
+
+        },
+        search() {
+            let startDate = utils.dateToDay(this.value2[0]);
+            let endDate = utils.dateToDay(this.value2[1]);
+            this.getlineData(startDate, endDate);
+        },
+        getlineData(startDate, endDate) {
+
+            let that = this;
+            this.axios.post("newApi/wuji/Device/DailyStatusStatistics", {
+                "start_date": startDate,
+                "end_date": endDate
+            }).then(res => {
+                let data = [];
+                let free_duration = [];
+                let run_duration = [];
+                let stop_duration = [];
+                let warn_duration = [];
+
+                for (let i = 0, len = res.data.length; i < len; i++) {
+                    let key = Object.keys(res.data[i]);
+                    data.push(key[0]);
+                    let free = 0;
+                    let run = 0;
+                    let stop = 0;
+                    let warn = 0;
+                    for (let j = 0, length = res.data[i][key].length; j < length; j++) {
+
+                        free += res.data[i][key][j].free_duration;
+                        run += res.data[i][key][j].run_duration;
+                        stop += res.data[i][key][j].stop_duration;
+                        warn += res.data[i][key][j].warn_duration;
+                    }
+                    free_duration.push(free);
+                    run_duration.push(run);
+                    stop_duration.push(stop);
+                    warn_duration.push(warn);
+
+                }
+                that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration);
+
+
+            }).catch(error => {
+
+            })
         },
         getData() {
             let that = this;
@@ -367,10 +377,8 @@ export default {
             )
 
         },
-
-
         //加载echart折线图
-        initEchartLine() {
+        initEchartLine(date, free, run, warn, stop) {
             let myChart = this.$echarts.init(document.getElementById('echarts-line'));
             let option = {
                 title: {
@@ -381,18 +389,21 @@ export default {
                     //     fontSize: 18,
                     // }
                 },
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {
-                //         type: 'cross',
-                //         label: {
-                //             backgroundColor: '#6a7985'
-                //         }
-                //     }
-                // },
-                // legend: {
-                //     data: ['邮件营销', '联盟广告', '视频广告', '直接访问', '搜索引擎']
-                // },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data: ['停机时长', '运行时长', '报警时长', '空闲时长'],
+                    textStyle: {
+                        color: "#fff"
+                    }
+                },
 
                 toolbox: {
                     feature: {
@@ -402,7 +413,7 @@ export default {
                 grid: {
                     left: '3%',
                     right: '4%',
-                    bottom: '3%',
+                    bottom: '10%',
                     containLabel: true
                 },
                 xAxis: [
@@ -412,7 +423,7 @@ export default {
                         axisTick: {
                             alignWithLabel: true
                         },
-                        // data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日'],
+                        data: date,
                         axisLine: {
                             lineStyle: {
                                 color: '#00a1e7', // 颜色
@@ -442,12 +453,12 @@ export default {
                 ],
                 series: [
                     {
-                        name: '邮件营销',
+                        name: '停机时长',
                         type: 'line',
                         stack: '总量',
                         symbol: 'none',//
                         smooth: true,//是否平滑
-                        data: [10, 10, 10, 10, 10, 100, 10],
+                        data: stop,
                         lineStyle: {
                             color: "rgba(10,156,174,0.5)"
 
@@ -457,11 +468,11 @@ export default {
                         }
                     },
                     {
-                        name: '联盟广告',
+                        name: '运行时长',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
-                        data: [20, 20, 20, 25, 20, 20, 25],
+                        data: run,
                         lineStyle: {
                             color: "rgba(10,156,174,0.5)"
 
@@ -471,11 +482,11 @@ export default {
                         }
                     },
                     {
-                        name: '视频广告',
+                        name: '报警时长',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
-                        data: [30, 25, 30, 35, 30, 35, 30],
+                        data: warn,
                         lineStyle: {
                             color: "rgba(10,156,174,0.5)"
 
@@ -485,11 +496,11 @@ export default {
                         }
                     },
                     {
-                        name: '直接访问',
+                        name: '空闲时长',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
-                        data: [40, 45, 45, 45, 50, 40, 25],
+                        data: free,
                         lineStyle: {
                             color: "rgba(10,156,174,0.5)"
 
@@ -498,52 +509,62 @@ export default {
                             color: "rgba(10,156,174,0.5)"
                         }
                     },
-                    {
-                        name: '搜索引擎',
-                        type: 'line',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
-                        smooth: true,
-                        data: [50, 55, 55, 55, 50, 50, 55],
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
-                    }
                 ]
             };
             myChart.setOption(option);
-        },
 
+
+            // myChart.showLoading();
+            // this.$axios.post("/newApi/DDC/DeviceWorkStatic/OnLineStat",
+            //     {
+
+            //     }
+            // ).then(res => {
+            //     myChart.hideLoading();
+
+
+
+            // }).catch(error => { }
+            // )
+        },
+        // 初始加载最近七天的开机运行时长
+
+        //报警排名
         initEchartBar3() {
             let myChart = this.$echarts.init(document.getElementById('echarts-bar3'));
             // 绘制图表
             myChart.setOption({
                 color: ['#3398DB'],
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //     }
-                // },
                 grid: {
                     left: '0%',
                     bottom: '3%',
                     top: "5%",
                     containLabel: true
                 },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                yAxis: [
+                    {
+                        // show: false,
+                        type: 'value',
+                        axisLabel: {
+                            interval: 0,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                        }
+                    }
+                ],
                 xAxis: [
                     {
+                        // name: '工位',
                         type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        data: [],
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -556,32 +577,51 @@ export default {
                         },
                         axisLabel: {
                             interval: 0,
-                        }
-                    }
-                ],
-                // dataZoom: [
-                //     {
-                //         id: 'dataZoomX',
-                //         type: 'slider',
-                //         start: 0,
-                //         end: 30,
-                //     }
-                // ],
-                yAxis: [
-                    {
-                        show: false,
-                        type: 'value'
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                            rotate: 300 //倾斜角度
+                        },
                     }
                 ],
                 series: [
                     {
                         type: 'bar',
                         barWidth: '40%',
-                        data: [10, 52, 200, 334, 390, 330, 220]
+                        data: []
                     }
                 ]
             });
+            let arr = utils.CurrentMonthFirstAndLast();
+            let obj = {
+                mac: "wuji",
+                begindate: arr[0],
+                enddate: arr[1],
+            }
+            myChart.showLoading();
+            this.$axios.post("/api/DDC/DeviceWorkStatic/WarnRank" + utils.formatQueryStr(obj)).then(res => {
+                myChart.hideLoading();
+                let data1 = [];
+                let data2 = [];
+                for (let i = 0; i < 7; i++) {
+                    data1.push(res[i].F_NAME.substr(8, res[i].F_NAME.length - 1));
+                    data2.push(res[i].F_WARNRATE);
+                }
+                myChart.setOption({
+                    xAxis: {
+                        data: data1
+                    },
+                    series: [{
+                        data: data2
+                    }]
+                })
+            }).catch(error => {
+
+            })
+
         },
+        //报警趋势
         initEchartBar4() {
             let myChart = this.$echarts.init(document.getElementById('echarts-bar4'));
             // 绘制图表
@@ -645,7 +685,8 @@ export default {
     updated() {
         if (this.buttonActive == 0) {
             this.$nextTick(() => {
-                this.initEchartLine();
+                let arr = utils.getDay(-7);
+                this.getlineData(arr[0], arr[1]);
 
             });
         }
@@ -662,8 +703,8 @@ export default {
     },
     mounted() {
         if (this.buttonActive == 0) {
-            this.initEchartLine();
-
+            let arr = utils.getDay(-7);
+            this.getlineData(arr[0], arr[1]);
         }
         else {
             this.initEchartPie();

@@ -96,13 +96,13 @@
             <!-- 五 -->
             <div class="s " @click="change(4)">
                 <div class="sa " v-if="index == 4">
-                    生产报表
+                    生产统计
                 </div>
                 <div class="as" v-else>
                     <el-row>
                         <el-col :span="24" :offset="1">
                             <div class="content-title ">
-                                生产报表
+                                生产统计
                             </div>
                         </el-col>
                     </el-row>

@@ -19,9 +19,27 @@
                     </div>
                 </el-col>
             </el-row>
-
-            <!-- 第一行 主体 -->
             <el-row>
+                <div class="">
+                    <div v-for="(item,index) in 6" :key="index" class="location-div">
+                        <el-row style="margin-top:5px">
+                            <el-col :span="9" :offset="1">
+                                <div class="content-content content-content-left ">
+                                    轴{{index + 1}}
+                                </div>
+                            </el-col>
+
+                            <el-col :span="11" :offset="2">
+                                <div class="content-content content-content-right ">
+                                    {{parseFloat(locationArray[index]).toFixed(4)}}°
+                                </div>
+                            </el-col>
+                        </el-row>
+                    </div>
+                </div>
+            </el-row>
+            <!-- 第一行 主体 -->
+            <!-- <el-row>
                 <el-col :span="24">
                     <div class="left-table-single-content-new " style="height:185px">
 
@@ -80,7 +98,7 @@
                         </el-row>
                     </div>
                 </el-col>
-            </el-row>
+            </el-row> -->
 
             <!-- 第二行title -->
             <el-row>
@@ -379,8 +397,8 @@
         </div>
 
         <!-- 位置坐标 -->
-        <div class="location ">
-            <div v-for="(item,index) in locationArray" :key="index" class="location-div">
+        <div class="location">
+            <div v-for="(item,index) in testarr" :key="index" class="location-div">
                 <el-row style="margin-top:5px">
                     <el-col :span="9" :offset="1">
                         <div class="content-content content-content-left ">
@@ -395,7 +413,6 @@
                     </el-col>
                 </el-row>
             </div>
-
         </div>
     </div>
 
@@ -444,6 +461,7 @@ export default {
             LstWarnListStr: "",//设备实时报警信息
             ACTRATE: 0,//设备稼动率
             locationArray: [],//轴坐标数组
+            testarr: [],
 
 
         };
@@ -583,7 +601,7 @@ export default {
             J6.position.x = 19;
             J6Box.position.y = 31.6;
             J6Box.position.x = -19;
-            // J6Box.rotation.z += Math.PI / 2;////////////////////////////
+            J6Box.rotation.z += Math.PI / 2;////////////////////////////
 
             J6Box.name = "J6Box";
 
@@ -629,7 +647,7 @@ export default {
             J1.add(mesh);
             J1.add(J2);
 
-            J1.scale.set(20, 20, 20);
+            J1.scale.set(30, 30, 30);
             J1.position.set(16 * 20, 18 * 20, 12 * 20);
 
             obj.name = this.$route.params.groupName;
@@ -752,33 +770,26 @@ export default {
                 this.camera.position.z += vect.dot(new Three.Vector3(0, 0, 15)) * 0.01;
                 this.camera.position.x += vect.dot(new Three.Vector3(15, 0, 0)) * 0.01;
             }
-
-            if (this.one) {
-                this.shaftOne();
-            }
-            if (this.two) {
-                this.shaftTwo();
-            }
-            if (this.three) {
-                this.shaftThree();
-            }
-            if (this.four) {
-                this.shaftFour();
-            }
-            if (this.five) {
-                this.shaftFive();
-            }
-            if (this.six) {
-                this.shaftSix();
-            }
             //轴4和轴6是跟rotation相反
-            // let a = ["0.659891", "-131.469000", "222.603000", "179.977000", "93.137600", "-46.173900"];
-            // this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = 0.659891;
-            // this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = -131.469000;
-            // this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = 222.603000;
-            // this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -179.977000;
-            // this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = 93.137600;
-            // this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = 46.173900;
+
+            // if (this.locationArray.length > 0) {
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.locationArray[0] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.locationArray[1] - (-90)) * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.locationArray[2] - 180) * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.locationArray[3] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = (this.locationArray[4] - 90) * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
+            // }
+
+
+            if (this.testarr.length > 0) {
+                this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.testarr[0] * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.testarr[1] - (-90)) * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.testarr[2] - 180) * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.testarr[3] * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = (this.testarr[4] - 90) * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.testarr[5] * Math.PI / 180;
+            }
         },
 
         //键盘按下事件
@@ -1204,9 +1215,6 @@ export default {
                 this.$axios.post('/api/DDC/DeviceWorkStatic/LstWarnList' + utils.formatQueryStr(obj)),
                 this.$axios.post('/api/DDC/DeviceWorkStatic/DayDevActRank' + utils.formatQueryStr(obj)),
                 this.$axios.post("/api/DDC/DeviceWorkStatic/ProductMonthRpt" + utils.formatQueryStr(obj)),
-
-
-
             ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList, DayDevActRank, ProductMonthRpt) {
                 console.log(ProductMonthRpt);
                 that.ACTRATE = DayDevActRank[0].ACTRATE;
@@ -1237,11 +1245,19 @@ export default {
         window.onresize = () => {
             return this.onWindowResize();
         }
-        this.$socketApi.sendSock((res) => {
-            // console.log(res);
-            res[this.deviceId][0].value && (this.locationArray = JSON.parse(res[this.deviceId][0].value));
+        setInterval(res => {
+            that.$axios.post("newApi/wuji/Device/RobotPoints").then(res => {
+                console.log(res);
+                that.testarr = JSON.parse(res[1]);
+            }).catch(error => {
 
-        });
+            })
+        }, 1000)
+        // this.$socketApi.sendSock((res) => {
+        //     // console.log(res);
+        //     res[this.deviceId][0].value && (this.locationArray = JSON.parse(res[this.deviceId][0].value));
+
+        // });
     },
     destroyed() {
         //页面销毁时删除场景
