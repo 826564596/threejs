@@ -361,7 +361,7 @@
 }
 
 .content-content-right {
-    font-size: 24px;
+    font-size: 20px;
     background: url("../assets/image/文字框2.png") no-repeat;
     background-size: 100% 100%;
 }
@@ -575,7 +575,7 @@
     height: auto;
     width: 240px;
     position: absolute;
-    bottom: 3%;
+    bottom: 2%;
     left: 3%;
 
     .el_content {
@@ -1267,7 +1267,7 @@ $color: #00bdfc;
 }
 
 .productionReport-content-bottom {
-    height: 380px;
+    height: 350px;
 }
 
 .title-height {
@@ -1384,4 +1384,18 @@ $color: #00bdfc;
     100% {
         transform: scale(1, 1);
     }
+}
+
+.timeText-bg-line:hover {
+    background-color: rgb(22, 117, 168);
+    cursor: pointer;
+}
+
+.location-div {
+    height: 220px;
+    background: url("../assets/image/框4.png") no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }

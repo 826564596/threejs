@@ -2,7 +2,7 @@
 <template>
     <div class="grid-content">
         <img class="information-img" src="../assets/image/消息.png" />
-        <div>登出</div>
+        <div @click="loginOut">登出</div>
         <img class="triangle-img" src="../assets/image/下拉三角.png" />
     </div>
 </template>
@@ -14,6 +14,11 @@ export default {
         return {
         };
     },
+    methods: {
+        loginOut() {
+            this.$router.push({ path: "/" });
+        }
+    }
 }
 
 </script>

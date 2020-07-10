@@ -1,4 +1,4 @@
-<!-- 生产报表下拉框 -->
+<!-- 任务派发下拉框 -->
 <template>
     <div class=" buttonAndText" style="width:720px">
         <div class="dropdown">
@@ -20,7 +20,7 @@
 <script>
 import utils from "../assets/utils/utils";
 export default {
-    name: "dropdownDev",
+    name: "dropdownTask",
     props: ["url", "tableData", "isNeedDate"],
     data() {
         return {
@@ -35,30 +35,6 @@ export default {
     mounted() {
         let that = this;
         this.arr = this.$store.state.deviceIdArr;
-        this.$axios.post("newApi/wuji/Device/ProductionStatement", {
-            "device": {
-                "id": "wuji"
-            },
-            "date_period": {
-                "start_date": "2020-06-01",
-                "end_date": "2021-06-01"
-            }
-        }).then(res => {
-            console.log(res);
-
-            if (res.length == 0) {
-                this.$messageBox('暂无数据', '提示', {
-                    confirmButtonText: '确定',
-                });
-            }
-            res.sort((a, b) => {
-                return a.name.substr(10, a.name.length - 1) - b.name.substr(10, b.name.length - 1);
-            })
-            this.$emit("update:tableData", res);
-        }).catch(error => {
-
-        })
-
     },
     methods: {
 
@@ -72,23 +48,19 @@ export default {
             let that = this;
             let startDate = utils.dateToDay(this.value2[0]);
             let endDate = utils.dateToDay(this.value2[1]);
-            this.$axios.post("newApi/wuji/Device/ProductionStatement", {
-                "device": {
-                    "id": that.$store.state.deviceIdArr[that.index].deviceId
-                },
-                "date_period": {
-                    "start_date": startDate,
-                    "end_date": endDate
-                }
-            }).then(res => {
+            let obj = {
+                deviceid: this.$store.state.deviceIdArr[this.index].deviceId,
+                begindate: startDate,
+                enddate: endDate,
+            }
+            this.$axios.post("api/DDC/DeviceWorkStatic/DeviceMTRecd" + utils.formatQueryStr(obj)).then(res => {
                 console.log(res);
-
-                if (res.length == 0) {
+                if (res.Rows.length == 0) {
                     this.$messageBox('暂无数据', '提示', {
                         confirmButtonText: '确定',
                     });
                 }
-                this.$emit("update:tableData", res);
+                this.$emit("update:tableData", res.Rows);
             }).catch(error => {
 
             })

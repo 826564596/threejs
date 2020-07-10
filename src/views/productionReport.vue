@@ -132,14 +132,14 @@
                                         <div>
                                             <div style="height:120px;width:120px" class="" id="echarts-pie2">
                                             </div>
-                                            <div class="text-two">产能利用率</div>
+                                            <div class="text-two">产量计数</div>
                                         </div>
 
                                         <div>
                                             <div style="height:120px;width:120px" class="" id="echarts-pie3">
 
                                             </div>
-                                            <div class="text-two">效果分析图</div>
+                                            <div class="text-two">平均加工时长</div>
                                         </div>
 
                                     </div>
@@ -159,23 +159,34 @@
                 <!-- 生产报表 -->
                 <div v-if="buttonActive == 1">
                     <dropdownDev :tableData.sync="tableData" />
-                    <div class="pm_content-two" style="height:582px;width:98%;margin-left:10px">
+                    <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
-                            <el-table :data="tableData" style="width: 100%; " max-height="581" border>
-                                <el-table-column prop="F_DEVICENAME" label="工位名称" width="249">
+                            <el-table :data="tableData" style="width: 100%; " max-height="571" border>
+                                <el-table-column prop="id" label="设备ID" width="249">
                                 </el-table-column>
-                                <el-table-column prop="F_CHKTYPE" label="生产名称" width="200">
+                                <el-table-column prop="name" label="设备名称" width="200">
                                 </el-table-column>
-                                <el-table-column prop="F_chkoper" label="生产名称" width="200">
+                                <el-table-column prop="run_count" label="运行数" width="100">
                                 </el-table-column>
-                                <el-table-column prop="F_chkrst" label="生产名称" width="200">
+                                <el-table-column prop="free_count" label="空闲数" width="100">
                                 </el-table-column>
-                                <el-table-column prop="F_chkdate" label="生产名称" width="200">
+                                <el-table-column prop="stop_count" label="停机数" width="100">
                                 </el-table-column>
-                                <el-table-column prop="F_chktime" label="生产名称" width="200">
+                                <el-table-column prop="warn_count" label="报警数" width="100">
                                 </el-table-column>
-                                <el-table-column prop="F_chkdesc" label="生产名称">
+                                <el-table-column prop="run_duration" label="运行时长" width="100">
                                 </el-table-column>
+                                <el-table-column prop="free_duration" label="空闲时长" width="100">
+                                </el-table-column>
+                                <el-table-column prop="stop_duration" label="停机时长" width="100">
+                                </el-table-column>
+                                <el-table-column prop="warn_duration" label="报警时长" width="100">
+                                </el-table-column>
+                                <el-table-column prop="online_rate" label="在线率" width="100">
+                                </el-table-column>
+                                <el-table-column prop="workload" label="产量" width="100">
+                                </el-table-column>
+
                             </el-table>
                         </div>
                     </div>
@@ -201,6 +212,7 @@ export default {
             stop: 0,
             warn: 0,
             run: 0,
+            tableData: [],
         };
     },
     methods: {
@@ -208,7 +220,7 @@ export default {
             this.buttonActive = index;
         },
         //加载echart折线图
-        initEchartLine(date, free, run, warn, stop) {
+        initEchartLine(date, free, run, warn, stop, workload) {
             let myChart = this.$echarts.init(document.getElementById('echarts-line'));
             let option = {
                 title: {
@@ -229,7 +241,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['停机时长', '运行时长', '报警时长', '空闲时长'],
+                    data: ['停机时长', '运行时长', '报警时长', '空闲时长', '加工量'],
                     textStyle: {
                         color: "#fff"
                     }
@@ -340,6 +352,21 @@ export default {
                         }
                     },
 
+                    {
+                        name: '加工量',
+                        type: 'line',
+                        stack: '总量',
+                        smooth: true,
+                        data: workload,
+                        lineStyle: {
+                            color: "rgba(10,156,174,0.5)"
+
+                        },
+                        areaStyle: {
+                            color: "rgba(10,156,174,0.5)"
+                        }
+                    },
+
                 ]
             };
             myChart.setOption(option);
@@ -358,13 +385,25 @@ export default {
             // }).catch(error => { }
             // )
         },
-        initEchartPie1() {
+        //报警计数
+        initEchartPie1(num) {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie1'));
 
+
             let option = {
+                title: {
+                    text: num,
+                    left: 'center',
+                    top: '40%',
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 20,
+                        align: 'center'
+                    }
+                },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    formatter: '{a} <br/>{b}: {c} '
                 },
                 legend: {
                     show: false,
@@ -403,8 +442,7 @@ export default {
                         //     show: false
                         // },
                         data: [
-                            { value: 335 },
-                            { value: 310 },
+                            { value: num, name: "ss" },
 
                         ]
                     }
@@ -413,13 +451,24 @@ export default {
             myChart.setOption(option);
 
         },
-        initEchartPie2() {
+        //产量计数
+        initEchartPie2(num) {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie2'));
 
             let option = {
+                title: {
+                    text: num,
+                    left: 'center',
+                    top: '40%',
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 20,
+                        align: 'center'
+                    }
+                },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    formatter: '{a} <br/>{b}: {c} '
                 },
                 legend: {
                     show: false,
@@ -438,7 +487,7 @@ export default {
                 },
                 series: [
                     {
-                        name: '设备报警数',
+                        name: '设备产量',
                         type: 'pie',
                         radius: ['70%', '90%'],
                         // radius: "50%",
@@ -458,8 +507,7 @@ export default {
                         //     show: false
                         // },
                         data: [
-                            { value: 335 },
-                            { value: 310 },
+                            { value: num },
 
                         ]
                     }
@@ -468,13 +516,24 @@ export default {
             myChart.setOption(option);
 
         },
-        initEchartPie3() {
+        //加工时长
+        initEchartPie3(num) {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie3'));
 
             let option = {
+                title: {
+                    text: num,
+                    left: 'center',
+                    top: '40%',
+                    textStyle: {
+                        color: '#fff',
+                        fontSize: 20,
+                        align: 'center'
+                    }
+                },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    formatter: '{a} <br/>{b}: {c} '
                 },
                 legend: {
                     show: false,
@@ -493,7 +552,7 @@ export default {
                 },
                 series: [
                     {
-                        name: '设备报警数',
+                        name: '加工时长',
                         type: 'pie',
                         radius: ['70%', '90%'],
                         // radius: "50%",
@@ -514,7 +573,7 @@ export default {
                         // },
                         data: [
                             { value: 335 },
-                            { value: 310 },
+                            { value: 0 },
 
                         ]
                     }
@@ -524,9 +583,11 @@ export default {
 
         },
         search() {
+            let that = this;
             let startDate = utils.dateToDay(this.value2[0]);
             let endDate = utils.dateToDay(this.value2[1]);
             this.getlineData(startDate, endDate);
+
         },
         getlineData(startDate, endDate) {
             let that = this;
@@ -534,6 +595,7 @@ export default {
                 "start_date": startDate,
                 "end_date": endDate
             }).then(res => {
+                console.log(res);
                 let data = [];
                 let free_duration = [];
                 let run_duration = [];
@@ -543,6 +605,9 @@ export default {
                 let run_all = 0;
                 let stop_all = 0;
                 let warn_all = 0;
+                let warn_count_all = 0;
+                let workload_all = 0;
+                let workloadarr = [];
 
                 for (let i = 0, len = res.data.length; i < len; i++) {
                     let key = Object.keys(res.data[i]);
@@ -551,28 +616,55 @@ export default {
                     let run = 0;
                     let stop = 0;
                     let warn = 0;
+                    let workload = 0;
+                    let warn_count = 0;
                     for (let j = 0, length = res.data[i][key].length; j < length; j++) {
 
                         free += res.data[i][key][j].free_duration;
                         run += res.data[i][key][j].run_duration;
                         stop += res.data[i][key][j].stop_duration;
                         warn += res.data[i][key][j].warn_duration;
+                        workload += res.data[i][key][j].workload;
+                        warn_count += res.data[i][key][j].warn_count;
                         free_all += free;
                         run_all += run;
                         stop_all += stop;
                         warn_all += warn;
+                        workload_all += workload;
+                        warn_count_all = warn_count;
 
                     }
                     free_duration.push(free);
                     run_duration.push(run);
                     stop_duration.push(stop);
                     warn_duration.push(warn);
+                    workloadarr.push(workload);
 
                 }
 
 
-                that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration);
+                that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration, workloadarr);
+                that.initEchartPie2(workload_all);
+                that.initEchartPie1(warn_count_all);
 
+            }).catch(error => {
+
+            })
+            this.$axios.post("newApi/wuji/Device/AvgWorkDuration", {
+                "device": {
+                    "id": "wuji"
+                },
+                "date_period": {
+                    "start_date": startDate,
+                    "end_date": endDate
+                }
+            }).then(res => {
+                console.log(res);
+                let avg_work_duration = 0;
+                for (let i of res) {
+                    avg_work_duration += i.avg_work_duration;
+                }
+                that.initEchartPie3(avg_work_duration);
 
             }).catch(error => {
 

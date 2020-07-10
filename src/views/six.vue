@@ -96,7 +96,7 @@
                                 <el-row>
                                     <el-col :span="10" :offset="1">
                                         <div class="table-title ">
-                                            总产量计数
+                                            产量计数
                                         </div>
                                     </el-col>
                                     <el-col :span="9">
@@ -213,7 +213,7 @@
                         <el-col :span="24">
                             <div class="timeText-bg ">
                                 <div v-if="alarmInformation.length > 0">
-                                    <div v-for="(item,index) in alarmInformation" :key="index" @click="chooseAlarm(index)">
+                                    <div v-for="(item,index) in alarmInformation" class="timeText-bg-line" :key="index" @click="chooseAlarm(index)">
                                         <el-row>
                                             <el-col :span="7" :offset="1">
                                                 <div class="timeText ">
@@ -1452,7 +1452,7 @@ export default {
                 xAxis: [
                     {
                         type: 'category',
-                        data: ['当月总产量', '当周总产量', "当天总产量"],
+                        data: ['当月产量', '当周产量', "当天产量"],
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -1471,7 +1471,7 @@ export default {
                 yAxis: [
                     {
                         max: function (value) {
-                            return value.max + 200;
+                            return value.max + 2000;
                         },
                         type: 'value',
                         axisLabel: {
@@ -1605,13 +1605,13 @@ export default {
                 enddate: arr[1],
             }
             myChart.showLoading();
-            this.$axios.post("/api/DDC/DeviceWorkStatic/WarnRank" + utils.formatQueryStr(obj)).then(res => {
+            this.$axios.post("/api/DDC/DeviceWorkStatic/WarnCRank" + utils.formatQueryStr(obj)).then(res => {
                 myChart.hideLoading();
                 let data1 = [];
                 let data2 = [];
                 for (let i = 0; i < 7; i++) {
                     data1.push(res[i].F_NAME.substr(8, res[i].F_NAME.length - 1));
-                    data2.push(res[i].F_WARNRATE);
+                    data2.push(res[i].F_WARNC);
                 }
                 myChart.setOption({
                     xAxis: {
@@ -1700,17 +1700,17 @@ export default {
 
 
             myChart.showLoading();
+            let arr = utils.CurrentMonthFirstAndLast();
 
 
             this.$axios.post("/newApi/wuji/Device/AvgWorkDuration",
                 {
-
                     "device": {
                         "id": "wuji"
                     },
                     "date_period": {
-                        "start_date": "2020-06-06",
-                        "end_date": "2020-07-06"
+                        "start_date": arr[0],
+                        "end_date": arr[1]
                     }
 
                 }).then(res => {
@@ -1723,8 +1723,11 @@ export default {
                     let data2 = [];
                     for (let i = 0; i < 7; i++) {
                         data1.push(res[i].name.substr(8, res[i].name.length - 1));
-                        data2.push(res[i].avg_workduration);
+                        data2.push(res[i].avg_work_duration);
                     }
+                    console.log(data1);
+                    console.log(data2);
+
                     myChart.setOption({
                         xAxis: {
                             data: data1
@@ -1930,7 +1933,7 @@ export default {
 
                 that.onlineNum = OnLineStat.onlinenum;
                 that.outlineNum = OnLineStat.offlinenum;
-
+                // that.number = alarmInformation[0].f_name;
                 let alarmInformation = [];
                 //整理
                 LstWarnList.forEach((item, index) => {
@@ -1942,6 +1945,7 @@ export default {
                     alarmInformation[index].name = item.f_name.substr(10, item.f_name.length - 1);
 
                 })
+
                 if (alarmInformation.length > 4) {
                     that.alarmInformation = alarmInformation.slice(0, 3);
                 }
@@ -1956,7 +1960,7 @@ export default {
                 })
                 that.averageYield = averageYield / 13;
 
-
+                that.number = that.alarmInformation[0].name;
 
             })).catch(error => {
 

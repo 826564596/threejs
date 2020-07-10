@@ -20,21 +20,22 @@
                 </el-col>
             </el-row>
             <el-row>
-                <div class="">
-                    <div v-for="(item,index) in 6" :key="index" class="location-div">
-                        <el-row style="margin-top:5px">
+                <div class="location-div">
+                    <div v-for="(item,index) in 6" :key="index">
+                        <el-row>
                             <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
+                                <div class="content-content content-content-left " style="height:30px">
                                     轴{{index + 1}}
                                 </div>
                             </el-col>
-
                             <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    {{parseFloat(locationArray[index]).toFixed(4)}}°
+                                <div class="content-content content-content-right " style="height:30px">
+                                    <span v-if="locationArray.length > 0">{{parseFloat(locationArray[index]).toFixed(4)}}°</span>
+                                    <span v-else>未开启</span>
                                 </div>
                             </el-col>
                         </el-row>
+
                     </div>
                 </div>
             </el-row>
@@ -125,6 +126,7 @@
                                 <div class="content-content content-content-right ">
 
                                     <div v-if="operation.length>0"> {{operation[0].F_RUNDURA + operation[0].F_FREEDURA + operation[0].F_WARNDURA}}</div>
+                                    <div v-else>暂无</div>
 
                                 </div>
                             </el-col>
@@ -140,6 +142,7 @@
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
                                     <div v-if="operation.length>0"> {{operation[0].F_RUNDURA}}</div>
+                                    <div v-else>暂无</div>
                                 </div>
                             </el-col>
                         </el-row>
@@ -154,6 +157,8 @@
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
                                     <div v-if="operation.length>0"> {{operation[0].F_WARNDURA}}</div>
+                                    <div v-else>暂无</div>
+
                                 </div>
                             </el-col>
                         </el-row>
@@ -397,7 +402,7 @@
         </div>
 
         <!-- 位置坐标 -->
-        <div class="location">
+        <!-- <div class="location">
             <div v-for="(item,index) in testarr" :key="index" class="location-div">
                 <el-row style="margin-top:5px">
                     <el-col :span="9" :offset="1">
@@ -413,7 +418,7 @@
                     </el-col>
                 </el-row>
             </div>
-        </div>
+        </div> -->
     </div>
 
 </template>
@@ -772,24 +777,24 @@ export default {
             }
             //轴4和轴6是跟rotation相反
 
-            // if (this.locationArray.length > 0) {
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.locationArray[0] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.locationArray[1] - (-90)) * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.locationArray[2] - 180) * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.locationArray[3] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = (this.locationArray[4] - 90) * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
-            // }
-
-
-            if (this.testarr.length > 0) {
-                this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.testarr[0] * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.testarr[1] - (-90)) * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.testarr[2] - 180) * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.testarr[3] * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = (this.testarr[4] - 90) * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.testarr[5] * Math.PI / 180;
+            if (this.locationArray.length > 0) {
+                this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.locationArray[0] * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.locationArray[1] - (-90)) * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.locationArray[2] - 180) * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.locationArray[3] * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.locationArray[4] * Math.PI / 180;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
             }
+
+
+            // if (this.testarr.length > 0) {
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.testarr[0] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.testarr[1] - (-90)) * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.testarr[2] - 180) * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.testarr[3] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.testarr[4] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.testarr[5] * Math.PI / 180;
+            // }
         },
 
         //键盘按下事件
@@ -926,7 +931,7 @@ export default {
                 xAxis: [
                     {
                         type: 'category',
-                        data: ['当月总产量', '当周总产量', "当天总产量"],
+                        data: ['当月产量', '当周产量', "当天产量"],
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -1216,7 +1221,7 @@ export default {
                 this.$axios.post('/api/DDC/DeviceWorkStatic/DayDevActRank' + utils.formatQueryStr(obj)),
                 this.$axios.post("/api/DDC/DeviceWorkStatic/ProductMonthRpt" + utils.formatQueryStr(obj)),
             ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList, DayDevActRank, ProductMonthRpt) {
-                console.log(ProductMonthRpt);
+                that.LstWarnListStr = LstWarnList[0].F_ERROR;
                 that.ACTRATE = DayDevActRank[0].ACTRATE;
                 that.operation = DayWorkLoadRank;
             })).catch(error => {
@@ -1245,19 +1250,18 @@ export default {
         window.onresize = () => {
             return this.onWindowResize();
         }
-        setInterval(res => {
-            that.$axios.post("newApi/wuji/Device/RobotPoints").then(res => {
-                console.log(res);
-                that.testarr = JSON.parse(res[1]);
-            }).catch(error => {
+        // setInterval(res => {
+        //     that.$axios.post("newApi/wuji/Device/RobotPoints").then(res => {
+        //         console.log(res);
+        //         that.testarr = JSON.parse(res[1]);
+        //     }).catch(error => {
 
-            })
-        }, 1000)
-        // this.$socketApi.sendSock((res) => {
-        //     // console.log(res);
-        //     res[this.deviceId][0].value && (this.locationArray = JSON.parse(res[this.deviceId][0].value));
+        //     })
+        // }, 1000)
+        this.$socketApi.sendSock((res) => {
+            res[this.deviceId][0].value && (this.locationArray = JSON.parse(res[this.deviceId][0].value));
 
-        // });
+        });
     },
     destroyed() {
         //页面销毁时删除场景

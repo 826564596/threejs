@@ -116,7 +116,7 @@
                 </div>
             </div>
             <!-- 六 -->
-            <div class="s " @click="change(5)">
+            <!-- <div class="s " @click="change(5)">
                 <div class="sa " v-if="index == 5">
                     系统设置
                 </div>
@@ -136,7 +136,7 @@
                         </el-col>
                     </el-row>
                 </div>
-            </div>
+            </div> -->
             <!-- 七 -->
             <!-- <div class="s " @click="change(6)">
                 <div class="sa " v-if="index == 6">

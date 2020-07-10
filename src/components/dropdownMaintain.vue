@@ -50,9 +50,14 @@ export default {
     mounted() {
         let that = this;
         this.arr = this.$store.state.deviceIdArr;
+        let obj = {
+            MAC: "wuji"
+        }
         this.axios.all([
             this.$axios.post("api/DDC/DeviceChk/PeriodTypeList"),
-        ]).then(this.axios.spread((PeriodTypeList) => {
+            this.$axios.post("api/DDC/DeviceFault/FaultList" + utils.formatQueryStr(obj)),
+        ]).then(this.axios.spread((PeriodTypeList, FaultList) => {
+            console.log(FaultList)
             that.PeriodTypeList = PeriodTypeList;
         })).catch(error => {
 

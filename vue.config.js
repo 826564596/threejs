@@ -73,6 +73,13 @@ module.exports = {
                     "^/newApi": "", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
                 },
             },
+            "ftp/": {
+                target: "http://119.3.66.94:8090/", //域名
+                changeOrigin: true,
+                pathRewrite: {
+                    "^/newApi": "", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
+                },
+            },
         },
         // proxy: null,
     },

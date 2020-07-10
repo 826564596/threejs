@@ -1,7 +1,7 @@
 <template>
 
-    <!-- <div id="app"> -->
-    <div id="app" :style="` width: ${width}px; height: ${height}px; `">
+    <div id="app">
+        <!-- <div id="app" :style="` width: ${width}px; height: ${height}px; `"> -->
 
         <!-- 标题图片登陆 -->
         <!-- 根据shouTitle参数判断login页是否要显示标题 -->

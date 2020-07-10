@@ -83,17 +83,17 @@
                             <div class="pm_content-two">
                                 <div style="margin-bottom:10px;height:100%;width:100%">
                                     <el-table :data="tableData" style="width: 100%; " max-height="333" border>
-                                        <el-table-column prop="date" label="报警时间" width="90">
+                                        <el-table-column prop="date" label="日期" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="name" label="设备ID" width="90">
+                                        <el-table-column prop="id" label="设备ID" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="address" label="报警类型" width="90">
+                                        <el-table-column prop="name" label="工位名称" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="address" label="报警内容" width="90">
+                                        <el-table-column prop="warn_type" label="报警类型" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="address" label="报警时长" width="90">
+                                        <el-table-column prop="warn_time" label="报警时间" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="address" label=" 报警数">
+                                        <el-table-column prop="warn_message" label=" 报警内容">
                                         </el-table-column>
                                     </el-table>
                                 </div>
@@ -134,12 +134,7 @@ export default {
             index: 0,
             buttonActive: 0,
             value2: "",
-            tableData: [{
-                date: '2016-05-04,2016-05-042016-05-04',
-                name: '王小虎sss',
-                address: '上海市普陀区金沙江路 1518 弄'
-            }
-            ]
+            tableData: []
         };
     },
     methods: {
@@ -214,7 +209,7 @@ export default {
 
 
         },
-        //报警类型占比
+        //设备在线
         initEchartPie() {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie'));
             let option = {
@@ -295,6 +290,7 @@ export default {
             )
 
         },
+        //报警类型占比
         initEchartPie2() {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie2'));
             let option = {
@@ -627,22 +623,35 @@ export default {
             // 绘制图表
             myChart.setOption({
                 color: ['#3398DB'],
-                // tooltip: {
-                //     trigger: 'axis',
-                //     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                //         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                //     }
-                // },
                 grid: {
                     left: '0%',
                     bottom: '3%',
                     top: "5%",
                     containLabel: true
                 },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                yAxis: [
+                    {
+                        // show: false,
+                        type: 'value',
+                        axisLabel: {
+                            interval: 0,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                        }
+                    }
+                ],
                 xAxis: [
                     {
+                        // name: '工位',
                         type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        data: [],
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -655,31 +664,80 @@ export default {
                         },
                         axisLabel: {
                             interval: 0,
-                        }
-                    }
-                ],
-                // dataZoom: [
-                //     {
-                //         id: 'dataZoomX',
-                //         type: 'slider',
-                //         start: 0,
-                //         end: 30,
-                //     }
-                // ],
-                yAxis: [
-                    {
-                        show: false,
-                        type: 'value'
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                            rotate: 300 //倾斜角度
+                        },
                     }
                 ],
                 series: [
                     {
                         type: 'bar',
                         barWidth: '40%',
-                        data: [10, 52, 200, 334, 390, 330, 220]
+                        data: []
                     }
                 ]
             });
+
+            let arr = utils.CurrentMonthFirstAndLast();
+            myChart.showLoading();
+            this.$axios.post("newApi/wuji/Device/WarnCountTrend", {
+                "device": {
+                    "id": "wuji"
+                },
+                "date_period": {
+                    "start_date": arr[0],
+                    "end_date": arr[1]
+                }
+            }).then(res => {
+                myChart.hideLoading();
+                let date = [];
+                let warn_duration = [];
+                for (let i = 0, len = res.length; i < len; i++) {
+                    let key = Object.keys(res[i]);
+                    date.push(key[0]);
+                    let warn = 0;
+                    for (let j = 0, length = res[i][key].length; j < length; j++) {
+                        warn += res[i][key][j].warn_count;
+                    }
+                    warn_duration.push(warn);
+                }
+
+                myChart.setOption({
+                    xAxis: {
+                        data: date
+                    },
+                    series: [{
+                        data: warn_duration
+                    }]
+                })
+
+            }).catch(error => {
+
+            })
+        },
+        // 表格信息
+        initTable() {
+            let that = this;
+            let arr = utils.CurrentMonthFirstAndLast();
+            this.$axios.post("newApi/wuji/Device/WarnMessage", {
+                "device": {
+                    "id": "wuji"
+                },
+                "date_period": {
+                    "start_date": arr[0],
+                    "end_date": arr[1]
+                },
+                "page": {
+                    "offset": 0,
+                    "limit": 10
+                }
+            }).then(res => {
+                that.tableData = res;
+            }).catch(errror => {
+            })
         }
     },
     updated() {
@@ -696,6 +754,7 @@ export default {
                 this.initEchartPie2();
                 this.initEchartBar3();
                 this.initEchartBar4();
+                // this.initTable();
 
             });
         }
@@ -705,12 +764,15 @@ export default {
         if (this.buttonActive == 0) {
             let arr = utils.getDay(-7);
             this.getlineData(arr[0], arr[1]);
+            this.initTable();
+
         }
         else {
             this.initEchartPie();
             this.initEchartPie2();
             this.initEchartBar3();
             this.initEchartBar4();
+            this.initTable();
         }
 
     }

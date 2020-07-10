@@ -22,7 +22,7 @@ export default {
         let now = new Date(); //当前日期
         let nowMonth = now.getMonth(); //当前月
         let nowYear = now.getFullYear(); //当前年
-        let nowDay = now.getDay(); //当前年
+        let nowDay = now.getDate(); //当前日
         let end = new Date(nowYear, nowMonth, nowDay);
         let start = new Date(2020, 5, 1);//2020-06-01
         this.operatingDay = utils.differDate(start, end);//计算差值

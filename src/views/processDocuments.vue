@@ -13,13 +13,13 @@
             <div class="body-content-right ">
 
                 <!-- 按钮 -->
-                <dropdown />
+                <dropdownFlie :flieData.sync="flieData" />
                 <div class="processDocuments ">
-                    <div class="processDocuments-content " v-for="index of 13" :key="index">
+                    <div class="processDocuments-content " v-for="(item,index) of flieData" :key="index">
                         <div class="top-picture ">
                         </div>
                         <div class="top-text ">
-                            工艺管理
+                            {{item.F_FILENAME}}
                         </div>
                     </div>
                 </div>
@@ -29,10 +29,14 @@
 </template>
 
 <script>
+import dropdownFlie from "../components/dropdownFlie.vue";
 export default {
+    components: {
+        dropdownFlie: dropdownFlie
+    },
     data() {
         return {
-            index: 2,
+            flieData: [],//文件数据
         };
     },
 
