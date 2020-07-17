@@ -10,6 +10,7 @@ import "./plugins/element.js";
 import "./plugins/echarts.js";
 import cookies from "vue-cookies";
 import utils from "./assets/utils/utils";
+import test from "./assets/utils/test";
 
 //组件
 import weather from "@/components/weather";

@@ -932,14 +932,14 @@
 
 .pm_content-two {
     margin-top: 10px;
-    height: 340px;
+    height: 300px;
     background: url('../assets/image/数据框2.png') no-repeat;
     background-size: 100% 100%;
 }
 
 .pm_content-one {
 
-    height: 300px;
+    height: 280px;
     background: url('../assets/image/弹窗1bg.png') no-repeat;
     background-size: 100% 100%;
 
@@ -954,7 +954,7 @@
     }
 
     .pm_content-one-content {
-        height: 240px;
+        height: 220px;
 
     }
 }
@@ -1211,11 +1211,16 @@ $color: #00bdfc;
     align-content: flex-start;
 
     .processDocuments-content {
+        box-sizing: border-box;
+
         height: 150px;
-        width: 135px;
+        width: 150px;
         margin: 10px;
+        // display: flex;
 
         .top-picture {
+            margin: 0 auto;
+
             height: 120px;
             width: 135px;
             background: url("../assets/image/documents.png") no-repeat;
@@ -1223,6 +1228,8 @@ $color: #00bdfc;
         }
 
         .top-text {
+            margin: 0 auto;
+
             height: 30px;
             width: 135px;
             font-size: 20px;
@@ -1232,6 +1239,65 @@ $color: #00bdfc;
             overflow: hidden;
             text-align: center;
         }
+    }
+
+    .processDocuments-content:hover {
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 2px solid rgba(22, 117, 168, 1);
+
+        .top-close {
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            position: relative;
+            top: -160px;
+            right: -140px;
+            background-color: rgba(22, 117, 168, 0.5);
+        }
+
+        .top-close:hover {
+            background-color: rgba(22, 117, 168, 1);
+
+        }
+
+        .top-close-item {
+            width: 2px;
+            height: 20px;
+            background: #fff;
+            transform: rotate(45deg);
+            display: inline-block;
+
+            position: relative;
+            top: 4px;
+            right: -14px;
+        }
+
+        .top-close-item:after {
+            content: "";
+            width: 2px;
+            height: 20px;
+            background: #fff;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transform: rotate(270deg);
+        }
+
+
+
+
+    }
+
+    .processDocuments-content:checked {
+        border: 1px red solid;
+    }
+
+    .active {
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 2px solid rgba(22, 117, 168, 1);
+        background-color: rgba(22, 117, 168, 0.5);
     }
 }
 

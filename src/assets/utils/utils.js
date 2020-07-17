@@ -1,4 +1,4 @@
-// 获取当前月第一天和最后一天
+/**获取当前月第一天和最后一天 */
 const CurrentMonthFirstAndLast = () => {
     let now = new Date(); //当前日期
     let nowMonth = now.getMonth(); //当前月
@@ -27,7 +27,7 @@ const CurrentMonthFirstAndLast = () => {
         .split(" ")[0];
     return arr;
 };
-//对象转字符串
+/**对象转字符串 */
 const formatQueryStr = (obj) => {
     let queryStr = "?";
     for (let o in obj) {
@@ -36,8 +36,7 @@ const formatQueryStr = (obj) => {
     return queryStr.substring(0, queryStr.length - 1);
 };
 
-//获取七天前的日期
-
+/**获取七天前的日期 */
 const getDay = (num) => {
     let date1 = new Date();
     //今天时间
@@ -50,7 +49,7 @@ const getDay = (num) => {
     return num >= 0 ? [time1, time2] : [time2, time1];
 };
 
-//获取指定月份的第一天和最后一天
+/**获取指定月份的第一天和最后一天 */
 const getAnyMouthFirstAndLast = (year, mouth) => {
     let monthStartDate = new Date(year, mouth, 1);
     //本月的结束时间
@@ -76,7 +75,7 @@ const getAnyMouthFirstAndLast = (year, mouth) => {
     return arr;
 };
 
-//输入new Date(),装换yyyy-mm-dd
+/** 输入new Date(),装换yyyy-mm-dd */
 const dateToDay = (date) => {
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
     return date
@@ -85,14 +84,14 @@ const dateToDay = (date) => {
         .replace("T", " ")
         .split(" ")[0];
 };
-//计算两个日期之间的日期差
+/**计算两个日期之间的日期差 */
 const differDate = (dateString1, dateString2) => {
     let startDate = Date.parse(dateString1);
     let endDate = Date.parse(dateString2);
     let days = (endDate - startDate) / (1 * 24 * 60 * 60 * 1000);
     return days;
 };
-//计算两个日期之间所有日期
+/** 计算两个日期之间所有日期*/
 const getAllAroundDay = (begin, end) => {
     // 开始日期和结束日期
     if (!begin || !end) {

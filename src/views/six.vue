@@ -391,11 +391,9 @@ export default {
             number: "...",//选中报警工位
             averageYield: 0,//平均稼动率
             deviceIdArr: [],//存放设备Id
-            tableData: [{
-                deviceName: '工位11',
-                time: '2020-02-06 18:20:20',
-                content: '主板烧了'
-            },]
+
+
+            DayWorkLoadRank: [],
         }
     },
     methods: {
@@ -443,18 +441,18 @@ export default {
 
 
         },
-        //设置场景
+        /**设置场景 */
         initScene() {
             this.scene = new Three.Scene();
             this.scene.background = new Three.Color(0xffffff);
         },
-        // 设置相机
+        /**设置相机 */
         initCamera() {
             this.camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10000);
             this.camera.position.set(0, 250, 500);
             this.camera.lookAt(0, 50, 50);
         },
-        // 渲染器
+        /**渲染器 */
         initRender() {
             this.renderer = new Three.WebGLRenderer({ antialias: true, alpha: true, });
             this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);
@@ -462,7 +460,7 @@ export default {
             this.renderer.setClearColor(0xFFFFFF, 0.0);
             this.container.appendChild(this.renderer.domElement);
         },
-        //灯光
+        /** 灯光 */
         initLight() {
 
             let ambientLight = new Three.AmbientLight(0xffffff, 1);
@@ -482,13 +480,13 @@ export default {
 
 
         },
-        //控制器
+        /**控制器 */
         initControls() {
             this.controls = new Three.OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
             console.log(this.controls);
             this.controls.maxZoom = 0.8;
         },
-        //设置辅助坐标系
+        /**设置辅助坐标系 */
         helper() {
             let grid = new Three.GridHelper(800, 160, 0xFF0000, 0x000000);
             grid.material.opacity = 0.1;
@@ -497,14 +495,14 @@ export default {
             let axesHelper = new Three.AxesHelper(30);
             this.scene.add(axesHelper);
         },
-        //添加环境
+        /**添加环境 */
         createEnvironment() {
 
             this.scene.background = new Three.TextureLoader()
                 .load(require("../assets/image/bg.jpg"));
 
         },
-        //添加地面
+        /**添加地面 */
         createFloor() {
             let that = this;
 
@@ -541,6 +539,85 @@ export default {
             // this.addAlarmLineP(this.WIDTH, 2, 0.5, 130, 0.1, 0, "线4");
         },
 
+        /** 创建canvas对象*/
+        makeLabelCanvas(baseWidth, size, name, color) {
+            const borderSize = 2;
+            const ctx = document.createElement('canvas').getContext('2d');
+            const font = `${size}px bold sans-serif`;
+            ctx.font = font;
+            // measure how long the name will be
+            const textWidth = ctx.measureText(name).width;
+            const doubleBorderSize = borderSize * 2;
+            const width = baseWidth + doubleBorderSize;
+            const height = size + doubleBorderSize;
+            ctx.canvas.width = width;
+            ctx.canvas.height = height;
+
+            // need to set font again after resizing canvas
+            ctx.font = font;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+            ctx.fillRect(0, 0, width, height);
+
+            // scale to fit but don't stretch
+            const scaleFactor = Math.min(1, baseWidth / textWidth);
+            ctx.translate(width / 2, height / 2);
+            ctx.scale(scaleFactor, 1);
+            ctx.fillStyle = color;
+            ctx.fillText(name, 0, 0);
+            return ctx.canvas;
+        },
+
+        /** 添加精灵图 */
+        createTable(index, item, x, z) {
+
+            let canvas;
+            if (item.F_ONLINESTATUS == "离线") {
+                canvas = this.makeLabelCanvas(100, 100, index, "rgb(210, 60, 64)");
+                let spriteMap = new Three.TextureLoader().load(require("../assets/image/离线2.png"));
+                let spriteMaterial = new Three.SpriteMaterial({
+                    transparent: true,
+                    map: spriteMap,
+                    side: Three.DoubleSide,
+
+                });
+                let sprite = new Three.Sprite(spriteMaterial);
+                sprite.scale.set(25, 25, 1)
+                sprite.position.set(x, 100, z);
+                this.scene.add(sprite);
+
+            }
+            else {
+                canvas = this.makeLabelCanvas(100, 100, index, "rgb(91, 255, 185)");
+                let spriteMap = new Three.TextureLoader().load(require("../assets/image/在线2.png"));
+                let spriteMaterial = new Three.SpriteMaterial({
+                    transparent: true,
+                    map: spriteMap,
+                    side: Three.DoubleSide,
+
+
+                });
+                let sprite = new Three.Sprite(spriteMaterial);
+                sprite.scale.set(25, 25, 1)
+                sprite.position.set(x, 100, z);
+                this.scene.add(sprite);
+            }
+            const texture = new Three.CanvasTexture(canvas);
+            let spriteMaterial = new Three.SpriteMaterial({
+                transparent: true,
+                map: texture,
+                side: Three.DoubleSide,
+                // color: 0x00ff00,
+
+            });
+            let sprite = new Three.Sprite(spriteMaterial);
+            sprite.scale.set(25, 25, 1)
+            sprite.position.set(x, 120, z);
+            this.scene.add(sprite);
+
+        },
 
         //场景中的内容
         initContent() {
@@ -548,6 +625,7 @@ export default {
             this.createFloor();
             // this.createAllCubeWall();
             this.createEnvironment();
+            // this.createTable();
 
             //生成激光打标机
             let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
@@ -577,6 +655,8 @@ export default {
                             // object.position.set(0, 16, 0);
                             // that.scene.add(object);
 
+
+
                             that.clone(object, pt, obj2);
                         });
                     });
@@ -592,7 +672,7 @@ export default {
             //     object.position.set(0, 16, 0);
             //     that.scene.add(object);
             //     console.log(object);
-            //     // that.clone(object);
+            //     // that.clone(object); 
             // });
 
 
@@ -645,7 +725,7 @@ export default {
 
             // });
         },
-        //初始化性能插件
+        /**初始化性能插件 */
         initStats() {
             let stats = new Stats();
             stats.domElement.style.position = 'absolute';
@@ -654,7 +734,7 @@ export default {
             this.container.appendChild(stats.domElement);
             return stats;
         },
-        // 动画
+        /** 动画  */
         animate() {
             requestAnimationFrame(this.animate);
             this.renderer.render(this.scene, this.camera);
@@ -705,7 +785,7 @@ export default {
                 this.shaftSix();
             }
         },
-
+        /**创建墙 */
         createAllCubeWall() {
             let that = this;
             this.createCubeWall(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0x9cb2d1 }), 0, 25, -this.WIDTH / 2, "墙面3");
@@ -1241,6 +1321,7 @@ export default {
             // J8.add(obj2.getObjectByName('墙面4'));
             // J8Box.add(J8);
 
+
             obj2.name = "激光打标机";
             obj.add(J1);
 
@@ -1250,14 +1331,13 @@ export default {
             obj2.position.set(0 * 20, 35 * 20, 60 * 20);
             obj.add(obj2);
 
-
             obj.position.z = z;
             obj.position.x = -x;
             obj.rotation.y = -0.5 * Math.PI;
 
             this.scene.add(obj);
             // this.scene.add(copy_J1);
-
+            this.createTable(1, this.DayWorkLoadRank[0], -x - 50, z);
 
             let copy_J1 = obj.clone();
             copy_J1.rotateY(Math.PI);
@@ -1268,7 +1348,6 @@ export default {
 
 
             //复制多个J1
-
             for (let i = 0, j = 2; i < 6; i++) {
                 z -= this.interval;
                 let copy_J1 = obj.clone();
@@ -1276,6 +1355,7 @@ export default {
                 copy_J1.position.x = -x;
                 copy_J1.name = `J0${j}`;
 
+                this.createTable(i + 2, this.DayWorkLoadRank[i + 1], -x - 50, z);
 
                 let copy_J2 = obj.clone();
                 copy_J2.rotateY(Math.PI);
@@ -1283,6 +1363,7 @@ export default {
                 copy_J2.position.x = x;
                 copy_J2.name = `J0${15 - j}`;
                 j++;
+                this.createTable(13 - i, this.DayWorkLoadRank[12 - i], x + 50, z);
 
                 this.scene.add(copy_J1);
                 this.scene.add(copy_J2);
@@ -1927,10 +2008,19 @@ export default {
             this.axios.all([
                 this.$axios.post('/api/DDC/DeviceWorkStatic/OnLineStat?mac=wuji'),
                 this.$axios.post('/api/DDC/DeviceWorkStatic/LstWarnList?mac=wuji'),
-                this.$axios.post("/api/DDC/DeviceWorkStatic/DayDevActRank" + utils.formatQueryStr(obj))
-            ]).then(this.axios.spread(function (OnLineStat, LstWarnList, DayDevActRank) {
-                //OnLineStat 设备在线数, LstWarnList 设备实时报警内容
+                this.$axios.post("/api/DDC/DeviceWorkStatic/DayDevActRank" + utils.formatQueryStr(obj)),
+                this.$axios.post("/api/DDC/DeviceWorkStatic/DayWorkLoadRank?mac=wuji"),
+            ]).then(this.axios.spread(function (OnLineStat, LstWarnList, DayDevActRank, DayWorkLoadRank) {
 
+                //升排序
+                DayWorkLoadRank.sort((a, b) => {
+                    return a.F_NAME.substr(10, a.F_NAME.length - 1) - b.F_NAME.substr(10, b.F_NAME.length - 1);
+                })
+                //web
+
+                that.DayWorkLoadRank = DayWorkLoadRank;
+
+                //OnLineStat 设备在线数, LstWarnList 设备实时报警内容
                 that.onlineNum = OnLineStat.onlinenum;
                 that.outlineNum = OnLineStat.offlinenum;
                 // that.number = alarmInformation[0].f_name;

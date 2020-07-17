@@ -442,6 +442,7 @@ import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass';
 import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass';
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass';
 import utils from "../assets/utils/utils";
+import { Vector2 } from 'three';
 // import socketApi from "../plugins/webScoket";
 
 
@@ -465,8 +466,10 @@ export default {
             operation: [],//运行情况
             LstWarnListStr: "",//设备实时报警信息
             ACTRATE: 0,//设备稼动率
-            locationArray: [],//轴坐标数组
+            locationArray: [],//轴坐标数组、
+            preLocationArray: [0, -90, 180, 0, 0, 0],// 更新轴坐标前的数据
             testarr: [],
+            // i: 0,
 
 
         };
@@ -532,7 +535,7 @@ export default {
             let that = this;
             this.createFloor();
             this.createEnvironment();
-            this.createTable();
+            // this.createTable();
 
             //生成激光打标机
             let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
@@ -718,21 +721,121 @@ export default {
         },
 
 
+        makeLabelCanvas(baseWidth, size, name, color) {
+            const borderSize = 2;
+            const ctx = document.createElement('canvas').getContext('2d');
+            const font = `${size}px bold sans-serif`;
+            ctx.font = font;
+            // measure how long the name will be
+            const textWidth = ctx.measureText(name).width;
+            const doubleBorderSize = borderSize * 2;
+            const width = baseWidth + doubleBorderSize;
+            const height = size + doubleBorderSize;
+            ctx.canvas.width = width;
+            ctx.canvas.height = height;
+
+            // need to set font again after resizing canvas
+            ctx.font = font;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+            ctx.fillRect(0, 0, width, height);
+
+            // scale to fit but don't stretch
+            const scaleFactor = Math.min(1, baseWidth / textWidth);
+            ctx.translate(width / 2, height / 2);
+            ctx.scale(scaleFactor, 1);
+            ctx.fillStyle = color;
+            ctx.fillText(name, 0, 0);
+            return ctx.canvas;
+        },
 
         //添加图表
         createTable() {
 
-            // let spriteMap = new Three.TextureLoader().load(require("../assets/image/底框.png"));
-            // let spriteMaterial = new Three.SpriteMaterial({
-            //     transparent: true,
-            //     map: spriteMap,
-            //     side: Three.DoubleSide
-            // });
+            let spriteMap = new Three.TextureLoader().load(require("../assets/image/标签.png"));
+            let spriteMaterial = new Three.SpriteMaterial({
+                transparent: true,
+                map: spriteMap,
+                side: Three.DoubleSide
+            });
 
-            // let sprite = new Three.Sprite(spriteMaterial);
-            // sprite.scale.set(50, 50, 1)
-            // sprite.position.set(100, 50, 0);
-            // this.scene.add(sprite);
+
+            let spriteMap2 = new Three.TextureLoader().load(require("../assets/image/标签2.png"));
+            let spriteMaterial2 = new Three.SpriteMaterial({
+                transparent: true,
+                map: spriteMap2,
+                side: Three.DoubleSide
+            });
+
+
+            let sprite1 = new Three.Sprite(spriteMaterial);
+            let sprite4 = new Three.Sprite(spriteMaterial2);
+
+            // 轴1
+            sprite1.scale.set(50, 25, 0);
+            sprite1.position.set(17, 23, 28);
+            sprite1.center = new Vector2(1, 0);
+            // 轴2
+            let sprite2 = sprite1.clone();
+            sprite2.position.set(17, 40, 22);
+            // 轴3
+            let sprite3 = sprite1.clone();
+            sprite3.position.set(17, 60, 20);
+
+
+            // 轴4
+            sprite4.scale.set(50, 25, 0);
+            sprite4.position.set(17, 68, 0);
+            sprite4.center = new Vector2(0, 0);
+
+            //轴5
+            let sprite5 = sprite4.clone();
+            sprite5.position.set(17, 68, -10);
+
+            //轴6
+            let sprite6 = sprite4.clone();
+            sprite6.position.set(17, 58, -10);
+
+
+            // //轴4
+            // let sprite4 = sprite1.clone();
+            // sprite4.position.set(17, 68, 0);
+            // //轴5
+            // let sprite5 = sprite1.clone();
+            // sprite5.position.set(17, 68, -10);
+            // //轴6
+            // let sprite6 = sprite1.clone();
+            // sprite6.position.set(17, 58, -10);
+
+
+
+            this.scene.add(sprite1);
+            this.scene.add(sprite2);
+            this.scene.add(sprite3);
+            this.scene.add(sprite4);
+            this.scene.add(sprite5);
+            this.scene.add(sprite6);
+
+
+
+            // let canvas = this.makeLabelCanvas(100, 100, 1, "rgb(210, 60, 64)");
+
+            // const texture = new Three.CanvasTexture(canvas);
+            // let spriteMaterial3 = new Three.SpriteMaterial({
+            //     transparent: true,
+            //     map: texture,
+            //     side: Three.DoubleSide,
+            //     // color: 0x00ff00,
+
+            // });
+            // let spriteText = new Three.Sprite(spriteMaterial3);
+            // spriteText.scale.set(25, 25, 1)
+            // spriteText.position.set(110, 23, 28);
+            // this.scene.add(spriteText);
+
+
 
         },
         //添加地面
@@ -775,26 +878,49 @@ export default {
                 this.camera.position.z += vect.dot(new Three.Vector3(0, 0, 15)) * 0.01;
                 this.camera.position.x += vect.dot(new Three.Vector3(15, 0, 0)) * 0.01;
             }
-            //轴4和轴6是跟rotation相反
+            // 轴4和轴6是跟rotation相反
+            // if (this.locationArray.length > 0) {
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.locationArray[0] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.locationArray[1] - (-90)) * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.locationArray[2] - 180) * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.locationArray[3] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.locationArray[4] * Math.PI / 180;
+            //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
+            // }
+            this.i++;
+            // console.log(this.i);
+            if (this.i == 1) {
+                this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.preLocationArray[0];
+                this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = this.preLocationArray[1];
+                this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = this.preLocationArray[2];
+                this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = this.preLocationArray[3];
+                this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.preLocationArray[4];
+                this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = this.preLocationArray[5];
 
+            }
             if (this.locationArray.length > 0) {
-                this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.locationArray[0] * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.locationArray[1] - (-90)) * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.locationArray[2] - 180) * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.locationArray[3] * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.locationArray[4] * Math.PI / 180;
-                this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
+
+
+                this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y += (this.locationArray[0] * Math.PI / 180 - this.preLocationArray[0]) * this.i / 60;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z += ((this.locationArray[1] - (-90)) * Math.PI / 180 - this.preLocationArray[1]) * this.i / 60;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z += ((this.locationArray[2] - 180) * Math.PI / 180 - this.preLocationArray[2]) * this.i / 60;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x += (-this.locationArray[3] * Math.PI / 180 - this.preLocationArray[3]) * this.i / 60;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z += (this.locationArray[4] * Math.PI / 180 - this.preLocationArray[4]) * this.i / 60;
+                this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x += (-this.locationArray[5] * Math.PI / 180 - this.preLocationArray[5]) * this.i / 60;
+                this.preLocationArray = [
+                    this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y,
+                    this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z,
+                    this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z,
+                    this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x,
+                    this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z,
+                    this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x
+                ]
             }
 
 
-            // if (this.testarr.length > 0) {
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.testarr[0] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.testarr[1] - (-90)) * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.testarr[2] - 180) * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.testarr[3] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.testarr[4] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.testarr[5] * Math.PI / 180;
-            // }
+            // console.log(this.i);
+            // console.log(this.preLocationArray);
+
         },
 
         //键盘按下事件
@@ -1250,18 +1376,17 @@ export default {
         window.onresize = () => {
             return this.onWindowResize();
         }
-        // setInterval(res => {
-        //     that.$axios.post("newApi/wuji/Device/RobotPoints").then(res => {
-        //         console.log(res);
-        //         that.testarr = JSON.parse(res[1]);
-        //     }).catch(error => {
 
-        //     })
-        // }, 1000)
+
+        // setInterval(() => {
         this.$socketApi.sendSock((res) => {
+            let arr = [];
             res[this.deviceId][0].value && (this.locationArray = JSON.parse(res[this.deviceId][0].value));
+            this.i = 0;
 
         });
+        // }, 1000)
+
     },
     destroyed() {
         //页面销毁时删除场景

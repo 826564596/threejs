@@ -289,4 +289,51 @@ export default {
     background-color: rgb(1, 88, 119);
     border: 1px solid rgb(92, 214, 254);
 }
+.el-date-range-picker__time-header > .el-icon-arrow-right {
+    color: rgb(92, 214, 254);
+}
+.el-date-range-picker__time-header {
+    border-bottom: 1px solid rgb(92, 214, 254);
+}
+.el-picker-panel__footer {
+    border-top: 1px solid rgb(92, 214, 254);
+    background-color: rgba(1, 88, 119, 0.8);
+}
+.el-time-panel {
+    background-color: rgba(1, 88, 119, 1);
+    border: 1px solid rgb(92, 214, 254);
+}
+.el-time-spinner__item.active:not(.disabled) {
+    color: rgb(92, 214, 254);
+}
+.el-time-spinner__item {
+    background-color: rgba(1, 88, 119, 1);
+    color: #fff;
+}
+
+.el-time-spinner__item:hover:not(.disabled):not(.active) {
+    background: rgba(1, 88, 119, 0.5);
+    cursor: pointer;
+}
+.el-time-panel__footer {
+    border-top: 1px solid rgb(92, 214, 254);
+}
+
+.el-time-panel__btn,
+.el-time-panel__btn.confirm {
+    color: rgb(92, 214, 254);
+}
+.el-date-editor .el-range-input {
+    width: 100%;
+}
+
+.el-popper[x-placement^="top"] .popper__arrow {
+    border-top-color: rgb(92, 214, 254);
+}
+.el-popper[x-placement^="top"] .popper__arrow::after {
+    border-top-color: rgb(92, 214, 254);
+}
+.el-button--text {
+    color: rgb(92, 214, 254);
+}
 </style>

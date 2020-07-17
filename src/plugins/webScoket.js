@@ -26,6 +26,7 @@ const websocketonopen = () => {
         { deviceid: "dev_wuji_dabcdff28b11418a9e3def4e1c3b83f6", paralist: "001002003007" },
         { deviceid: "dev_wuji_e3eb868c8319485caa76de30a1faecbe", paralist: "001002003007" },
         { deviceid: "dev_wuji_fd4d4619bf2f4ae580671f18ca4beed2", paralist: "001002003007" },
+        { deviceid: "dev_test_ad7528b86fcd44f4a4cacf06733c07de", paralist: "001002003007" },
     ];
     websocketsend(JSON.stringify(actions));
 };
@@ -35,6 +36,7 @@ const websocketonerror = () => {
 };
 const websocketonmessage = (e) => {
     //数据接收
+    // console.log(JSON.parse(e.data));
     globalCallback(JSON.parse(e.data));
 };
 const websocketsend = (Data) => {

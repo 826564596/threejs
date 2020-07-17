@@ -42,18 +42,31 @@
 
                 </div>
                 <div v-if="buttonActive == 1">
+
+                    <div class=" buttonAndText" style="width:420px">
+                        <div>
+                            <el-date-picker v-model="value3" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                            </el-date-picker>
+                        </div>
+
+                        <div class="">
+                            <button class="buttonAndText-button" @click="search2">搜索</button>
+                        </div>
+                    </div>
+
                     <el-row style="margin-top:10px;">
                         <el-col :span="23" class="" style="margin-left:30px;">
-
                             <div class="pm_content-one">
                                 <el-row>
+                                    <!-- 设备状态统计 -->
                                     <el-col :span="6">
                                         <div class="pm_content-one-title ">
-                                            设备状态统计
+                                            报警计数统计
                                         </div>
                                         <div class="pm_content-one-content " id="echarts-pie">
                                         </div>
                                     </el-col>
+                                    <!-- 报警类型统计 -->
                                     <el-col :span="6">
                                         <div class="pm_content-one-title ">
                                             报警类型统计
@@ -62,6 +75,7 @@
 
                                         </div>
                                     </el-col>
+                                    <!-- 报警次数（排名） -->
                                     <el-col :span="6">
                                         <div class="pm_content-one-title ">
                                             报警次数（排名）
@@ -70,6 +84,7 @@
 
                                         </div>
                                     </el-col>
+                                    <!-- 报警趋势 -->
                                     <el-col :span="6">
                                         <div class="pm_content-one-title ">
                                             报警趋势
@@ -82,10 +97,10 @@
                             </div>
                             <div class="pm_content-two">
                                 <div style="margin-bottom:10px;height:100%;width:100%">
-                                    <el-table :data="tableData" style="width: 100%; " max-height="333" border>
+                                    <el-table :data="tableData" style="width: 100%; " max-height="293" border>
                                         <el-table-column prop="date" label="日期" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="id" label="设备ID" width="200">
+                                        <el-table-column prop="id" label="设备ID" width="350">
                                         </el-table-column>
                                         <el-table-column prop="name" label="工位名称" width="200">
                                         </el-table-column>
@@ -134,7 +149,11 @@ export default {
             index: 0,
             buttonActive: 0,
             value2: "",
-            tableData: []
+            value3: "",
+            startDate: utils.getDay(-6)[0],
+            endDate: utils.getDay(-6)[1],
+            tableData: [],
+            flag: false,//报警统计初次加载判断标志
         };
     },
     methods: {
@@ -151,6 +170,19 @@ export default {
             let endDate = utils.dateToDay(this.value2[1]);
             this.getlineData(startDate, endDate);
         },
+        search2() {
+            let startDate = utils.dateToDay(this.value3[0]);
+            let endDate = utils.dateToDay(this.value3[1]);
+
+            this.getData(startDate, endDate);
+            this.initTable(startDate, endDate);
+
+            this.startDate = startDate;
+            this.endDate = endDate;
+
+
+        },
+        /** 获取整体概况页面信息 */
         getlineData(startDate, endDate) {
 
             let that = this;
@@ -191,17 +223,79 @@ export default {
 
             })
         },
-        getData() {
+        /** 获取报警页面信息 */
+        getData(startDate, endDate) {
             let that = this;
-
             let obj = {
-                mac: "wuji",
-                datestr: utils.getDay(0)[0],
-                deviceid: this.deviceId,
+                "device": {
+                    "id": "wuji"
+                },
+                "date_period": {
+                    "start_date": startDate,
+                    "end_date": endDate
+                }
+            }
+            let obj2 = {
+                "start_date": startDate,
+                "end_date": endDate
             }
             this.axios.all([
-                this.$axios.post('/api/DDC/DeviceWorkStatic/DayWorkLoadRank' + utils.formatQueryStr(obj)),
-            ]).then(this.axios.spread(function () {
+                this.$axios.post('newApi/wuji/Device/WarnCountTrend', obj),
+                this.$axios.post('newApi/wuji/Device/WarnCountRank', obj2),
+                this.$axios.post('newApi/wuji/Device/WarnCountByType', obj),
+            ]).then(this.axios.spread(function (WarnCountTrend, WarnCountRank, WarnCountByType) {
+                // 报警计数统计
+                let data = [];
+                let data2 = [];
+
+                //报警次数排名
+                let data3 = [];
+                let data4 = [];
+
+
+                for (let i = 0, len = WarnCountRank.length; i < len; i++) {
+                    let name = WarnCountRank[i].name.substr(8, WarnCountRank[i].name.length - 1);
+                    let j = WarnCountRank[i].name.substr(10, WarnCountRank[i].name.length - 1);
+                    data[j - 1] = name;
+                    data2[j - 1] = {
+                        value: WarnCountRank[i].warn_count,
+                        name: name
+                    }
+                    if (i < 7) {
+                        data3.push(name);
+                        data4.push(WarnCountRank[i].warn_count);
+                    }
+
+                }
+
+                //报警类型占比
+                let data5 = [];
+                let data6 = [];
+                for (let i = 0, len = WarnCountByType.length; i < len; i++) {
+                    data5.push(WarnCountByType[i].warn_type);
+                    data6.push({
+                        value: WarnCountByType[i].warn_count,
+                        name: WarnCountByType[i].warn_type
+                    })
+                }
+
+                //报警趋势
+                let date = [];
+                let warn_duration = [];
+                for (let i = 0, len = WarnCountTrend.length; i < len; i++) {
+                    let key = Object.keys(WarnCountTrend[i]);
+                    date.push(key[0]);
+                    let warn = 0;
+                    for (let j = 0, length = WarnCountTrend[i][key].length; j < length; j++) {
+                        warn += WarnCountTrend[i][key][j].warn_count;
+                    }
+                    warn_duration.push(warn);
+                }
+
+                that.initEchartPie(data, data2); //报警计数统计
+                that.initEchartPie2(data5, data6);//报警类型统计
+                that.initEchartBar3(data3, data4);//报警次数排名
+                that.initEchartBar4(date, warn_duration); // 报警趋势 
 
             })).catch(error => {
 
@@ -209,8 +303,8 @@ export default {
 
 
         },
-        //设备在线
-        initEchartPie() {
+        /**报警数量统计 */
+        initEchartPie(legendData, seriesData) {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie'));
             let option = {
                 tooltip: {
@@ -229,7 +323,7 @@ export default {
                         color: "#fff",
                         fontSize: 12
                     },
-                    data: ['在线', '离线']
+                    data: legendData
                 },
                 grid: {
                 },
@@ -254,44 +348,20 @@ export default {
                         // labelLine: {
                         //     show: false
                         // },
-                        data: []
+                        data: seriesData
                     }
                 ]
             };
             myChart.setOption(option);
 
-            let obj = {
-                mac: "wuji",
-            }
-            myChart.showLoading();
-            this.$axios.post("/api/DDC/DeviceWorkStatic/OnLineStat" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
-                console.log(res);
-                let data2 = [];
-                data2.push({
-                    value: res.onlinenum,
-                    name: "在线"
-                });
-
-                data2.push({
-                    value: res.offlinenum,
-                    name: "离线"
-                });
-                myChart.setOption({
-                    series: [
-                        {
-                            data: data2
-                        }
-                    ]
-                });
 
 
-            }).catch(error => { }
-            )
+
+
 
         },
-        //报警类型占比
-        initEchartPie2() {
+        /** 报警类型占比 */
+        initEchartPie2(data1, data2) {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie2'));
             let option = {
                 tooltip: {
@@ -310,7 +380,7 @@ export default {
                         color: "#fff",
                         fontSize: 12
                     },
-                    data: []
+                    data: data1
                 },
                 grid: {
                 },
@@ -335,45 +405,203 @@ export default {
                         // labelLine: {
                         //     show: false
                         // },
-                        data: []
+                        data: data2
                     }
                 ]
             };
             myChart.setOption(option);
 
-            let obj = {
-                mac: "wuji",
-                datestr: utils.getDay(0)[0],
-            }
-            myChart.showLoading();
-            this.$axios.post("/api/DDC/DeviceWorkStatic/DayWarnDis" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
-                let data1 = [];
-                let data2 = [];
-                res.forEach((item, index) => {
-                    data1.push(item.F_ERRORN);
-                    data2.push({
-                        value: item.F_ERRORC,
-                        name: item.F_ERRORN
-                    })
-                })
-                myChart.setOption({
-                    legend: {
-                        data: data1
-                    },
-                    series: [
-                        {
-                            data: data2
-                        }
-                    ]
-                });
+            // let obj = {
+            //     mac: "wuji",
+            //     datestr: utils.getDay(0)[0],
+            // }
+            // myChart.showLoading();
+            // this.$axios.post("/api/DDC/DeviceWorkStatic/DayWarnDis" + utils.formatQueryStr(obj)).then(res => {
+            //     myChart.hideLoading();
+            //     let data1 = [];
+            //     let data2 = [];
+            //     res.forEach((item, index) => {
+            //         data1.push(item.F_ERRORN);
+            //         data2.push({
+            //             value: item.F_ERRORC,
+            //             name: item.F_ERRORN
+            //         })
+            //     })
+            //     myChart.setOption({
+            //         legend: {
+            //             data: data1
+            //         },
+            //         series: [
+            //             {
+            //                 data: data2
+            //             }
+            //         ]
+            //     });
 
 
-            }).catch(error => { }
-            )
+            // }).catch(error => { }
+            // )
 
         },
-        //加载echart折线图
+        /** 报警排名 */
+        initEchartBar3(data1, data2) {
+            let myChart = this.$echarts.init(document.getElementById('echarts-bar3'));
+            // 绘制图表
+            myChart.setOption({
+                color: ['#3398DB'],
+                grid: {
+                    left: '0%',
+                    bottom: '3%',
+                    top: "5%",
+                    containLabel: true
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                yAxis: [
+                    {
+                        // show: false,
+                        type: 'value',
+                        axisLabel: {
+                            interval: 0,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                        }
+                    }
+                ],
+                xAxis: [
+                    {
+                        // name: '工位',
+                        type: 'category',
+                        data: data1,
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd', // 颜色
+                                width: 1 // 粗细
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                            rotate: 300 //倾斜角度
+                        },
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: '40%',
+                        data: data2
+                    }
+                ]
+            });
+            // let arr = utils.CurrentMonthFirstAndLast();
+            // let obj = {
+            //     mac: "wuji",
+            //     begindate: arr[0],
+            //     enddate: arr[1],
+            // }
+            // myChart.showLoading();
+            // this.$axios.post("/api/DDC/DeviceWorkStatic/WarnRank" + utils.formatQueryStr(obj)).then(res => {
+            //     myChart.hideLoading();
+            //     let data1 = [];
+            //     let data2 = [];
+            //     for (let i = 0; i < 7; i++) {
+            //         data1.push(res[i].F_NAME.substr(8, res[i].F_NAME.length - 1));
+            //         data2.push(res[i].F_WARNRATE);
+            //     }
+
+            //     myChart.setOption({
+            //         xAxis: {
+            //             data: data1
+            //         },
+            //         series: [{
+            //             data: data2
+            //         }]
+            //     })
+            // }).catch(error => {
+
+            // })
+
+        },
+        /** 报警趋势 */
+        initEchartBar4(date, warn_duration) {
+            let myChart = this.$echarts.init(document.getElementById('echarts-bar4'));
+            // 绘制图表
+            myChart.setOption({
+                color: ['#3398DB'],
+                grid: {
+                    left: '0%',
+                    bottom: '3%',
+                    top: "5%",
+                    containLabel: true
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                yAxis: [
+                    {
+                        // show: false,
+                        type: 'value',
+                        axisLabel: {
+                            interval: 0,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                        }
+                    }
+                ],
+                xAxis: [
+                    {
+                        // name: '工位',
+                        type: 'category',
+                        data: date,
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+
+                        axisLine: {
+                            lineStyle: {
+                                color: '#ddd', // 颜色
+                                width: 1 // 粗细
+                            }
+                        },
+                        axisLabel: {
+                            interval: 0,
+                            show: true,
+                            textStyle: {
+                                color: '#fff'
+                            },
+                            rotate: 300 //倾斜角度
+                        },
+                    }
+                ],
+                series: [
+                    {
+                        type: 'bar',
+                        barWidth: '40%',
+                        data: warn_duration
+                    }
+                ]
+            });
+
+
+        },
+        /** 获取整体概况页面信息 空闲时长 运行时长 报警时长 停机时长 */
         initEchartLine(date, free, run, warn, stop) {
             let myChart = this.$echarts.init(document.getElementById('echarts-line'));
             let option = {
@@ -524,211 +752,16 @@ export default {
             // }).catch(error => { }
             // )
         },
-        // 初始加载最近七天的开机运行时长
-
-        //报警排名
-        initEchartBar3() {
-            let myChart = this.$echarts.init(document.getElementById('echarts-bar3'));
-            // 绘制图表
-            myChart.setOption({
-                color: ['#3398DB'],
-                grid: {
-                    left: '0%',
-                    bottom: '3%',
-                    top: "5%",
-                    containLabel: true
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                yAxis: [
-                    {
-                        // show: false,
-                        type: 'value',
-                        axisLabel: {
-                            interval: 0,
-                            textStyle: {
-                                color: '#fff'
-                            },
-                        }
-                    }
-                ],
-                xAxis: [
-                    {
-                        // name: '工位',
-                        type: 'category',
-                        data: [],
-                        axisTick: {
-                            alignWithLabel: true
-                        },
-
-                        axisLine: {
-                            lineStyle: {
-                                color: '#ddd', // 颜色
-                                width: 1 // 粗细
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                            show: true,
-                            textStyle: {
-                                color: '#fff'
-                            },
-                            rotate: 300 //倾斜角度
-                        },
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: '40%',
-                        data: []
-                    }
-                ]
-            });
-            let arr = utils.CurrentMonthFirstAndLast();
-            let obj = {
-                mac: "wuji",
-                begindate: arr[0],
-                enddate: arr[1],
-            }
-            myChart.showLoading();
-            this.$axios.post("/api/DDC/DeviceWorkStatic/WarnRank" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
-                let data1 = [];
-                let data2 = [];
-                for (let i = 0; i < 7; i++) {
-                    data1.push(res[i].F_NAME.substr(8, res[i].F_NAME.length - 1));
-                    data2.push(res[i].F_WARNRATE);
-                }
-                myChart.setOption({
-                    xAxis: {
-                        data: data1
-                    },
-                    series: [{
-                        data: data2
-                    }]
-                })
-            }).catch(error => {
-
-            })
-
-        },
-        //报警趋势
-        initEchartBar4() {
-            let myChart = this.$echarts.init(document.getElementById('echarts-bar4'));
-            // 绘制图表
-            myChart.setOption({
-                color: ['#3398DB'],
-                grid: {
-                    left: '0%',
-                    bottom: '3%',
-                    top: "5%",
-                    containLabel: true
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                yAxis: [
-                    {
-                        // show: false,
-                        type: 'value',
-                        axisLabel: {
-                            interval: 0,
-                            textStyle: {
-                                color: '#fff'
-                            },
-                        }
-                    }
-                ],
-                xAxis: [
-                    {
-                        // name: '工位',
-                        type: 'category',
-                        data: [],
-                        axisTick: {
-                            alignWithLabel: true
-                        },
-
-                        axisLine: {
-                            lineStyle: {
-                                color: '#ddd', // 颜色
-                                width: 1 // 粗细
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                            show: true,
-                            textStyle: {
-                                color: '#fff'
-                            },
-                            rotate: 300 //倾斜角度
-                        },
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: '40%',
-                        data: []
-                    }
-                ]
-            });
-
-            let arr = utils.CurrentMonthFirstAndLast();
-            myChart.showLoading();
-            this.$axios.post("newApi/wuji/Device/WarnCountTrend", {
-                "device": {
-                    "id": "wuji"
-                },
-                "date_period": {
-                    "start_date": arr[0],
-                    "end_date": arr[1]
-                }
-            }).then(res => {
-                myChart.hideLoading();
-                let date = [];
-                let warn_duration = [];
-                for (let i = 0, len = res.length; i < len; i++) {
-                    let key = Object.keys(res[i]);
-                    date.push(key[0]);
-                    let warn = 0;
-                    for (let j = 0, length = res[i][key].length; j < length; j++) {
-                        warn += res[i][key][j].warn_count;
-                    }
-                    warn_duration.push(warn);
-                }
-
-                myChart.setOption({
-                    xAxis: {
-                        data: date
-                    },
-                    series: [{
-                        data: warn_duration
-                    }]
-                })
-
-            }).catch(error => {
-
-            })
-        },
-        // 表格信息
-        initTable() {
+        /**表格信息 */
+        initTable(startDate, endDate) {
             let that = this;
-            let arr = utils.CurrentMonthFirstAndLast();
             this.$axios.post("newApi/wuji/Device/WarnMessage", {
                 "device": {
                     "id": "wuji"
                 },
                 "date_period": {
-                    "start_date": arr[0],
-                    "end_date": arr[1]
+                    "start_date": startDate,
+                    "end_date": endDate
                 },
                 "page": {
                     "offset": 0,
@@ -743,36 +776,31 @@ export default {
     updated() {
         if (this.buttonActive == 0) {
             this.$nextTick(() => {
-                let arr = utils.getDay(-7);
+                let arr = utils.getDay(-6);
                 this.getlineData(arr[0], arr[1]);
 
             });
         }
         else {
             this.$nextTick(() => {
-                this.initEchartPie();
-                this.initEchartPie2();
-                this.initEchartBar3();
-                this.initEchartBar4();
-                // this.initTable();
-
+                this.getData(this.startDate, this.endDate);
             });
+
         }
 
     },
     mounted() {
         if (this.buttonActive == 0) {
-            let arr = utils.getDay(-7);
+            let arr = utils.getDay(-6);
             this.getlineData(arr[0], arr[1]);
-            this.initTable();
+            this.initTable(arr[0], arr[1]);
+
+
 
         }
         else {
-            this.initEchartPie();
-            this.initEchartPie2();
-            this.initEchartBar3();
-            this.initEchartBar4();
-            this.initTable();
+            let arr = utils.getDay(-6);
+            this.getData(arr[0], arr[1]);
         }
 
     }
