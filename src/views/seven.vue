@@ -888,8 +888,8 @@ export default {
             //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
             // }
             this.i++;
-            // console.log(this.i);
-            if (this.i == 1) {
+            console.log(this.i);
+            if (this.locationArray.length > 0 && this.i == 1) {
                 this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.preLocationArray[0];
                 this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = this.preLocationArray[1];
                 this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = this.preLocationArray[2];
@@ -916,8 +916,6 @@ export default {
                     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x
                 ]
             }
-
-
             // console.log(this.i);
             // console.log(this.preLocationArray);
 
@@ -1381,10 +1379,13 @@ export default {
         // setInterval(() => {
         this.$socketApi.sendSock((res) => {
             let arr = [];
-            res[this.deviceId][0].value && (this.locationArray = JSON.parse(res[this.deviceId][0].value));
-            this.i = 0;
+            res[this.deviceId][0].value && (this.locationArrays = JSON.parse(res[this.deviceId][0].value));
 
         });
+        setInterval(() => {
+            this.locationArray = this.locationArrays;
+            this.i = 0;
+        }, 1000)
         // }, 1000)
 
     },
