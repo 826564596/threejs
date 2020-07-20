@@ -9,6 +9,7 @@ import socketApi from "./plugins/webScoket";
 import "./plugins/element.js";
 import "./plugins/echarts.js";
 import cookies from "vue-cookies";
+
 import utils from "./assets/utils/utils";
 import test from "./assets/utils/test";
 
@@ -47,6 +48,7 @@ Vue.prototype.$cookies = cookies;
 Vue.prototype.axios = axios;
 Vue.config.productionTip = false;
 
+//路由守卫，拦截
 router.beforeEach((to, from, next) => {
     if (to.meta.requireLogin) {
         //判断cookie是否生效

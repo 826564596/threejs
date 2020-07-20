@@ -16,6 +16,9 @@ export default {
     },
     methods: {
         loginOut() {
+
+            this.$cookies.remove("userName");
+            this.$cookies.remove("password");
             this.$router.push({ path: "/" });
         }
     }
