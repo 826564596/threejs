@@ -30,7 +30,7 @@
                     <el-row>
                         <el-col :span="12">
                             <div class="  thrid">
-                                <el-checkbox v-model="checked" @change="chanage">七天内保持登录</el-checkbox>
+                                <el-checkbox v-model="checked">七天内保持登录</el-checkbox>
                             </div>
                         </el-col>
 
@@ -74,14 +74,7 @@ export default {
     },
 
     methods: {
-        chanage(val) {
-            if (val) {
-                this.setUserInfo();
-            }
-            else {
-                this.deleteUserInfo();
-            }
-        },
+
         login() {
 
             let that = this;
@@ -89,11 +82,12 @@ export default {
                 USERNAME: this.userName,
                 PASSWD: this.password
             }
-
             this.$axios.post("/api/DDC/User/Login" + utils.formatQueryStr(obj)).then(res => {
-                console.log(res);
                 if (res.success == true) {
-                    this.$router.push({ name: "six" });
+                    if (this.checked) this.setUserInfoSeven();
+                    else this.setUserInfo();
+                    this.$router.push({ name: "six" }).catch(err => { console.log("跳转失败！") });
+
                 }
                 else {
                     this.$messageBox('账户名或密码有误，请重新输入', '提示', {
@@ -117,13 +111,18 @@ export default {
 
         },
         setUserInfo() {
+            this.$cookies.set("userName", this.userName, 60 * 60 * 24);
+            this.$cookies.set("password", this.password, 60 * 60 * 24);
+        },
+
+        setUserInfoSeven() {
             this.$cookies.set("userName", this.userName, 60 * 60 * 24 * 7);
             this.$cookies.set("password", this.password, 60 * 60 * 24 * 7);
-        },
-        deleteUserInfo() {
-            this.$cookies.isKey("userName") && this.$cookies.remove("userName");
-            this.$cookies.isKey("password") && this.$cookies.remove("password");
         }
+        // deleteUserInfo() {
+        //     this.$cookies.isKey("userName") && this.$cookies.remove("userName");
+        //     this.$cookies.isKey("password") && this.$cookies.remove("password");
+        // }
     }
 
 }

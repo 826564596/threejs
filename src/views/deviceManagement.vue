@@ -77,7 +77,7 @@
                             <el-table :data="tableData2" style="width: 100%; " max-height="571" border>
                                 <el-table-column prop="F_DEVICEID" label="设备ID" width="249">
                                 </el-table-column>
-                                <el-table-column prop="F_chkoper" label="点检人" width="200">
+                                <el-table-column prop="F_mtoper" label="维修人员" width="200">
                                 </el-table-column>
                                 <el-table-column prop="F_mtdate" label="维修日期" width="200">
                                 </el-table-column>
@@ -85,9 +85,9 @@
                                 </el-table-column>
                                 <el-table-column prop="f_downtmlen" label="停机时长（分钟）" width="200">
                                 </el-table-column>
-                                <el-table-column prop="F_mttmlen" label="维修时长" width="200">
+                                <el-table-column prop="F_mttmlen" label="维修时长（分钟）" width="200">
                                 </el-table-column>
-                                <el-table-column prop="f_mtdesc" label="补充描述">
+                                <el-table-column prop="f_mtdesc" label="维修内容" show-overflow-tooltip>
                                 </el-table-column>
                             </el-table>
                         </div>
@@ -100,7 +100,7 @@
                     <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
                             <el-table :data="tableData3" style="width: 100%; " max-height="571" border>
-                                <el-table-column prop="F_DEVICENAME" label="工位名称" width="249">
+                                <el-table-column prop="F_DEVICENAME" label="设备名称" width="249">
                                 </el-table-column>
                                 <el-table-column prop="F_CHKTYPE" label="类型名称" width="200">
                                 </el-table-column>
@@ -162,7 +162,7 @@
                     <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
                             <el-table :data="tableData5" style="width: 100%; " max-height="571" border>
-                                <el-table-column prop="F_NAME" label="工位名称" width="200">
+                                <el-table-column prop="F_NAME" label="设备名称" width="200">
                                 </el-table-column>
                                 <el-table-column prop="F_FAULTNAME" label="故障类型" width="200">
                                 </el-table-column>
@@ -176,7 +176,7 @@
                                 </el-table-column>
                                 <el-table-column prop="F_OTHDESC" label="备注" width="200">
                                 </el-table-column>
-                                <el-table-column prop=" F_TREATMENT" label="处理" width="200">
+                                <el-table-column prop="F_TREATMENT" label="处理" width="200">
                                 </el-table-column>
                                 <el-table-column prop="F_WARNDURA" label="报警时长" width="200">
                                 </el-table-column>

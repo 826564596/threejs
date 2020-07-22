@@ -50,12 +50,12 @@
                         <el-input v-model="form.planworkload" size='mini' maxlength="16" autocomplete="off"></el-input>
                     </el-form-item>
 
-                    <el-form-item label="设备编号" :label-width="formLabelWidth">
-                        <el-select multiple collapse-tags size="small" v-model="form.deviceids" placeholder="请选择设备编号" @change="multiple">
+                    <el-form-item label="设备名称" :label-width="formLabelWidth" prop="uploadDeviceTree">
+                        <el-select multiple collapse-tags size="small" v-model="form.deviceids" placeholder="请选择设备名称" @change="multiple">
                             <el-option v-for="(item,index) of uploadDeviceTree" :key="index" :label="item.label" :value="item.id"> </el-option>
                         </el-select>
                     </el-form-item>
-                    <el-form-item label="时间" :label-width="formLabelWidth">
+                    <el-form-item label="时间" :label-width="formLabelWidth" prop="datetimerange">
                         <el-date-picker format="yyyy-MM-dd HH:mm:ss" v-model="value1" type="datetimerange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
                         </el-date-picker>
                     </el-form-item>
@@ -71,7 +71,7 @@
             </div>
 
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogTaskVisible = false">取 消</el-button>
+                <el-button type="primary" @click="cancel(dialogTaskVisible = false)">取 消</el-button>
                 <el-button type="primary" @click="submit(dialogTaskVisible = false)">确 定</el-button>
             </span>
         </el-dialog>
@@ -121,12 +121,26 @@ export default {
             uploadDeviceTree: [],//上传文件设备列表
             uploadDeviceTreeIndex: 0,//上传文件设备列表
             rule: {
-                techfilename: [
-                    { required: true, message: '工艺文件名称不能为空' }
+                productname: [
+                    { required: true, message: '产品名称不能为空' }
                 ],
-                ctltype: [
-                    { required: true, message: '工艺文件名称不能为空' }
+                productmodel: [
+                    { required: true, message: '产品型号不能为空' }
                 ],
+                planworkload: [
+                    { required: true, message: '计划产量不能为空' }
+                ],
+                uploadDeviceTree: [
+                    { required: true, message: '设备名称不能为空' }
+                ],
+                datetimerange: [
+                    { required: true, message: '时间不能为空' }
+                ],
+                chargeman: [
+                    { required: true, message: '负责人不能为空' }
+                ],
+
+
             }
         };
     },
@@ -280,14 +294,33 @@ export default {
         multiple(val) {
             this.deviceId = val;
         },
+        cancel() {
+            this.form = {
+                productname: '',//产品名称
+                productmodel: '',//产品型号
+                planworkload: '',//计划产量
+                deviceids: '',//设备id
+                begintime: '',//开始时间
+                endtime: '',//结束时间
+                chargeman: '',//负责人
+                desc: '',//备注
+            };
+            this.value1 = "";
+
+        },
         //确认 
         submit() {
             let obj = JSON.parse(JSON.stringify(this.form));
 
-            obj.begintime = this.value1[0].toJSON().substr(0, 19).replace("T", " ");
-            obj.endtime = this.value1[1].toJSON().substr(0, 19).replace("T", " ");
+            obj.begintime = utils.dateToDayTime(this.value1[0]);
+            obj.endtime = utils.dateToDayTime(this.value1[1]);
+
+
             obj.planworkload = parseInt(obj.planworkload);
             obj.techfileid = "";
+            console.log(obj.begintime);
+            console.log(obj.endtime);
+
             //如果选则工艺文件
             if (this.fileId) {
                 obj.techfileid = this.fileId;

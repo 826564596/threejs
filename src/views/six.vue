@@ -645,10 +645,10 @@ export default {
                     pt.scale.set(0.05, 0.05, 0.05);
                     //加载机械臂
                     let mtlLoader2 = new MTLLoader();
-                    mtlLoader2.load(`${that.publicPath}/model/605(1).mtl`, function (materials) {
+                    mtlLoader2.load(`${that.publicPath}/model/model02.mtl`, function (materials) {
                         let objLoader2 = new OBJLoader();
                         objLoader2.setMaterials(materials);
-                        objLoader2.load(`${that.publicPath}/model/model(1).obj`, function (object) {
+                        objLoader2.load(`${that.publicPath}/model/model02(1).obj`, function (object) {
 
                             // console.log(object);
                             // object.rotation.z = Math.PI;
@@ -1075,40 +1075,41 @@ export default {
                 // this.labelLeft = event.clientX;
                 // this.labelTop = event.clientY;
                 // this.$refs.label.innerText = intersects[0].object.name;
+
                 outlinePass.selectedObjects = [intersects[0].object];
 
 
-                if (intersects[0].object.name == "左门1") {
+                // if (intersects[0].object.name == "左门1") {
 
-                    if (this.door_state_left1) {
-                        new TWEEN.Tween(intersects[0].object.rotation).to({
-                            y: -0.5 * Math.PI
-                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                        }).start();
-                        this.door_state_left1 = false;
-                    } else {
-                        new TWEEN.Tween(intersects[0].object.rotation).to({
-                            y: 0
-                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                        }).start();
-                        this.door_state_left1 = true;
-                    }
-                }
-                else if (intersects[0].object.name == "右门1") {
-                    if (this.door_state_right1) {
-                        new TWEEN.Tween(intersects[0].object.rotation).to({
-                            y: 0.5 * Math.PI
-                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                        }).start();
-                        this.door_state_right1 = false;
-                    } else {
-                        new TWEEN.Tween(intersects[0].object.rotation).to({
-                            y: 0
-                        }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                        }).start();
-                        this.door_state_right1 = true;
-                    }
-                }
+                //     if (this.door_state_left1) {
+                //         new TWEEN.Tween(intersects[0].object.rotation).to({
+                //             y: -0.5 * Math.PI
+                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                //         }).start();
+                //         this.door_state_left1 = false;
+                //     } else {
+                //         new TWEEN.Tween(intersects[0].object.rotation).to({
+                //             y: 0
+                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                //         }).start();
+                //         this.door_state_left1 = true;
+                //     }
+                // }
+                // else if (intersects[0].object.name == "右门1") {
+                //     if (this.door_state_right1) {
+                //         new TWEEN.Tween(intersects[0].object.rotation).to({
+                //             y: 0.5 * Math.PI
+                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                //         }).start();
+                //         this.door_state_right1 = false;
+                //     } else {
+                //         new TWEEN.Tween(intersects[0].object.rotation).to({
+                //             y: 0
+                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
+                //         }).start();
+                //         this.door_state_right1 = true;
+                //     }
+                // }
 
 
 
@@ -1922,7 +1923,11 @@ export default {
                     type: 'scroll',
                     orient: 'vertical',
                     right: 0,
-                    textStyle: { color: " #fff" },
+                    itemWidth: 15,
+                    itemHeight: 10,
+
+
+                    textStyle: { color: " #fff", fontSize: 11 },
                     pageIconColor: '#fff',
                     pageIconSize: 12,
                     pageTextStyle: {

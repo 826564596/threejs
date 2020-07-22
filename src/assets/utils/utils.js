@@ -84,6 +84,14 @@ const dateToDay = (date) => {
         .replace("T", " ")
         .split(" ")[0];
 };
+/** 输入new Date(),装换yyyy-mm-dd HH:mm:ss*/
+const dateToDayTime = (date) => {
+    date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
+    return date
+        .toJSON()
+        .substr(0, 19)
+        .replace("T", " ");
+};
 /**计算两个日期之间的日期差 */
 const differDate = (dateString1, dateString2) => {
     let startDate = Date.parse(dateString1);
@@ -133,4 +141,5 @@ module.exports = {
     dateToDay: dateToDay,
     differDate: differDate,
     getAllAroundDay: getAllAroundDay,
+    dateToDayTime: dateToDayTime,
 };

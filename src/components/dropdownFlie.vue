@@ -82,8 +82,8 @@
                         </el-select>
                     </el-form-item>
 
-                    <el-form-item label="设备编号" :label-width="formLabelWidth" v-if="showRange == 2">
-                        <el-select multiple size="small" collapse-tags v-model="form.ctltarget" placeholder="请选择设备编号" @change="multiple">
+                    <el-form-item label="设备名称" :label-width="formLabelWidth" v-if="showRange == 2">
+                        <el-select multiple size="small" collapse-tags v-model="form.ctltarget" placeholder="请选择设备名称" @change="multiple">
                             <el-option v-for="(item,index) of uploadDeviceTree" :key="index" :label="item.label" :value="item.id"> </el-option>
                         </el-select>
                     </el-form-item>
@@ -100,7 +100,7 @@
             </div>
 
             <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogUploadVisible = false">取 消</el-button>
+                <el-button type="primary" @click="cancel(dialogUploadVisible = false)">取 消</el-button>
                 <el-button type="primary" @click="upload(dialogUploadVisible = false)">确 定</el-button>
             </span>
         </el-dialog>
@@ -161,7 +161,7 @@ export default {
                     { required: true, message: '工艺文件名称不能为空' }
                 ],
                 ctltype: [
-                    { required: true, message: '工艺文件名称不能为空' }
+                    { required: true, message: '使用范围不能为空' }
                 ],
             }
         };
@@ -370,16 +370,27 @@ export default {
         },
         //上传成功的回调
         success(res) {
-            this.PathList = JSON.parse(res).PathList;
+            this.PathList = JSON.parse(res).pathlist;
         },
 
         //文件上传之前的校验，限制文件大小
         beforeAvatarUpload(file) {
             const isLt2M = file.size / 1024 / 1024 < 10;
             if (!isLt2M) {
-                this.$message.error('上传头像图片大小不能超过 10MB!');
+                this.$message.error('上传文件大小不能超过 10MB!');
             }
             return isLt2M;
+        },
+        //取消
+        cancel() {
+            this.form = {
+                techfilename: '',//工艺文件名称
+                ctltype: '',//使用范围
+                ctltarget: '',//终端编号 or 设备编号
+            };
+            this.fileList = [];
+            this.showRange = 0;
+
         },
         //上传
         upload() {

@@ -27,12 +27,15 @@ service.interceptors.request.use(
 // response响应拦截器
 service.interceptors.response.use(
     (response) => {
+        //替换换行符
         if (typeof response.data == "string") {
+            response.data = response.data.replace(/\n/g, "    ");
             response.data = JSON.parse(response.data);
         }
         return response.data;
     },
     (error) => {
+        console.log(error);
         // 请求失败回调
         // Message({
         //   message: error.message,

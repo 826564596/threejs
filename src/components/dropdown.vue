@@ -23,9 +23,12 @@
 
         <div style="display:flex; align-items: center;">
             <div class="dropdown-text">点检类型：</div>
-            <div class="dropdown" style="width:150px">
-                <span v-if="QueryChkTypeList.length>0">{{QueryChkTypeList[QueryChkTypeIndex].F_CHKTYPE}}</span>
-                <div class="dropdown-content" style="min-width:150px">
+            <div class="dropdown" style="width:150px;">
+                <div v-if="QueryChkTypeList.length > 0" class="text-overflow ">
+                    {{QueryChkTypeList[QueryChkTypeIndex].F_CHKTYPE}}
+
+                </div>
+                <div class="dropdown-content" style="min-width:150px;">
                     <div v-for="(item,index) in QueryChkTypeList" :key="index" @click="choseItem3(index)">{{item.F_CHKTYPE}}</div>
                 </div>
             </div>
@@ -88,7 +91,10 @@ export default {
     methods: {
         choseItem(index) {
             this.index = index;
-
+            this.SpcTypeIndex = 0;
+            this.PeriodTypeIndex = 0;
+            this.QueryChkTypeList = [];
+            this.value2 = "";
         },
 
         choseItem1(index) {

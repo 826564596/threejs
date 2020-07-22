@@ -19,7 +19,9 @@
                         <div class="top-picture ">
                         </div>
                         <div class="top-text ">
-                            {{item.F_FILENAME}}
+                            <!-- {{item.F_FILENAME}} -->
+                            {{item. F_TECHFILENAME}}
+
                         </div>
                         <div class="top-close" @click="deleteFile(item)">
                             <div class="top-close-item"></div>

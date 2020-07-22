@@ -312,7 +312,8 @@ export default {
 
         .main__block-unsuccess {
             transition: 0.5s all;
-            background-color: rgb(254, 180, 1);
+            // background-color: rgb(254, 180, 1);
+            background-color: #8799a3;
             color: #fff;
         }
 

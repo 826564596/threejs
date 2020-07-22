@@ -1,10 +1,10 @@
 <!-- 设备档案下拉框 -->
 <template>
     <div class=" buttonAndText" style="width:420px">
-        <div class="dropdown">
-            {{this.$store.state.deviceIdArr[index].deviceName}}
+        <div class="dropdown" v-if="arr.length > 0">
+            {{this.arr[index].deviceName}}
             <div class="dropdown-content">
-                <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
+                <div v-for="(item,index) in this.arr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
             </div>
         </div>
 
@@ -30,7 +30,8 @@ export default {
 
     mounted() {
         let that = this;
-        this.arr = this.$store.state.deviceIdArr;
+        this.arr = JSON.parse(JSON.stringify(this.$store.state.deviceIdArr));
+        this.arr.unshift({ deviceId: "", deviceName: "全部" });
     },
     methods: {
 
@@ -41,7 +42,7 @@ export default {
             let that = this;
             let obj = {
                 MAC: "wuji",
-                deviceid: this.$store.state.deviceIdArr[this.index].deviceId,
+                deviceid: this.arr[this.index].deviceId,
                 pagesize: 15
             }
             this.$axios.post('api/DDC/Terminal/DeviceList' + utils.formatQueryStr(obj)).then((res) => {

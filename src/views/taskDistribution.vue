@@ -28,7 +28,7 @@
                     <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
                             <el-table :data="tableData1" style="width: 100%; " max-height="571" border>
-                                <el-table-column prop="F_NAME" label="工位名称" width="249">
+                                <el-table-column prop="F_NAME" label="设备名称" width="249">
                                 </el-table-column>
                                 <el-table-column prop="F_PRODUCTNAME" label="产品名称" width="200">
                                 </el-table-column>
@@ -59,7 +59,8 @@
                             <div class="top-picture ">
                             </div>
                             <div class="top-text">
-                                {{item.F_FILENAME}}
+                                <!-- {{item.F_FILENAME}} -->
+                                {{item. F_TECHFILENAME}}
                             </div>
                         </div>
                     </div>

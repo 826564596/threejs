@@ -35,13 +35,14 @@ export default {
     mounted() {
         let that = this;
         this.arr = this.$store.state.deviceIdArr;
+        let a = utils.dateToDay(new Date());
         this.$axios.post("newApi/wuji/Device/ProductionStatement", {
             "device": {
                 "id": "wuji"
             },
             "date_period": {
                 "start_date": "2020-06-01",
-                "end_date": "2021-06-01"
+                "end_date": a
             }
         }).then(res => {
             console.log(res);
@@ -54,6 +55,14 @@ export default {
             res.sort((a, b) => {
                 return a.name.substr(10, a.name.length - 1) - b.name.substr(10, b.name.length - 1);
             })
+            for (let i of res) {
+                i.run_duration = (i.run_duration / 1000 / 60).toFixed(5);
+                i.free_duration = (i.free_duration / 1000 / 60).toFixed(5);
+
+                i.stop_duration = (i.stop_duration / 1000 / 60).toFixed(5);
+                i.warn_duration = (i.warn_duration / 1000 / 60).toFixed(5);
+
+            }
             this.$emit("update:tableData", res);
         }).catch(error => {
 

@@ -89,6 +89,7 @@ export default {
                         confirmButtonText: '确定',
                     });
                 }
+                console.log(res);
 
                 this.$emit("update:tableData", res);
             }).catch(error => {

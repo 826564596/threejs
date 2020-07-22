@@ -58,7 +58,7 @@
                                     <el-row>
                                         <el-col :span="4" :offset="1">
                                             <div class="input-label-left ">
-                                                开机时长
+                                                运行时长(分)
                                             </div>
                                         </el-col>
 
@@ -70,7 +70,7 @@
 
                                         <el-col :span="4" :offset="2">
                                             <div class="input-label-left ">
-                                                空闲时长
+                                                空闲时长(分)
                                             </div>
                                         </el-col>
 
@@ -83,7 +83,7 @@
                                     <el-row style="margin-top:30px">
                                         <el-col :span="4" :offset="1">
                                             <div class="input-label-left">
-                                                停机时长
+                                                停机时长(分)
                                             </div>
                                         </el-col>
 
@@ -95,7 +95,7 @@
 
                                         <el-col :span="4" :offset="2">
                                             <div class="input-label-left">
-                                                报警时长
+                                                报警时长(分)
                                             </div>
                                         </el-col>
 
@@ -139,7 +139,7 @@
                                             <div style="height:120px;width:120px" class="" id="echarts-pie3">
 
                                             </div>
-                                            <div class="text-two">平均加工时长</div>
+                                            <div class="text-two">平均加工时长(分)</div>
                                         </div>
 
                                     </div>
@@ -166,27 +166,26 @@
                                 </el-table-column>
                                 <el-table-column prop="name" label="设备名称" width="200">
                                 </el-table-column>
-                                <el-table-column prop="run_count" label="运行数" width="100">
+                                <el-table-column prop="run_count" label="运行数(次)" width="100">
                                 </el-table-column>
-                                <el-table-column prop="free_count" label="空闲数" width="100">
+                                <el-table-column prop="free_count" label="空闲数(次)" width="100">
                                 </el-table-column>
-                                <el-table-column prop="stop_count" label="停机数" width="100">
+                                <el-table-column prop="stop_count" label="停机数(次)" width="100">
                                 </el-table-column>
-                                <el-table-column prop="warn_count" label="报警数" width="100">
+                                <el-table-column prop="warn_count" label="报警数(次)" width="100">
                                 </el-table-column>
-                                <el-table-column prop="run_duration" label="运行时长" width="100">
+                                <el-table-column prop="run_duration" label="运行时长(分)" width="150">
                                 </el-table-column>
-                                <el-table-column prop="free_duration" label="空闲时长" width="100">
+                                <el-table-column prop="free_duration" label="空闲时长(分)" width="150">
                                 </el-table-column>
-                                <el-table-column prop="stop_duration" label="停机时长" width="100">
+                                <el-table-column prop="stop_duration" label="停机时长(分)" width="150">
                                 </el-table-column>
-                                <el-table-column prop="warn_duration" label="报警时长" width="100">
+                                <el-table-column prop="warn_duration" label="报警时长(分)" width="150">
                                 </el-table-column>
                                 <el-table-column prop="online_rate" label="在线率" width="100">
                                 </el-table-column>
                                 <el-table-column prop="workload" label="产量" width="100">
                                 </el-table-column>
-
                             </el-table>
                         </div>
                     </div>
@@ -218,6 +217,14 @@ export default {
     methods: {
         changeButton(index) {
             this.buttonActive = index;
+            if (this.buttonActive == 0) {
+                this.$nextTick(() => {
+                    this.value2 = "";
+                    let arr = utils.getDay(-6);
+                    this.getlineData(arr[0], arr[1]);
+
+                });
+            }
         },
         //加载echart折线图
         initEchartLine(date, free, run, warn, stop, workload) {
@@ -241,7 +248,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['停机时长', '运行时长', '报警时长', '空闲时长', '加工量'],
+                    data: ['停机时长(分)', '运行时长(分)', '报警时长(分)', '空闲时长(分)', '加工量'],
                     textStyle: {
                         color: "#fff"
                     }
@@ -295,7 +302,7 @@ export default {
                 ],
                 series: [
                     {
-                        name: '停机时长',
+                        name: '停机时长(分)',
                         type: 'line',
                         stack: '总量',
                         symbol: 'none',//
@@ -310,7 +317,7 @@ export default {
                         }
                     },
                     {
-                        name: '运行时长',
+                        name: '运行时长(分)',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
@@ -324,7 +331,7 @@ export default {
                         }
                     },
                     {
-                        name: '报警时长',
+                        name: '报警时长(分)',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
@@ -338,7 +345,7 @@ export default {
                         }
                     },
                     {
-                        name: '空闲时长',
+                        name: '空闲时长(分)',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
@@ -626,22 +633,42 @@ export default {
                         warn += res.data[i][key][j].warn_duration;
                         workload += res.data[i][key][j].workload;
                         warn_count += res.data[i][key][j].warn_count;
-                        free_all += free;
-                        run_all += run;
-                        stop_all += stop;
-                        warn_all += warn;
-                        workload_all += workload;
+
+
                         warn_count_all = warn_count;
 
                     }
-                    free_duration.push(free);
-                    run_duration.push(run);
-                    stop_duration.push(stop);
-                    warn_duration.push(warn);
+                    // free_duration.push(free);
+                    // run_duration.push(run);
+                    // stop_duration.push(stop);
+                    // warn_duration.push(warn);
+
+
+                    free_duration.push((free / 1000 / 60).toFixed(5));
+                    run_duration.push((run / 1000 / 60).toFixed(5));
+                    stop_duration.push((stop / 1000 / 60).toFixed(5));
+                    warn_duration.push((warn / 1000 / 60).toFixed(5));
+
                     workloadarr.push(workload);
 
                 }
 
+
+
+
+                for (let i = 0, len = free_duration.length; i < len; i++) {
+                    free_all += parseFloat(free_duration[i]);
+                    run_all += parseFloat(run_duration[i]);
+                    warn_all += parseFloat(warn_duration[i]);
+                    stop_all += parseFloat(stop_duration[i]);
+                    workload_all += workloadarr[i];
+
+                }
+
+                that.free = free_all;
+                that.run = run_all;
+                that.stop = stop_all;
+                that.warn = warn_all;
 
                 that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration, workloadarr);
                 that.initEchartPie2(workload_all);
@@ -664,7 +691,7 @@ export default {
                 for (let i of res) {
                     avg_work_duration += i.avg_work_duration;
                 }
-                that.initEchartPie3(avg_work_duration);
+                that.initEchartPie3((avg_work_duration / 1000 / 60).toFixed(2));
 
             }).catch(error => {
 
@@ -673,27 +700,19 @@ export default {
     },
 
     updated() {
-        if (this.buttonActive == 0) {
-            this.$nextTick(() => {
-                let arr = utils.getDay(-7);
-                this.getlineData(arr[0], arr[1]);
-                this.initEchartPie1();
-                this.initEchartPie2();
-                this.initEchartPie3();
+        // if (this.buttonActive == 0) {
+        //     this.$nextTick(() => {
+        //         let arr = utils.getDay(-6);
+        //         this.getlineData(arr[0], arr[1]);
 
-            });
-        }
+        //     });
+        // }
 
 
     },
     mounted() {
-        let arr = utils.getDay(-7);
+        let arr = utils.getDay(-6);
         this.getlineData(arr[0], arr[1]);
-        this.initEchartPie1();
-        this.initEchartPie2();
-        this.initEchartPie3();
-
-
     }
 }
 

@@ -102,7 +102,7 @@
                                         </el-table-column>
                                         <el-table-column prop="id" label="设备ID" width="350">
                                         </el-table-column>
-                                        <el-table-column prop="name" label="工位名称" width="200">
+                                        <el-table-column prop="name" label="名称" width="200">
                                         </el-table-column>
                                         <el-table-column prop="warn_type" label="报警类型" width="200">
                                         </el-table-column>
@@ -210,10 +210,10 @@ export default {
                         stop += res.data[i][key][j].stop_duration;
                         warn += res.data[i][key][j].warn_duration;
                     }
-                    free_duration.push(free);
-                    run_duration.push(run);
-                    stop_duration.push(stop);
-                    warn_duration.push(warn);
+                    free_duration.push((free / 1000 / 60).toFixed(5));
+                    run_duration.push((run / 1000 / 60).toFixed(5));
+                    stop_duration.push((stop / 1000 / 60).toFixed(5));
+                    warn_duration.push((warn / 1000 / 60).toFixed(5));
 
                 }
                 that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration);
@@ -623,7 +623,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['停机时长', '运行时长', '报警时长', '空闲时长'],
+                    data: ['停机时长(分)', '运行时长(分)', '报警时长(分)', '空闲时长(分)'],
                     textStyle: {
                         color: "#fff"
                     }
@@ -677,7 +677,7 @@ export default {
                 ],
                 series: [
                     {
-                        name: '停机时长',
+                        name: '停机时长(分)',
                         type: 'line',
                         stack: '总量',
                         symbol: 'none',//
@@ -692,7 +692,7 @@ export default {
                         }
                     },
                     {
-                        name: '运行时长',
+                        name: '运行时长(分)',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
@@ -706,7 +706,7 @@ export default {
                         }
                     },
                     {
-                        name: '报警时长',
+                        name: '报警时长(分)',
                         type: 'line',
                         stack: '总量',
                         smooth: true,
@@ -720,7 +720,7 @@ export default {
                         }
                     },
                     {
-                        name: '空闲时长',
+                        name: '空闲时长(分)',
                         type: 'line',
                         stack: '总量',
                         smooth: true,

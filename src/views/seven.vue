@@ -380,7 +380,7 @@
             <el-row>
                 <el-col :span="18">
                     <div class=" left-table-single-title">
-                        <div>设备健康</div>
+                        <div>设备稼动率</div>
                     </div>
                 </el-col>
             </el-row>
@@ -390,7 +390,7 @@
                     <div class="left-table-single-content-new bg-small" style="height:50px;">
                         <el-row>
                             <el-col :span="10" :offset="4" class="healthy ">
-                                设备稼动率:
+                                当日设备稼动率:
                             </el-col>
                             <el-col :span="2" :offset="0" class="healthy ">
                                 <span>{{ACTRATE}}%</span>
@@ -554,10 +554,12 @@ export default {
                     pt.scale.set(0.05, 0.05, 0.05);
                     //加载机械臂
                     let mtlLoader2 = new MTLLoader();
-                    mtlLoader2.load(`${that.publicPath}/model/605(1).mtl`, function (materials) {
+                    mtlLoader2.load(`${that.publicPath}/model/model02.mtl`, function (materials) {
                         let objLoader2 = new OBJLoader();
                         objLoader2.setMaterials(materials);
-                        objLoader2.load(`${that.publicPath}/model/model(1).obj`, function (object) {
+                        objLoader2.load(`${that.publicPath}/model/model02(1).obj`, function (object) {
+
+
 
                             console.log(object);
                             // object.rotation.z = Math.PI;
@@ -569,6 +571,10 @@ export default {
                     });
                 });
             });
+
+            //加载控制台
+            // let
+
 
         },
         addObject(object, obj, obj2) {
