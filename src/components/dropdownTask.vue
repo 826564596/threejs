@@ -1,85 +1,92 @@
 <!-- 任务派发下拉框 -->
 <template>
-    <div class=" buttonAndText" :style="`width:${width}px`">
-        <div style="display:flex; align-items: center;">
-            <div class="dropdown-text">使用范围：</div>
-            <div class="dropdown" style="width:150px">
-                <span v-if="TechCtlTypeList.length>0"> {{ TechCtlTypeList[TechCtlTypeListIndex].F_NAME}}</span>
-                <div class="dropdown-content" style="min-width:150px">
-                    <div v-for="(item,index) in TechCtlTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+    <div>
+        <div class=" buttonAndText" :style="`width:${width}px`">
+            <div style="display:flex; align-items: center;">
+                <div class="dropdown-text">使用范围：</div>
+                <div class="dropdown" style="width:150px">
+                    <span v-if="TechCtlTypeList.length>0"> {{ TechCtlTypeList[TechCtlTypeListIndex].F_NAME}}</span>
+                    <div class="dropdown-content" style="min-width:150px">
+                        <div v-for="(item,index) in TechCtlTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 1">
-            <div class="dropdown-text">终端列表：</div>
-            <div class="dropdown" style="width:250px">
-                <span v-if="TerminalTree.length>0"> {{TerminalTree[TerminalTreeIndex].label}}</span>
-                <div class="dropdown-content" style="min-width:250px">
-                    <div v-for="(item,index) in TerminalTree" :key="index" @click="choseItem2(index)">{{item.label}}</div>
+            <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 1">
+                <div class="dropdown-text">终端列表：</div>
+                <div class="dropdown" style="width:250px">
+                    <span v-if="TerminalTree.length>0"> {{TerminalTree[TerminalTreeIndex].label}}</span>
+                    <div class="dropdown-content" style="min-width:250px">
+                        <div v-for="(item,index) in TerminalTree" :key="index" @click="choseItem2(index)">{{item.label}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 2">
-            <div class="dropdown-text">设备列表：</div>
-            <div class="dropdown" style="width:250px">
-                <span v-if="DeviceTree.length>0"> {{DeviceTree[DeviceTreeIndex].label}}</span>
-                <div class="dropdown-content" style="min-width:250px">
-                    <div v-for="(item,index) in DeviceTree" :key="index" @click="choseItem3(index)">{{item.label}}</div>
+            <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 2">
+                <div class="dropdown-text">设备列表：</div>
+                <div class="dropdown" style="width:250px">
+                    <span v-if="DeviceTree.length>0"> {{DeviceTree[DeviceTreeIndex].label}}</span>
+                    <div class="dropdown-content" style="min-width:250px">
+                        <div v-for="(item,index) in DeviceTree" :key="index" @click="choseItem3(index)">{{item.label}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="">
-            <button class="buttonAndText-button" @click="search">搜索</button>
-        </div>
-
-        <el-dialog title="任务派发" :visible.sync="dialogTaskVisible">
-            <div class="center">
-                <el-form :model="form" :rules="rule">
-                    <el-form-item label="产品名称" :label-width="formLabelWidth" prop="productname">
-                        <el-input v-model="form.productname" size='mini' maxlength="16" autocomplete="off"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="产品型号" :label-width="formLabelWidth" prop="productmodel">
-                        <el-input v-model="form.productmodel" size='mini' maxlength="16" autocomplete="off"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="计划产量" :label-width="formLabelWidth" prop="planworkload">
-                        <el-input v-model="form.planworkload" size='mini' maxlength="16" autocomplete="off"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="设备名称" :label-width="formLabelWidth" prop="uploadDeviceTree">
-                        <el-select multiple collapse-tags size="small" v-model="form.deviceids" placeholder="请选择设备名称" @change="multiple">
-                            <el-option v-for="(item,index) of uploadDeviceTree" :key="index" :label="item.label" :value="item.id"> </el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="时间" :label-width="formLabelWidth" prop="datetimerange">
-                        <el-date-picker format="yyyy-MM-dd HH:mm:ss" v-model="value1" type="datetimerange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-                        </el-date-picker>
-                    </el-form-item>
-                    <el-form-item label="负责人" :label-width="formLabelWidth" prop="chargeman">
-                        <el-input v-model="form.chargeman" size='mini' maxlength="16" autocomplete="off"></el-input>
-                    </el-form-item>
-
-                    <el-form-item label="备注" :label-width="formLabelWidth" prop="desc">
-                        <el-input v-model="form.desc" size='mini' maxlength="16" autocomplete="off"></el-input>
-                    </el-form-item>
-
-                </el-form>
+            <div class="">
+                <button class="buttonAndText-button" @click="search">搜索</button>
             </div>
 
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="cancel(dialogTaskVisible = false)">取 消</el-button>
-                <el-button type="primary" @click="submit(dialogTaskVisible = false)">确 定</el-button>
-            </span>
-        </el-dialog>
+            <el-dialog title="任务派发" :visible.sync="dialogTaskVisible">
+                <div class="center">
+                    <el-form :model="form" :rules="rule">
+                        <el-form-item label="产品名称" :label-width="formLabelWidth" prop="productname">
+                            <el-input v-model="form.productname" size='mini' maxlength="16" autocomplete="off"></el-input>
+                        </el-form-item>
 
-        <div class="">
-            <button class="buttonAndText-button" @click="issue(dialogTaskVisible = true)">派发</button>
+                        <el-form-item label="产品型号" :label-width="formLabelWidth" prop="productmodel">
+                            <el-input v-model="form.productmodel" size='mini' maxlength="16" autocomplete="off"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="计划产量" :label-width="formLabelWidth" prop="planworkload">
+                            <el-input v-model="form.planworkload" size='mini' maxlength="16" autocomplete="off"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="设备名称" :label-width="formLabelWidth" prop="deviceids">
+                            <el-select multiple collapse-tags size="small" v-model="form.deviceids" placeholder="请选择设备名称" @change="multiple">
+                                <el-option v-for="(item,index) of uploadDeviceTree" :key="index" :label="item.label" :value="item.id"> </el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="时间" :label-width="formLabelWidth" prop="value1">
+                            <el-date-picker format="yyyy-MM-dd HH:mm:ss" v-model="form.value1" type="datetimerange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                            </el-date-picker>
+                        </el-form-item>
+                        <el-form-item label="负责人" :label-width="formLabelWidth" prop="chargeman">
+                            <el-input v-model="form.chargeman" size='mini' maxlength="16" autocomplete="off"></el-input>
+                        </el-form-item>
+
+                        <el-form-item label="备注" :label-width="formLabelWidth" prop="desc">
+                            <el-input v-model="form.desc" size='mini' maxlength="16" autocomplete="off"></el-input>
+                        </el-form-item>
+
+                    </el-form>
+                </div>
+
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="cancel(dialogTaskVisible = false)">取 消</el-button>
+                    <el-button type="primary" @click="submit(dialogTaskVisible = false)">确 定</el-button>
+                </span>
+            </el-dialog>
+
+            <div class="">
+                <button class="buttonAndText-button" @click="issue(dialogTaskVisible = true)">派发</button>
+            </div>
+        </div>
+        <div style="text-align:right">
+            <el-pagination :pager-count="11" :page-size="27" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            </el-pagination>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -93,15 +100,13 @@ export default {
             arr: [],
             startDate: '',//开始时间
             endDate: '',//结束时间
-            value1: "",
             width: 470,
-
             TechCtlTypeList: [], // 工艺文件使用范围
             TechCtlTypeListIndex: 0, // 工艺文件使用范围
 
             TerminalTree: [],//终端列表
             TerminalTreeIndex: 0,//终端列表
-
+            total: 0,
             DeviceTree: [],//设备列表
             DeviceTreeIndex: 0,//设备列表
 
@@ -130,7 +135,7 @@ export default {
                 planworkload: [
                     { required: true, message: '计划产量不能为空' }
                 ],
-                uploadDeviceTree: [
+                deviceids: [
                     { required: true, message: '设备名称不能为空' }
                 ],
                 datetimerange: [
@@ -163,7 +168,7 @@ export default {
             ctltype: 0,
             oper: "wuji",
             pageindex: 0,
-            pagesize: 15,
+            pagesize: 27,
         }
 
         this.$axios.post("api/DDC/TechFile/TechFilelist" + utils.formatQueryStr(obj)).then(res => {
@@ -172,6 +177,7 @@ export default {
                     confirmButtonText: '确定',
                 });
             }
+            this.total = parseInt(res.Counts);
             that.$emit("update:fileData", res.Rows);
         }
         ).catch(error => {
@@ -179,6 +185,9 @@ export default {
         })
     },
     methods: {
+        currentChange(val) {
+            this.search(val - 1);
+        },
         choseItem(index) {
             this.index = index;
 
@@ -228,8 +237,8 @@ export default {
             let obj = {
                 ctltype: this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL,
                 oper: "wuji",
-                pageindex: 0,
-                pagesize: 15,
+                pageindex: typeof arguments[0] == 'number' ? arguments[0] : 0,
+                pagesize: 27,
             }
             if (this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL == 0) {
                 this.$axios.post("api/DDC/TechFile/TechFilelist" + utils.formatQueryStr(obj)).then(res => {
@@ -238,6 +247,7 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.total = parseInt(res.Counts);
                     that.$emit("update:fileData", res.Rows);
                 }
                 ).catch(error => {
@@ -253,6 +263,8 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.total = parseInt(res.Counts);
+
                     that.$emit("update:fileData", res.Rows);
                 }
                 ).catch(error => {
@@ -268,6 +280,8 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.total = parseInt(res.Counts);
+
                     that.$emit("update:fileData", res.Rows);
                 }
                 ).catch(error => {
@@ -304,16 +318,16 @@ export default {
                 endtime: '',//结束时间
                 chargeman: '',//负责人
                 desc: '',//备注
+                value1: "",
             };
-            this.value1 = "";
 
         },
         //确认 
         submit() {
             let obj = JSON.parse(JSON.stringify(this.form));
 
-            obj.begintime = utils.dateToDayTime(this.value1[0]);
-            obj.endtime = utils.dateToDayTime(this.value1[1]);
+            obj.begintime = utils.dateToDayTime(this.form.value1[0]);
+            obj.endtime = utils.dateToDayTime(this.form.value1[1]);
 
 
             obj.planworkload = parseInt(obj.planworkload);
@@ -334,6 +348,7 @@ export default {
                     this.$messageBox('任务派发成功', '提示', {
                         confirmButtonText: '确定',
                     });
+                    this.cancel();
                 }
             }).catch(error => {
 

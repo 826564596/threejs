@@ -284,7 +284,7 @@ export default {
                 let warn_duration = [];
                 for (let i = 0, len = WarnCountTrend.length; i < len; i++) {
                     let key = Object.keys(WarnCountTrend[i]);
-                    date.push(key[0]);
+                    date.push(key[0].substr(5, 5));
                     let warn = 0;
                     for (let j = 0, length = WarnCountTrend[i][key].length; j < length; j++) {
                         warn += WarnCountTrend[i][key][j].warn_count;
@@ -540,10 +540,41 @@ export default {
             let myChart = this.$echarts.init(document.getElementById('echarts-bar4'));
             // 绘制图表
             myChart.setOption({
+
+                dataZoom: [{
+                    type: 'slider',
+                    show: true,
+                    start: 0,
+                    end: 30,
+                    height: 12,
+                    bottom: 0,
+                    borderColor: "#fff",
+                    // fillerColor: "#fff",
+                    handleSize: '10%',
+                    textStyle: {
+                        color: "#fff",
+
+                    },
+                    handleStyle: {
+                        color: "#fff",
+                        borderColor: '#fff',
+                    }
+                },
+                {
+                    type: 'inside',
+                    rangeMode: ['value', 'value'],
+                    startValue: 0,
+                    endValue: 100,
+
+                    start: 0,
+                    end: 30,
+
+                }
+                ],
                 color: ['#3398DB'],
                 grid: {
                     left: '0%',
-                    bottom: '3%',
+                    bottom: '10%',
                     top: "5%",
                     containLabel: true
                 },
@@ -765,7 +796,7 @@ export default {
                 },
                 "page": {
                     "offset": 0,
-                    "limit": 10
+                    "limit": 30,
                 }
             }).then(res => {
                 that.tableData = res;

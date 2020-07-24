@@ -271,7 +271,7 @@
                                             <div class="colorone">
                                             </div>
                                             <div class="text">
-                                                未执行
+                                                异常
                                             </div>
                                         </div>
                                     </el-col>
@@ -281,7 +281,7 @@
                                             <div class="colortwo">
                                             </div>
                                             <div class="text">
-                                                已完成
+                                                正常
                                             </div>
                                         </div>
                                     </el-col>
@@ -538,20 +538,22 @@ export default {
             // this.createTable();
 
             //生成激光打标机
-            let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
-            let a = this.returnWallObject(30, 20, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca }), 10, 45, 0, "墙面4");
-            let arr3 = [];
-            arr3.push(a);
-            let obj2 = this.createResultBspLight(wall, arr3);
+            // let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
+            // let a = this.returnWallObject(30, 20, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca }), 10, 45, 0, "墙面4");
+            // let arr3 = [];
+            // arr3.push(a);
+            // let obj2 = this.createResultBspLight(wall, arr3);
 
             // 加载平台
             let mtlLoader = new MTLLoader();
-            mtlLoader.load(`${that.publicPath}/model/pt(1).mtl`, function (materials1) {
+            mtlLoader.load(`${that.publicPath}/model/TP06.mtl`, function (materials1) {
                 let objLoader = new OBJLoader();
                 objLoader.setMaterials(materials1);
-                objLoader.load(`${that.publicPath}/model/pt(1).obj`, function (pt) {
+                objLoader.load(`${that.publicPath}/model/TP06.obj`, function (pt) {
 
                     pt.scale.set(0.05, 0.05, 0.05);
+                    // pt.scale.set(10, 10, 10);
+
                     //加载机械臂
                     let mtlLoader2 = new MTLLoader();
                     mtlLoader2.load(`${that.publicPath}/model/model02.mtl`, function (materials) {
@@ -559,14 +561,30 @@ export default {
                         objLoader2.setMaterials(materials);
                         objLoader2.load(`${that.publicPath}/model/model02(1).obj`, function (object) {
 
+                            //加载激光打标 
+                            let mtlLoader3 = new MTLLoader();
+                            mtlLoader3.load(`${that.publicPath}/model/激光打标机05.mtl`, function (materials2) {
+                                let objLoader3 = new OBJLoader();
+                                objLoader3.setMaterials(materials2);
+                                objLoader3.load(`${that.publicPath}/model/激光打标机05.obj`, function (obj3) {
 
 
-                            console.log(object);
-                            // object.rotation.z = Math.PI;
-                            // object.position.set(0, 16, 0);
-                            // that.scene.add(object);
+                                    //加载控制台
+                                    let mtlLoader4 = new MTLLoader();
+                                    mtlLoader4.load(`${that.publicPath}/model/控制台04.mtl`, function (materials3) {
+                                        let objLoader4 = new OBJLoader();
+                                        objLoader4.setMaterials(materials3);
+                                        objLoader4.load(`${that.publicPath}/model/控制台04.obj`, function (obj4) {
+                                            that.addObject(object, pt, obj3, obj4);
+                                        })
+                                    })
 
-                            that.addObject(object, pt, obj2);
+
+
+                                })
+                            })
+
+
                         });
                     });
                 });
@@ -577,7 +595,7 @@ export default {
 
 
         },
-        addObject(object, obj, obj2) {
+        addObject(object, obj, obj3, obj4) {
             let z = 300;
             let x = 200;
             let J1 = new Three.Group();
@@ -663,17 +681,19 @@ export default {
 
             J1.scale.set(30, 30, 30);
             J1.position.set(16 * 20, 18 * 20, 12 * 20);
-
             obj.name = this.$route.params.groupName;
-
-            obj2.name = "激光打标机";
             obj.add(J1);
 
-            obj2.scale.set(20, 20, 20);
-            obj2.rotation.y = 0.5 * Math.PI;
 
-            obj2.position.set(0 * 20, 35 * 20, 60 * 20);
-            obj.add(obj2);
+            obj3.scale.set(1.5, 1.5, 1.5);
+            obj3.rotation.y = Math.PI;
+            obj3.position.set(-5 * 20, 0, -60 * 20);
+            obj.add(obj3);
+
+            obj4.rotation.y = Math.PI;
+            obj4.position.set(-60 * 20, 0, 40 * 20);
+
+            obj.add(obj4);
 
             obj.position.z = 0;
             obj.position.x = 30;
@@ -894,8 +914,7 @@ export default {
             //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
             // }
             this.i++;
-            console.log(this.i);
-            if (this.locationArray.length > 0 && this.i == 1) {
+            if (this.locationArray && this.i == 1 && this.locationArray.length > 0) {
                 this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.preLocationArray[0];
                 this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = this.preLocationArray[1];
                 this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = this.preLocationArray[2];
@@ -904,9 +923,7 @@ export default {
                 this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = this.preLocationArray[5];
 
             }
-            if (this.locationArray.length > 0) {
-
-
+            if (this.locationArray && this.locationArray.length > 0) {
                 this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y += (this.locationArray[0] * Math.PI / 180 - this.preLocationArray[0]) * this.i / 60;
                 this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z += ((this.locationArray[1] - (-90)) * Math.PI / 180 - this.preLocationArray[1]) * this.i / 60;
                 this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z += ((this.locationArray[2] - 180) * Math.PI / 180 - this.preLocationArray[2]) * this.i / 60;
@@ -1080,7 +1097,7 @@ export default {
                 yAxis: [
                     {
                         max: function (value) {
-                            return value.max + 200;
+                            return value.max + value.max * 0.2;
                         },
                         type: 'value',
                         axisLabel: {

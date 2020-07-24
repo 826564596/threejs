@@ -1,30 +1,38 @@
 <!-- 设备故障下拉框 -->
 
 <template>
-    <div class=" buttonAndText" style="width:1000px">
-        <div class="dropdown">
-            {{this.$store.state.deviceIdArr[index].deviceName}}
-            <div class="dropdown-content">
-                <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
-            </div>
-        </div>
-        <div>
-            <el-date-picker v-model="value2" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-            </el-date-picker>
-        </div>
-        <div style="display:flex; align-items: center;">
-            <div class="dropdown-text">故障类型：</div>
-            <div class="dropdown" style="width:150px">
-                <span v-if="FaultTypeList.length>0"> {{FaultTypeList[FaultTypeIndex].F_NAME}}</span>
-                <div class="dropdown-content" style="min-width:150px">
-                    <div v-for="(item,index) in FaultTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+    <div>
+        <div class=" buttonAndText" style="width:1000px">
+            <div class="dropdown">
+                {{this.$store.state.deviceIdArr[index].deviceName}}
+                <div class="dropdown-content">
+                    <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
                 </div>
             </div>
+            <div>
+                <el-date-picker v-model="value2" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
+            <div style="display:flex; align-items: center;">
+                <div class="dropdown-text">故障类型：</div>
+                <div class="dropdown" style="width:150px">
+                    <span v-if="FaultTypeList.length>0"> {{FaultTypeList[FaultTypeIndex].F_NAME}}</span>
+                    <div class="dropdown-content" style="min-width:150px">
+                        <div v-for="(item,index) in FaultTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="">
+                <button class="buttonAndText-button" @click="search">搜索</button>
+            </div>
         </div>
-        <div class="">
-            <button class="buttonAndText-button" @click="search">搜索</button>
+
+        <div style="text-align:right">
+            <el-pagination :pager-count="11" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            </el-pagination>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -39,6 +47,7 @@ export default {
             startDate: '',//开始时间
             endDate: '',//结束时间
             value2: "",
+            total: 0,
             FaultTypeList: [],//故障类型
             FaultTypeIndex: 0,//故障类型
 
@@ -59,6 +68,9 @@ export default {
 
     },
     methods: {
+        currentChange(val) {
+            this.search(val - 1);
+        },
         choseItem(index) {
             this.index = index;
         },
@@ -77,8 +89,8 @@ export default {
                 begindate: startDate,
                 enddate: endDate,
                 faulttype: this.FaultTypeList[this.FaultTypeIndex].F_KEY,
-                pageindex: 0,
-                pagesize: 15,
+                pageindex: typeof arguments[0] == 'number' ? arguments[0] : 0,
+                pagesize: 10,
             }
             this.$axios.post("api/DDC/DeviceFault/FaultList" + utils.formatQueryStr(obj)).then(res => {
                 console.log(res);
@@ -88,6 +100,7 @@ export default {
                         confirmButtonText: '确定',
                     });
                 }
+                this.total = parseInt(res.Counts);
                 this.$emit("update:tableData", res.Rows);
             }).catch(error => {
 

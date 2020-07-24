@@ -1,52 +1,60 @@
 <!-- 设备点检下拉菜单 -->
 <template>
-    <div class=" buttonAndText">
-        <div class="dropdown">
-            {{this.$store.state.deviceIdArr[index].deviceName}}
-            <div class="dropdown-content" ref="dropdown">
-                <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
-            </div>
-        </div>
-        <div>
-            <el-date-picker v-model="value2" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
-            </el-date-picker>
-        </div>
-        <div style="display:flex; align-items: center;">
-            <div class="dropdown-text">点检大类：</div>
-            <div class="dropdown" style="width:150px">
-                <span v-if="SpcTypeList.length>0"> {{SpcTypeList[SpcTypeIndex].F_NAME}}</span>
-                <div class="dropdown-content" style="min-width:150px">
-                    <div v-for="(item,index) in SpcTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+    <div>
+        <div class=" buttonAndText">
+            <div class="dropdown">
+                {{this.$store.state.deviceIdArr[index].deviceName}}
+                <div class="dropdown-content" ref="dropdown">
+                    <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
                 </div>
             </div>
-        </div>
+            <div>
+                <el-date-picker v-model="value2" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
+            <div style="display:flex; align-items: center;">
+                <div class="dropdown-text">点检大类：</div>
+                <div class="dropdown" style="width:150px">
+                    <span v-if="SpcTypeList.length>0"> {{SpcTypeList[SpcTypeIndex].F_NAME}}</span>
+                    <div class="dropdown-content" style="min-width:150px">
+                        <div v-for="(item,index) in SpcTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+                    </div>
+                </div>
+            </div>
 
-        <div style="display:flex; align-items: center;">
-            <div class="dropdown-text">点检类型：</div>
-            <div class="dropdown" style="width:150px;">
-                <div v-if="QueryChkTypeList.length > 0" class="text-overflow ">
-                    {{QueryChkTypeList[QueryChkTypeIndex].F_CHKTYPE}}
+            <div style="display:flex; align-items: center;">
+                <div class="dropdown-text">点检类型：</div>
+                <div class="dropdown" style="width:150px;">
+                    <div v-if="QueryChkTypeList.length > 0" class="text-overflow ">
+                        {{QueryChkTypeList[QueryChkTypeIndex].F_CHKTYPE}}
 
-                </div>
-                <div class="dropdown-content" style="min-width:150px;">
-                    <div v-for="(item,index) in QueryChkTypeList" :key="index" @click="choseItem3(index)">{{item.F_CHKTYPE}}</div>
+                    </div>
+                    <div class="dropdown-content" style="min-width:150px;">
+                        <div v-for="(item,index) in QueryChkTypeList" :key="index" @click="choseItem3(index)">{{item.F_CHKTYPE}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="display:flex; align-items: center;">
-            <div class="dropdown-text">周期：</div>
-            <div class="dropdown" style="width:100px">
-                <span v-if="SpcTypeList.length>0"> {{PeriodTypeList[PeriodTypeIndex].F_NAME}}</span>
-                <div class="dropdown-content" style="min-width:100px">
-                    <div v-for="(item,index) in PeriodTypeList" :key="index" @click="choseItem2(index)">{{item.F_NAME}}</div>
+            <div style="display:flex; align-items: center;">
+                <div class="dropdown-text">周期：</div>
+                <div class="dropdown" style="width:100px">
+                    <span v-if="SpcTypeList.length>0"> {{PeriodTypeList[PeriodTypeIndex].F_NAME}}</span>
+                    <div class="dropdown-content" style="min-width:100px">
+                        <div v-for="(item,index) in PeriodTypeList" :key="index" @click="choseItem2(index)">{{item.F_NAME}}</div>
+                    </div>
                 </div>
             </div>
+            <div class="">
+                <button class="buttonAndText-button" @click="search">搜索</button>
+            </div>
+
         </div>
-        <div class="">
-            <button class="buttonAndText-button" @click="search">搜索</button>
+        <div style="text-align:right">
+            <el-pagination :pager-count="11" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            </el-pagination>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -62,6 +70,7 @@ export default {
             startDate: '',//开始时间
             endDate: '',//结束时间
             value2: "",
+            total: 0,
             SpcTypeList: [], // 点检大类
             SpcTypeIndex: 0, // 点检大类
             PeriodTypeList: [],//周期
@@ -89,6 +98,10 @@ export default {
 
     },
     methods: {
+
+        currentChange(val) {
+            this.search(val - 1);
+        },
         choseItem(index) {
             this.index = index;
             this.SpcTypeIndex = 0;
@@ -112,6 +125,7 @@ export default {
         },
 
         choseItem2(index) {
+
             this.PeriodTypeIndex = index;
         },
         choseItem3(index) {
@@ -128,8 +142,8 @@ export default {
                 spctype: this.SpcTypeList[this.SpcTypeIndex].F_KEY,
                 chktype: this.QueryChkTypeList[this.QueryChkTypeIndex].F_CHKTYPE,
                 chkperiod: this.PeriodTypeList[this.PeriodTypeIndex].F_VAL,
-                pageindex: 0,
-                pagesize: 15,
+                pageindex: typeof arguments[0] == 'number' ? arguments[0] : 0,
+                pagesize: 10,
             }
             this.$axios.post("api/DDC/DeviceChk/QueryChkRecdList" + utils.formatQueryStr(obj)).then(res => {
                 if (res.Rows.length == 0) {
@@ -140,6 +154,7 @@ export default {
                 for (let i of res.Rows) {
                     i.F_chkrst = i.F_chkrst == "0" ? "异常" : "通过";
                 }
+                this.total = parseInt(res.Counts);
                 this.$emit("update:tableData", res.Rows);
             }).catch(error => {
 

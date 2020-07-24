@@ -81,7 +81,9 @@
                                 </el-table-column>
                                 <el-table-column prop="F_mtdate" label="维修日期" width="200">
                                 </el-table-column>
-                                <el-table-column prop="F_mttime" label="维护时间" width="200">
+                                <el-table-column prop="F_mttime" label="维修时间" width="200">
+                                </el-table-column>
+                                <el-table-column prop="F_CHKNAME" label="点检项" width="200">
                                 </el-table-column>
                                 <el-table-column prop="f_downtmlen" label="停机时长（分钟）" width="200">
                                 </el-table-column>
@@ -97,9 +99,9 @@
                 <div v-if="buttonActive == 2">
                     <dropdown :tableData.sync="tableData3" />
 
-                    <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
+                    <div class="pm_content-two" style="height:552px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
-                            <el-table :data="tableData3" style="width: 100%; " max-height="571" border>
+                            <el-table :data="tableData3" style="width: 100%; " max-height="551" border>
                                 <el-table-column prop="F_DEVICENAME" label="设备名称" width="249">
                                 </el-table-column>
                                 <el-table-column prop="F_CHKTYPE" label="类型名称" width="200">
@@ -159,9 +161,9 @@
                 <div v-if="buttonActive == 4">
                     <dropdownFault :tableData.sync="tableData5" />
 
-                    <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
+                    <div class="pm_content-two" style="height:552px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
-                            <el-table :data="tableData5" style="width: 100%; " max-height="571" border>
+                            <el-table :data="tableData5" style="width: 100%; " max-height="551" border>
                                 <el-table-column prop="F_NAME" label="设备名称" width="200">
                                 </el-table-column>
                                 <el-table-column prop="F_FAULTNAME" label="故障类型" width="200">

@@ -2,7 +2,7 @@
 <template>
     <div class="div">
         <!-- 3D场景 -->
-        <div id="container" @click="click($event)" @mousemove.prevent="move($event)" @mousedown.prevent="down($event)" @mouseup.prevent="up($event)">
+        <div id="container" @click="click($event)" @dblclick="doubleClick($event)" @mousemove.prevent="move($event)" @mousedown.prevent="down($event)" @mouseup.prevent="up($event)">
         </div>
         <!-- 左侧 -->
         <div class="left-table">
@@ -394,6 +394,8 @@ export default {
 
 
             DayWorkLoadRank: [],
+
+            flag: false,
         }
     },
     methods: {
@@ -637,10 +639,10 @@ export default {
 
             // 加载平台
             let mtlLoader = new MTLLoader();
-            mtlLoader.load(`${that.publicPath}/model/pt(1).mtl`, function (materials1) {
+            mtlLoader.load(`${that.publicPath}/model/TP06.mtl`, function (materials1) {
                 let objLoader = new OBJLoader();
                 objLoader.setMaterials(materials1);
-                objLoader.load(`${that.publicPath}/model/pt(1).obj`, function (pt) {
+                objLoader.load(`${that.publicPath}/model/TP06.obj`, function (pt) {
 
                     pt.scale.set(0.05, 0.05, 0.05);
                     //加载机械臂
@@ -656,8 +658,35 @@ export default {
                             // that.scene.add(object);
 
 
+                            //加载激光打标 
+                            let mtlLoader3 = new MTLLoader();
+                            mtlLoader3.load(`${that.publicPath}/model/激光打标机05.mtl`, function (materials2) {
+                                let objLoader3 = new OBJLoader();
+                                objLoader3.setMaterials(materials2);
+                                objLoader3.load(`${that.publicPath}/model/激光打标机05.obj`, function (obj3) {
 
-                            that.clone(object, pt, obj2);
+
+
+                                    //加载控制台
+                                    let mtlLoader4 = new MTLLoader();
+                                    mtlLoader4.load(`${that.publicPath}/model/控制台04.mtl`, function (materials3) {
+                                        let objLoader4 = new OBJLoader();
+                                        objLoader4.setMaterials(materials3);
+                                        objLoader4.load(`${that.publicPath}/model/控制台04.obj`, function (obj4) {
+                                            that.clone(object, pt, obj3, obj4);
+                                        })
+                                    })
+
+
+
+
+
+
+                                })
+                            })
+
+
+
                         });
                     });
                 });
@@ -1070,7 +1099,7 @@ export default {
             // console.log(intersects);
             if (intersects.length > 0) {
                 let selectedObject = intersects[0].object;
-                this.addSelectedObject(selectedObject, outlinePass, evnet.clientX, event.clientY);
+                // this.addSelectedObject(selectedObject, outlinePass, event.clientX, event.clientY);
                 //给标签赋值
                 // this.labelLeft = event.clientX;
                 // this.labelTop = event.clientY;
@@ -1121,6 +1150,21 @@ export default {
 
                 // outlinePass.selectedObjects = [];
 
+            }
+
+        },
+        doubleClick(event) {
+            let raycaster = new Three.Raycaster();
+            let mouse = new Three.Vector2();
+            let outlinePass = this.definedComposer();
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+            raycaster.setFromCamera(mouse, this.camera);
+            let intersects = raycaster.intersectObjects([this.scene], true);
+            if (intersects.length > 0) {
+                let selectedObject = intersects[0].object;
+                this.addSelectedObject(selectedObject, outlinePass, event.clientX, event.clientY);
+            } else {
             }
 
         },
@@ -1217,7 +1261,7 @@ export default {
             }
         },
         //复制obj
-        clone(object, obj, obj2) {
+        clone(object, obj, obj3, obj4) {
             let z = 300;
             let x = 200;
             let J1 = new Three.Group();
@@ -1307,7 +1351,7 @@ export default {
             // J1.position.z = z;
             // J1.position.x = -x;
 
-            J1.scale.set(20, 20, 20);
+            J1.scale.set(30, 30, 30);
             J1.position.set(16 * 20, 18 * 20, 12 * 20);
 
             // J1.rotateY(0.5 * Math.PI);
@@ -1322,15 +1366,25 @@ export default {
             // J8.add(obj2.getObjectByName('墙面4'));
             // J8Box.add(J8);
 
-
-            obj2.name = "激光打标机";
             obj.add(J1);
 
-            obj2.scale.set(20, 20, 20);
-            obj2.rotation.y = 0.5 * Math.PI;
+            // obj2.name = "激光打标机";
 
-            obj2.position.set(0 * 20, 35 * 20, 60 * 20);
-            obj.add(obj2);
+
+            // obj2.scale.set(20, 20, 20);
+            // obj2.rotation.y = 0.5 * Math.PI;
+
+            // obj2.position.set(0 * 20, 35 * 20, 60 * 20);
+            // obj.add(obj2);
+
+            obj3.scale.set(1.5, 1.5, 1.5);
+            obj3.rotation.y = Math.PI;
+            obj3.position.set(-5 * 20, 0, -60 * 20);
+            obj.add(obj3);
+
+            obj4.rotation.y = Math.PI;
+            obj4.position.set(-60 * 20, 0, 40 * 20);
+            obj.add(obj4);
 
             obj.position.z = z;
             obj.position.x = -x;
@@ -1553,7 +1607,7 @@ export default {
                 yAxis: [
                     {
                         max: function (value) {
-                            return value.max + 2000;
+                            return value.max + value.max * 0.2;
                         },
                         type: 'value',
                         axisLabel: {
@@ -2068,6 +2122,9 @@ export default {
     },
     updated() {
 
+        console.log('ssssssssssssssss');
+        console.log(window.innerWidth);
+        console.log(window.screen.availWidth);
     },
     mounted() {
         let that = this;
@@ -2084,13 +2141,33 @@ export default {
         this.helper();
         this.animate();
 
+
+
         window.onresize = () => {
+
             return this.onWindowResize();
         }
         this.$socketApi.sendSock((res) => {
             console.log(6);
             // this.locationArray = JSON.parse(res[this.deviceId][0].value);
         });
+
+
+
+
+        setInterval(() => {
+            if (window.innerWidth != window.screen.availWidth) {
+                this.flag = true;
+            }
+            if (window.innerWidth == window.screen.availWidth && this.flag) {
+                this.flag = false;
+                this.onWindowResize();
+            }
+        }, 500)
+
+
+
+        // alert(window);
     },
 
     destroyed() {

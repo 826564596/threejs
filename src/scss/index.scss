@@ -613,7 +613,7 @@
         div {
             height: 90px;
             width: 90px;
-            background-image: url("../assets/image/qrcode.png");
+            background-image: url("../assets/image/无极小程序.jpg");
             background-size: 100% 100%;
         }
     }
@@ -636,7 +636,7 @@
     left: 50%;
     margin-left: -(300 / 1920) *100%;
     height: 55px;
-    width: (600 / 1920) *100%;
+    width: (800 / 1920) *100%;
     font-size: 18px;
     color: rgb(22, 117, 168);
     font-weight: bold;
@@ -653,7 +653,7 @@
     position: absolute;
     top: 16%;
     left: 2%;
-    height: 75%;
+    height: 76%;
     width: 17%;
     box-sizing: border-box;
     background: url("../assets/image/列表框.png") no-repeat;
@@ -666,7 +666,7 @@
     position: absolute;
     top: 16%;
     left: 20%;
-    height: 75%;
+    height: 76%;
     width: 77%;
     box-sizing: border-box;
     background: url("../assets/image/通用bg.png") no-repeat;
@@ -1004,6 +1004,51 @@
 }
 
 
+//重写elementPagination样式
+
+.el-pagination {
+    margin-left: 40px;
+    color: rgb(92, 214, 254);
+}
+
+.el-pagination .btn-next,
+.el-pagination .btn-prev {
+    background: center center no-repeat rgba(1, 88, 119, 0);
+    color: rgb(92, 214, 254);
+
+}
+
+.el-pagination .btn-prev .el-icon,
+.el-pagination .btn-next .el-icon {
+    font-size: 20px;
+}
+
+.el-pager li {
+    background: center center no-repeat rgba(1, 88, 119, 0);
+    font-size: 16px;
+
+}
+
+.el-pagination button,
+.el-pagination button:disabled {
+    background: center center no-repeat rgba(1, 88, 119, 0);
+    color: rgb(200, 254, 254);
+
+}
+
+
+.el-pager li.btn-quicknext,
+.el-pager li.btn-quickprev {
+    line-height: 28px;
+    color: rgb(92, 214, 254);
+
+}
+
+.el-pagination__jump .el-input__inner,
+.el-pagination__jump {
+    color: rgb(92, 214, 254);
+}
+
 //重写element表格样式
 
 $color: #00bdfc;
@@ -1226,15 +1271,15 @@ $color: #00bdfc;
     .processDocuments-content {
         box-sizing: border-box;
 
-        height: 150px;
-        width: 150px;
+        height: 135px;
+        width: 135px;
         margin: 10px;
         // display: flex;
 
         .top-picture {
             margin: 0 auto;
 
-            height: 120px;
+            height: 112.5px;
             width: 135px;
             background: url("../assets/image/documents.png") no-repeat;
             // background-size: 100% 100%;
@@ -1242,15 +1287,28 @@ $color: #00bdfc;
 
         .top-text {
             margin: 0 auto;
-
-            height: 30px;
+            height: 22.5px;
             width: 135px;
-            font-size: 20px;
+            font-size: 18px;
             color: rgb(0, 205, 245);
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
             text-align: center;
+        }
+
+        .top-text:hover::after {
+            position: absolute;
+
+            transform: translate(-50%);
+            border: 2px solid rgba(22, 117, 168, 1);
+            background-color: rgba(22, 117, 168, 1);
+            border-radius: 5px;
+            color: #fff;
+            content: attr(labelTooltip);
+            z-index: 2;
+            // height: 25px;
+            // width: 300px;
         }
     }
 
@@ -1264,8 +1322,8 @@ $color: #00bdfc;
             width: 30px;
             border-radius: 50%;
             position: relative;
-            top: -160px;
-            right: -140px;
+            top: -150px;
+            right: -125px;
             background-color: rgba(22, 117, 168, 0.5);
         }
 

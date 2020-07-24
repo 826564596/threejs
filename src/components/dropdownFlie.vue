@@ -1,47 +1,48 @@
 <!-- 工艺文件下拉框 -->
 <template>
-    <div class=" buttonAndText" :style="`width:${width}px`">
+    <div>
+        <div class=" buttonAndText" :style="`width:${width}px`">
 
-        <div style="display:flex; align-items: center;">
-            <div class="dropdown-text">使用范围：</div>
-            <div class="dropdown" style="width:150px">
-                <span v-if="TechCtlTypeList.length>0"> {{ TechCtlTypeList[TechCtlTypeListIndex].F_NAME}}</span>
-                <div class="dropdown-content" style="min-width:150px">
-                    <div v-for="(item,index) in TechCtlTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+            <div style="display:flex; align-items: center;">
+                <div class="dropdown-text">使用范围：</div>
+                <div class="dropdown" style="width:150px">
+                    <span v-if="TechCtlTypeList.length>0"> {{ TechCtlTypeList[TechCtlTypeListIndex].F_NAME}}</span>
+                    <div class="dropdown-content" style="min-width:150px">
+                        <div v-for="(item,index) in TechCtlTypeList" :key="index" @click="choseItem1(index)">{{item.F_NAME}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 1">
-            <div class="dropdown-text">终端列表：</div>
-            <div class="dropdown" style="width:250px">
-                <span v-if="TerminalTree.length>0"> {{TerminalTree[TerminalTreeIndex].label}}</span>
-                <div class="dropdown-content" style="min-width:250px">
-                    <div v-for="(item,index) in TerminalTree" :key="index" @click="choseItem2(index)">{{item.label}}</div>
+            <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 1">
+                <div class="dropdown-text">终端列表：</div>
+                <div class="dropdown" style="width:250px">
+                    <span v-if="TerminalTree.length>0"> {{TerminalTree[TerminalTreeIndex].label}}</span>
+                    <div class="dropdown-content" style="min-width:250px">
+                        <div v-for="(item,index) in TerminalTree" :key="index" @click="choseItem2(index)">{{item.label}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 2">
-            <div class="dropdown-text">设备列表：</div>
-            <div class="dropdown" style="width:250px">
-                <span v-if="DeviceTree.length>0"> {{DeviceTree[DeviceTreeIndex].label}}</span>
-                <div class="dropdown-content" style="min-width:250px">
-                    <div v-for="(item,index) in DeviceTree" :key="index" @click="choseItem3(index)">{{item.label}}</div>
+            <div style="display:flex; align-items: center;" v-show="TechCtlTypeList.length > 0 && TechCtlTypeList[TechCtlTypeListIndex].F_VAL == 2">
+                <div class="dropdown-text">设备列表：</div>
+                <div class="dropdown" style="width:250px">
+                    <span v-if="DeviceTree.length>0"> {{DeviceTree[DeviceTreeIndex].label}}</span>
+                    <div class="dropdown-content" style="min-width:250px">
+                        <div v-for="(item,index) in DeviceTree" :key="index" @click="choseItem3(index)">{{item.label}}</div>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="">
-            <button class="buttonAndText-button" @click="search">搜索</button>
-        </div>
-        <div class="">
-            <button class="buttonAndText-button" @click="dialogUploadVisible = true">上传</button>
-        </div>
-        <div class="">
-            <button class="buttonAndText-button" @click="dialogTableVisible = true">下发</button>
-        </div>
-        <!-- <div style="display:flex; align-items: center;">
+            <div class="">
+                <button class="buttonAndText-button" @click="search">搜索</button>
+            </div>
+            <div class="">
+                <button class="buttonAndText-button" @click="dialogUploadVisible = true">上传</button>
+            </div>
+            <div class="">
+                <button class="buttonAndText-button" @click="dialogTableVisible = true">下发</button>
+            </div>
+            <!-- <div style="display:flex; align-items: center;">
             <div class="dropdown-text">下发设备：</div>
             <div class="dropdown">
                 {{this.$store.state.deviceIdArr[index].deviceName}}
@@ -50,62 +51,69 @@
                 </div>
             </div>
         </div> -->
-        <!-- 设备列表弹窗 -->
-        <el-dialog title="设备列表" :visible.sync="dialogTableVisible">
-            <el-table :data="deviceArray" max-height="400" @selection-change="handleSelectionChange">
-                <el-table-column type="selection" width="55"></el-table-column>
-                <el-table-column property="F_NAME" label="设备名" width="250"></el-table-column>
-                <el-table-column property="F_DEVICEID" label="设备id"></el-table-column>
-            </el-table>
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="dialogTableVisible = false">取 消</el-button>
-                <el-button type="primary" @click="submit(dialogTableVisible = false)">确 定</el-button>
-            </span>
-        </el-dialog>
-        <!-- 文件上传弹窗 -->
-        <el-dialog title="文件上传" :visible.sync="dialogUploadVisible">
-            <div class="center">
-                <el-form :model="form" :rules="rule">
-                    <el-form-item label="工艺文件名称" :label-width="formLabelWidth" prop="techfilename">
-                        <el-input v-model="form.techfilename" size='mini' maxlength="16" autocomplete="off"></el-input>
-                    </el-form-item>
-                    <el-form-item label="使用范围" :label-width="formLabelWidth" prop="ctltype">
-                        <el-select v-model="form.ctltype" placeholder="请选择使用范围" @change="getRange">
-                            <el-option v-for="(item,index) of TechCtlTypeList" :key="index" :label="item.F_NAME" :value="item.F_VAL"> </el-option>
-                        </el-select>
-                    </el-form-item>
+            <!-- 设备列表弹窗 -->
+            <el-dialog title="设备列表" :visible.sync="dialogTableVisible">
+                <el-table :data="deviceArray" max-height="400" @selection-change="handleSelectionChange">
+                    <el-table-column type="selection" width="55"></el-table-column>
+                    <el-table-column property="F_NAME" label="设备名" width="250"></el-table-column>
+                    <el-table-column property="F_DEVICEID" label="设备id"></el-table-column>
+                </el-table>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="dialogTableVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="submit(dialogTableVisible = false)">确 定</el-button>
+                </span>
+            </el-dialog>
+            <!-- 文件上传弹窗 -->
+            <el-dialog title="文件上传" :visible.sync="dialogUploadVisible">
+                <div class="center">
+                    <el-form :model="form" :rules="rule">
+                        <el-form-item label="工艺文件名称" :label-width="formLabelWidth" prop="techfilename">
+                            <el-input v-model="form.techfilename" size='mini' maxlength="16" autocomplete="off"></el-input>
+                        </el-form-item>
+                        <el-form-item label="使用范围" :label-width="formLabelWidth" prop="ctltype">
+                            <el-select v-model="form.ctltype" placeholder="请选择使用范围" @change="getRange">
+                                <el-option v-for="(item,index) of TechCtlTypeList" :key="index" :label="item.F_NAME" :value="item.F_VAL"> </el-option>
+                            </el-select>
+                        </el-form-item>
 
-                    <el-form-item label="终端编号" :label-width="formLabelWidth" v-if="showRange == 1">
-                        <el-select multiple size="small" v-model="form.ctltarget" placeholder="请选择终端编号">
-                            <el-option v-for="(item,index) of uploadTerminalTree" :key="index" :label="item.label" :value="item.id"> </el-option>
+                        <el-form-item label="终端编号" :label-width="formLabelWidth" v-if="showRange == 1">
+                            <el-select multiple size="small" v-model="form.ctltarget" placeholder="请选择终端编号">
+                                <el-option v-for="(item,index) of uploadTerminalTree" :key="index" :label="item.label" :value="item.id"> </el-option>
 
-                        </el-select>
-                    </el-form-item>
+                            </el-select>
+                        </el-form-item>
 
-                    <el-form-item label="设备名称" :label-width="formLabelWidth" v-if="showRange == 2">
-                        <el-select multiple size="small" collapse-tags v-model="form.ctltarget" placeholder="请选择设备名称" @change="multiple">
-                            <el-option v-for="(item,index) of uploadDeviceTree" :key="index" :label="item.label" :value="item.id"> </el-option>
-                        </el-select>
-                    </el-form-item>
+                        <el-form-item label="设备名称" :label-width="formLabelWidth" v-if="showRange == 2">
+                            <el-select multiple size="small" collapse-tags v-model="form.ctltarget" placeholder="请选择设备名称" @change="multiple">
+                                <el-option v-for="(item,index) of uploadDeviceTree" :key="index" :label="item.label" :value="item.id"> </el-option>
+                            </el-select>
+                        </el-form-item>
 
-                    <el-form-item label="文件" :label-width="formLabelWidth">
-                        <el-upload class="upload-demo" action="http://27.150.173.9:9002/DDC/Image/SaveTechFile" :data="urlData" :on-preview="handlePreview" :on-success="success" :on-remove="handleRemove" :before-remove="beforeRemove" :before-upload="beforeAvatarUpload" multiple :limit="1"
-                            :on-exceed="handleExceed" :file-list="fileList">
-                            <el-button size="small" type="primary">点击上传</el-button>
-                            <div slot="tip" class="el-upload__tip">文件大小不超过10mb</div>
-                        </el-upload>
-                    </el-form-item>
+                        <el-form-item label="文件" :label-width="formLabelWidth">
+                            <el-upload class="upload-demo" action="http://27.150.173.9:9002/DDC/Image/SaveTechFile" :data="urlData" :on-preview="handlePreview" :on-success="success" :on-remove="handleRemove" :before-remove="beforeRemove" :before-upload="beforeAvatarUpload" multiple :limit="1"
+                                :on-exceed="handleExceed" :file-list="fileList">
+                                <el-button size="small" type="primary">点击上传</el-button>
+                                <div slot="tip" class="el-upload__tip">文件大小不超过10mb</div>
+                            </el-upload>
+                        </el-form-item>
 
-                </el-form>
-            </div>
+                    </el-form>
+                </div>
 
-            <span slot="footer" class="dialog-footer">
-                <el-button type="primary" @click="cancel(dialogUploadVisible = false)">取 消</el-button>
-                <el-button type="primary" @click="upload(dialogUploadVisible = false)">确 定</el-button>
-            </span>
-        </el-dialog>
+                <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="cancel(dialogUploadVisible = false)">取 消</el-button>
+                    <el-button type="primary" @click="upload(dialogUploadVisible = false)">确 定</el-button>
+                </span>
+            </el-dialog>
 
+        </div>
+
+        <div style="text-align:right">
+            <el-pagination :pager-count="11" :page-size="36" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </div>
     </div>
+
 </template>
 
 <script>
@@ -148,7 +156,7 @@ export default {
             uploadDeviceTree: [],//上传文件设备列表
             uploadDeviceTreeIndex: 0,//上传文件设备列表
 
-
+            total: 0,
             fileList: [],//文件列表
             PathList: [],//服务端返回的文件id（fileId）
             urlData: {
@@ -184,6 +192,9 @@ export default {
 
     },
     methods: {
+        currentChange(val) {
+            this.search(val - 1);
+        },
         choseItem(index) {
             this.index = index;
 
@@ -233,8 +244,8 @@ export default {
             let obj = {
                 ctltype: this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL,
                 oper: "wuji",
-                pageindex: 0,
-                pagesize: 15,
+                pageindex: typeof arguments[0] == 'number' ? arguments[0] : 0,
+                pagesize: 36,
             }
             if (this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL == 0) {
                 this.$axios.post("api/DDC/TechFile/TechFilelist" + utils.formatQueryStr(obj)).then(res => {
@@ -243,6 +254,7 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.total = parseInt(res.Counts);
                     that.$emit("update:fileData", res.Rows);
                 }
                 ).catch(error => {
@@ -258,6 +270,8 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.total = parseInt(res.Counts);
+
                     that.$emit("update:fileData", res.Rows);
                 }
                 ).catch(error => {
@@ -273,6 +287,7 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.total = parseInt(res.Counts);
                     that.$emit("update:fileData", res.Rows);
                 }
                 ).catch(error => {
@@ -396,6 +411,9 @@ export default {
         upload() {
             let obj = JSON.parse(JSON.stringify(this.form));
             obj.fileid = this.PathList[0];
+            if (this.showRange == 0) {
+                obj.ctltarget = "";
+            }
             if (this.showRange == 1) {
                 obj.ctltarget = obj.ctltarget.join(",");
             }
@@ -403,6 +421,8 @@ export default {
                 obj.ctltarget = this.deviceId.join(",");
             }
             obj.oper = "wuji";
+            console.log(obj);
+
             this.$axios.post("api/DDC/TechFile/TechFileSave", obj).then(res => {
                 console.log(res);
                 if (res.success) {
@@ -410,6 +430,9 @@ export default {
                         confirmButtonText: '确定',
                     })
                 }
+                // this.search();
+                this.cancel();
+
             }).catch(error => {
 
             })
@@ -430,15 +453,15 @@ export default {
             ctltype: 0,
             oper: "wuji",
             pageindex: 0,
-            pagesize: 15,
+            pagesize: 36,
         }
-
         this.$axios.post("api/DDC/TechFile/TechFilelist" + utils.formatQueryStr(obj)).then(res => {
             if (res.Rows.length == 0) {
                 this.$messageBox('暂无数据', '提示', {
                     confirmButtonText: '确定',
                 });
             }
+            this.total = parseInt(res.Counts);
             that.$emit("update:fileData", res.Rows);
         }
         ).catch(error => {

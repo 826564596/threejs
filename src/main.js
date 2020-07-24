@@ -11,6 +11,7 @@ import "./plugins/echarts.js";
 import cookies from "vue-cookies";
 
 import utils from "./assets/utils/utils";
+import test from "./assets/utils/test";
 
 //组件
 import weather from "@/components/weather";
@@ -24,6 +25,7 @@ import operatingDay from "@/components/operatingDay";
 import calendar from "@/components/calendar";
 import backToHome from "@/components/backToHome";
 import dropdown from "@/components/dropdown";
+import pagination from "@/components/pagination";
 
 // import dropdownMaintain from "@/components/dropdownMaintain";
 
@@ -38,6 +40,8 @@ Vue.component("operatingDay", operatingDay);
 Vue.component("calendar", calendar);
 Vue.component("backToHome", backToHome);
 Vue.component("dropdown", dropdown);
+Vue.component("pagination", pagination);
+
 // Vue.component("dropdownMaintain", dropdownMaintain);
 
 Vue.prototype.$axios = $axios;

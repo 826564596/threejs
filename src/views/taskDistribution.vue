@@ -25,9 +25,9 @@
                 <!-- 派发记录查询 -->
                 <div v-if="buttonActive == 0">
                     <dropdownTaskQuery :tableData.sync="tableData1" />
-                    <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
+                    <div class="pm_content-two" style="height:552px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
-                            <el-table :data="tableData1" style="width: 100%; " max-height="571" border>
+                            <el-table :data="tableData1" style="width: 100%; " max-height="551" border>
                                 <el-table-column prop="F_NAME" label="设备名称" width="249">
                                 </el-table-column>
                                 <el-table-column prop="F_PRODUCTNAME" label="产品名称" width="200">
@@ -58,9 +58,9 @@
                         <div :class="`processDocuments-content ${fileIndex == index ? 'active' : ''}` " @click="clickId(item,index)" v-for="(item,index) of fileData" :key="index">
                             <div class="top-picture ">
                             </div>
-                            <div class="top-text">
+                            <div class="top-text" :labelTooltip="`${item.F_TECHFILENAME}`">
                                 <!-- {{item.F_FILENAME}} -->
-                                {{item. F_TECHFILENAME}}
+                                {{item.F_TECHFILENAME}}
                             </div>
                         </div>
                     </div>

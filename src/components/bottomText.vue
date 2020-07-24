@@ -2,28 +2,29 @@
 <template>
     <div class="bottomText">
         <el-row>
-            <el-col :span="12">
+            <el-col :span="11">
                 <div class="">
                     晋江市无极激光工艺品工贸有限公司
                 </div>
             </el-col>
-            <el-col :span="10" :offset="2">
+            <el-col :span="14" :offset="1">
                 <div class="">
-                    地址：泉州市晋江市青阳街道
+                    地址：福建省晋江市青阳街道和平商务酒店旁无极大楼
                 </div>
             </el-col>
         </el-row>
 
         <el-row>
-            <el-col :span="12">
+            <el-col :span="11">
                 <div class="">
-                    邮箱：company@wuji.com
+                    电话：18859951991
                 </div>
             </el-col>
 
-            <el-col :span="10" :offset="2">
+            <el-col :span="14" :offset="1">
                 <div class="">
-                    电话：0595-28888888
+                    邮箱：wangyunbing@wujiendlesl.com
+
                 </div>
             </el-col>
         </el-row>

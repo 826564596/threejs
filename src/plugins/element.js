@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { Dialog, Form, Upload, FormItem, Option, Select, Message, Col, Row, Button, Input, Checkbox, Table, TableColumn, Carousel, CarouselItem, DatePicker, Alert, MessageBox } from "element-ui";
+import { Dialog, Pagination, Form, Upload, FormItem, Option, Select, Message, Col, Row, Button, Input, Checkbox, Table, TableColumn, Carousel, CarouselItem, DatePicker, Alert, MessageBox } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import "element-ui/lib/theme-chalk/display.css";
 Vue.use(Col);
@@ -17,6 +17,7 @@ Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Option);
 Vue.use(Select);
+Vue.use(Pagination);
 Vue.use(Upload);
 
 // Vue.use(Alert);

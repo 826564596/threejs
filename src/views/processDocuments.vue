@@ -18,7 +18,7 @@
                     <div :class="`processDocuments-content  ${fileIndex == index ? 'active' : ''}` " @click="clickId(item,index)" v-for="(item,index) of fileData" :key="index">
                         <div class="top-picture ">
                         </div>
-                        <div class="top-text ">
+                        <div class="top-text " :labelTooltip="`${item.F_TECHFILENAME}`">
                             <!-- {{item.F_FILENAME}} -->
                             {{item. F_TECHFILENAME}}
 
