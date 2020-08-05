@@ -231,9 +231,9 @@
                         </div> -->
                         <el-row>
                             <el-col :span="12">
-                                <div style='height:180px' class="" id="echarts-pie">
-
+                                <div style='height:180px' id="echarts-pie">
                                 </div>
+
                             </el-col>
 
                             <el-col :span="12">
@@ -242,7 +242,7 @@
                                         报警信息
                                     </div>
                                     <div class="first-right-content ">
-                                        {{LstWarnListStr != "" ? LstWarnListStr :'暂无'}}
+                                        {{LstWarnListStr != "" ? LstWarnListStr :'暂无数据'}}
 
                                     </div>
                                 </div>
@@ -469,6 +469,9 @@ export default {
             locationArray: [],//轴坐标数组、
             preLocationArray: [0, -90, 180, 0, 0, 0],// 更新轴坐标前的数据
             testarr: [],
+            flag: false,
+            online: "",//在线状态
+            DayWarnDis: [],
             // i: 0,
 
 
@@ -501,9 +504,10 @@ export default {
         },
         // 设置相机
         initCamera() {
-            this.camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10000);
-            this.camera.position.set(0, 100, 100);
-            this.camera.lookAt(0, 60, 50);
+            this.camera = new Three.PerspectiveCamera(80, window.innerWidth / window.innerHeight, 0.1, 10000);
+
+            this.camera.position.set(156, 112, -197);
+
         },
         // 渲染器
         initRender() {
@@ -595,6 +599,85 @@ export default {
 
 
         },
+        /** 创建canvas对象*/
+        makeLabelCanvas(baseWidth, size, name, color) {
+            const borderSize = 2;
+            const ctx = document.createElement('canvas').getContext('2d');
+            const font = `${size}px bold sans-serif`;
+            ctx.font = font;
+            // measure how long the name will be
+            const textWidth = ctx.measureText(name).width;
+            const doubleBorderSize = borderSize * 2;
+            const width = baseWidth + doubleBorderSize;
+            const height = size + doubleBorderSize;
+            ctx.canvas.width = width;
+            ctx.canvas.height = height;
+
+            // need to set font again after resizing canvas
+            ctx.font = font;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+
+            ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+            ctx.fillRect(0, 0, width, height);
+
+            // scale to fit but don't stretch
+            const scaleFactor = Math.min(1, baseWidth / textWidth);
+            ctx.translate(width / 2, height / 2);
+            ctx.scale(scaleFactor, 1);
+            ctx.fillStyle = color;
+            ctx.fillText(name, 0, 0);
+            return ctx.canvas;
+        },
+        /** 添加精灵图 */
+        createTables(index, item, x, z) {
+
+            let canvas;
+            console.log(item);
+            if (item == "离线") {
+                canvas = this.makeLabelCanvas(100, 100, index, "rgb(210, 60, 64)");
+                let spriteMap = new Three.TextureLoader().load(require("../assets/image/离线2.png"));
+                let spriteMaterial = new Three.SpriteMaterial({
+                    transparent: true,
+                    map: spriteMap,
+                    side: Three.DoubleSide,
+
+                });
+                let sprite = new Three.Sprite(spriteMaterial);
+                sprite.scale.set(25, 25, 1)
+                sprite.position.set(x, 110, z);
+                this.scene.add(sprite);
+
+            }
+            else {
+                canvas = this.makeLabelCanvas(100, 100, index, "rgb(91, 255, 185)");
+                let spriteMap = new Three.TextureLoader().load(require("../assets/image/在线2.png"));
+                let spriteMaterial = new Three.SpriteMaterial({
+                    transparent: true,
+                    map: spriteMap,
+                    side: Three.DoubleSide,
+
+
+                });
+                let sprite = new Three.Sprite(spriteMaterial);
+                sprite.scale.set(25, 25, 1)
+                sprite.position.set(x, 110, z);
+                this.scene.add(sprite);
+            }
+            const texture = new Three.CanvasTexture(canvas);
+            let spriteMaterial = new Three.SpriteMaterial({
+                transparent: true,
+                map: texture,
+                side: Three.DoubleSide,
+                // color: 0x00ff00,
+
+            });
+            let sprite = new Three.Sprite(spriteMaterial);
+            sprite.scale.set(25, 25, 1)
+            sprite.position.set(x, 130, z);
+            this.scene.add(sprite);
+
+        },
         addObject(object, obj, obj3, obj4) {
             let z = 300;
             let x = 200;
@@ -681,7 +764,7 @@ export default {
 
             J1.scale.set(30, 30, 30);
             J1.position.set(16 * 20, 18 * 20, 12 * 20);
-            obj.name = this.$route.params.groupName;
+            obj.name = this.groupName;
             obj.add(J1);
 
 
@@ -695,10 +778,12 @@ export default {
 
             obj.add(obj4);
 
-            obj.position.z = 0;
-            obj.position.x = 30;
+            obj.position.z = -20;
+            obj.position.x = 70;
             obj.rotation.y = -0.5 * Math.PI;
 
+
+            this.createTables(this.groupName.substr(1, 2), this.online, -0, -20);
             this.scene.add(obj);
 
         },
@@ -747,35 +832,7 @@ export default {
         },
 
 
-        makeLabelCanvas(baseWidth, size, name, color) {
-            const borderSize = 2;
-            const ctx = document.createElement('canvas').getContext('2d');
-            const font = `${size}px bold sans-serif`;
-            ctx.font = font;
-            // measure how long the name will be
-            const textWidth = ctx.measureText(name).width;
-            const doubleBorderSize = borderSize * 2;
-            const width = baseWidth + doubleBorderSize;
-            const height = size + doubleBorderSize;
-            ctx.canvas.width = width;
-            ctx.canvas.height = height;
 
-            // need to set font again after resizing canvas
-            ctx.font = font;
-            ctx.textBaseline = 'middle';
-            ctx.textAlign = 'center';
-
-            ctx.fillStyle = 'rgba(255, 255, 255, 0)';
-            ctx.fillRect(0, 0, width, height);
-
-            // scale to fit but don't stretch
-            const scaleFactor = Math.min(1, baseWidth / textWidth);
-            ctx.translate(width / 2, height / 2);
-            ctx.scale(scaleFactor, 1);
-            ctx.fillStyle = color;
-            ctx.fillText(name, 0, 0);
-            return ctx.canvas;
-        },
 
         //添加图表
         createTable() {
@@ -877,7 +934,7 @@ export default {
         },
 
         animate() {
-            requestAnimationFrame(this.animate);
+            this.id = requestAnimationFrame(this.animate);
             this.renderer.render(this.scene, this.camera);
             this.update();
             let vect = this.camera.getWorldDirection(new Three.Vector3());//获取当前视角方向
@@ -976,6 +1033,9 @@ export default {
                     break;
                 case 87: // w
                     this.front = true;
+                    console.log(this.camera.position);
+                    console.log(this.camera);
+
                     break;
             }
         },
@@ -1327,6 +1387,7 @@ export default {
             myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/DayWarnDis" + utils.formatQueryStr(obj)).then(res => {
                 myChart.hideLoading();
+                this.DayWarnDis = res;
                 let data1 = [];
                 let data2 = [];
                 res.forEach((item, index) => {
@@ -1336,6 +1397,18 @@ export default {
                         name: item.F_ERRORN
                     })
                 })
+                if (res.length == 0) {
+                    myChart.setOption({
+                        title: {
+                            text: '暂无数据',
+                            x: "center",
+                            top: "40%",
+                            textStyle: {
+                                color: "#fff"
+                            }
+                        },
+                    })
+                }
                 myChart.setOption({
                     legend: {
                         data: data1
@@ -1381,8 +1454,9 @@ export default {
     },
 
     created() {
-        this.deviceId = this.$route.params.deviceId;
-        this.groupName = this.$route.params.groupName;
+        this.deviceId = this.$cookies.get("deviceId");
+        this.groupName = this.$cookies.get("groupName");
+        this.online = this.$cookies.get("online");
     },
     mounted() {
         let that = this;
@@ -1398,6 +1472,16 @@ export default {
             return this.onWindowResize();
         }
 
+        setInterval(() => {
+            if (window.innerWidth != window.screen.availWidth) {
+                this.flag = true;
+            }
+            if (window.innerWidth == window.screen.availWidth && this.flag) {
+                this.flag = false;
+                this.onWindowResize();
+            }
+        }, 500)
+
 
         // setInterval(() => {
         this.$socketApi.sendSock((res) => {
@@ -1409,13 +1493,27 @@ export default {
             this.locationArray = this.locationArrays;
             this.i = 0;
         }, 1000)
+
+        // setInterval(() => {
+        //     this.getData();
+        //     this.initEchartBar2();
+        //     this.initEchartRadar();
+        //     this.initEchartPie();
+        // }, 10000)
         // }, 1000)
 
     },
     destroyed() {
         //页面销毁时删除场景
+        cancelAnimationFrame(this.id);//停止动画
         this.scene.children = {};
         this.renderer.dispose();
+        this.scene = null;//清除场景
+        this.controls = null;//清除控制器
+        this.camera = null;//清除相机
+        this.renderer = null;//清除渲染器
+        this.container = null;
+        this.composer = null;//后期处理
         // socketApi.websock.close();
     },
 

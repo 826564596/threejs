@@ -28,7 +28,7 @@ export default {
             arr: [],
             startDate: '',//开始时间
             endDate: '',//结束时间
-            value2: "",
+            value2: ["2020-06-01", utils.dateToDay(new Date())],
         };
     },
 
@@ -56,11 +56,11 @@ export default {
                 return a.name.substr(10, a.name.length - 1) - b.name.substr(10, b.name.length - 1);
             })
             for (let i of res) {
-                i.run_duration = (i.run_duration / 1000 / 60).toFixed(5);
-                i.free_duration = (i.free_duration / 1000 / 60).toFixed(5);
+                i.run_duration = (i.run_duration / 1000 / 60).toFixed(2);
+                i.free_duration = (i.free_duration / 1000 / 60).toFixed(2);
 
-                i.stop_duration = (i.stop_duration / 1000 / 60).toFixed(5);
-                i.warn_duration = (i.warn_duration / 1000 / 60).toFixed(5);
+                i.stop_duration = (i.stop_duration / 1000 / 60).toFixed(2);
+                i.warn_duration = (i.warn_duration / 1000 / 60).toFixed(2);
 
             }
             this.$emit("update:tableData", res);

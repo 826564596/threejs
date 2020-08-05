@@ -123,9 +123,9 @@
                 <!-- 设备保养 -->
                 <div v-if="buttonActive == 3">
                     <dropdownProtect :tableData.sync="tableData4" />
-                    <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
+                    <div class="pm_content-two" style="height:552px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
-                            <el-table :data="tableData4" style="width: 100%; " max-height="571" border>
+                            <el-table :data="tableData4" style="width: 100%; " max-height="551" border>
                                 <el-table-column prop="F_mtdate" label="保养日期" width="200">
                                 </el-table-column>
                                 <el-table-column prop="F_mttime" label="保养时间" width="200">

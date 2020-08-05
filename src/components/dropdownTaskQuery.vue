@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div>
-                <el-date-picker v-model="value2" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
+                <el-date-picker v-model="value4" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
                 </el-date-picker>
             </div>
             <div class="">
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div style="text-align:right">
-            <el-pagination :pager-count="11" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            <el-pagination :pager-count="11" :current-page.sync="pageIndex" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
     </div>
@@ -35,8 +35,9 @@ export default {
             arr: [],
             startDate: '',//开始时间
             endDate: '',//结束时间
-            value2: "",
-            total: 0,
+            value4: "",
+            total: 0,//数据总数
+            pageIndex: 1,//分页页码
         };
     },
 
@@ -66,11 +67,11 @@ export default {
 
     methods: {
         currentChange(val) {
-            console.log(val);
-
+            console.log(this.value4);
             let that = this;
-            let startDate = this.value2 ? utils.dateToDay(this.value2[0]) : "";
-            let endDate = this.value2 ? utils.dateToDay(this.value2[1]) : "";
+            let arr = [this.value4[0].clone(), this.value4[1].clone()];
+            let startDate = utils.dateToDay(arr[0]);
+            let endDate = utils.dateToDay(arr[1]);
             let obj = {
                 MAC: 'wuji',
                 deviceid: this.arr[this.index].deviceId,
@@ -85,6 +86,7 @@ export default {
                         confirmButtonText: '确定',
                     });
                 }
+                this.pageIndex = obj.pageindex + 1;
                 this.total = parseInt(res.Counts);
                 this.$emit("update:tableData", res.Rows);
             }).catch(error => {
@@ -102,14 +104,15 @@ export default {
         //搜索
         search() {
             let that = this;
-            let startDate = utils.dateToDay(this.value2[0]);
-            let endDate = utils.dateToDay(this.value2[1]);
+            let arr = [this.value4[0].clone(), this.value4[1].clone()];
+            let startDate = utils.dateToDay(arr[0]);
+            let endDate = utils.dateToDay(arr[1]);
             let obj = {
                 MAC: 'wuji',
                 deviceid: this.arr[this.index].deviceId,
                 begindate: startDate,
                 enddate: endDate,
-                pageindex: 0,
+                pageindex: typeof arguments[0] == 'number' ? arguments[0] : 0,
                 pagesize: 10,
             }
             this.$axios.post("api/DDC/ProductTask/ProductTaskList" + utils.formatQueryStr(obj)).then(res => {
@@ -118,6 +121,7 @@ export default {
                         confirmButtonText: '确定',
                     });
                 }
+                this.pageIndex = obj.pageindex + 1;
                 this.total = parseInt(res.Counts);
                 this.$emit("update:tableData", res.Rows);
             }).catch(error => {

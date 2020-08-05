@@ -24,6 +24,9 @@ export default new Vuex.Store({
             { deviceId: "dev_test_ad7528b86fcd44f4a4cacf06733c07de", deviceName: "鞋材激光3D雕刻工位14" },
         ],
         a: 1,
+        deviceId: "",
+        online: "",
+        groupName: "",
         websocket: null, //websocket变量
         websocketData: null, //onmessage 返回的数据
     },

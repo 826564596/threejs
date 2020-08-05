@@ -50,7 +50,7 @@
 
         </div>
         <div style="text-align:right">
-            <el-pagination :pager-count="11" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            <el-pagination :pager-count="11" :current-page.sync="pageIndex" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
     </div>
@@ -70,7 +70,8 @@ export default {
             startDate: '',//开始时间
             endDate: '',//结束时间
             value2: "",
-            total: 0,
+            total: 0,//数据总数
+            pageIndex: 1,//分页页码
             SpcTypeList: [], // 点检大类
             SpcTypeIndex: 0, // 点检大类
             PeriodTypeList: [],//周期
@@ -154,6 +155,7 @@ export default {
                 for (let i of res.Rows) {
                     i.F_chkrst = i.F_chkrst == "0" ? "异常" : "通过";
                 }
+                // this.pageIndex = obj.pageindex + 1;
                 this.total = parseInt(res.Counts);
                 this.$emit("update:tableData", res.Rows);
             }).catch(error => {

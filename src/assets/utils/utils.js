@@ -75,6 +75,11 @@ const getAnyMouthFirstAndLast = (year, mouth) => {
     return arr;
 };
 
+//给Date得原型新增深拷贝clone函数
+Date.prototype.clone = function() {
+    return new Date(this.valueOf());
+};
+
 /** 输入new Date(),装换yyyy-mm-dd */
 const dateToDay = (date) => {
     date.setMinutes(date.getMinutes() - date.getTimezoneOffset());
@@ -132,7 +137,6 @@ const getAllAroundDay = (begin, end) => {
     }
     return arr; // 返回两个日期之间的所有日期数组。
 };
-
 module.exports = {
     CurrentMonthFirstAndLast: CurrentMonthFirstAndLast,
     formatQueryStr: formatQueryStr,

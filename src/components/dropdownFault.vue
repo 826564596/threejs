@@ -28,7 +28,7 @@
         </div>
 
         <div style="text-align:right">
-            <el-pagination :pager-count="11" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            <el-pagination :pager-count="11" :current-page.sync="pageIndex" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
     </div>
@@ -47,7 +47,8 @@ export default {
             startDate: '',//开始时间
             endDate: '',//结束时间
             value2: "",
-            total: 0,
+            total: 0,//数据总数
+            pageIndex: 1,//分页页码
             FaultTypeList: [],//故障类型
             FaultTypeIndex: 0,//故障类型
 
@@ -100,6 +101,7 @@ export default {
                         confirmButtonText: '确定',
                     });
                 }
+                this.pageIndex = obj.pageindex + 1;
                 this.total = parseInt(res.Counts);
                 this.$emit("update:tableData", res.Rows);
             }).catch(error => {

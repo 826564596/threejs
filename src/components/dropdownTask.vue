@@ -31,7 +31,12 @@
                     </div>
                 </div>
             </div>
-
+            <div style="display:flex; align-items: center;">
+                <div class="dropdown-text">关键词：</div>
+                <div>
+                    <el-input v-model="keyword" placeholder="请输入关键词"></el-input>
+                </div>
+            </div>
             <div class="">
                 <button class="buttonAndText-button" @click="search">搜索</button>
             </div>
@@ -82,7 +87,7 @@
             </div>
         </div>
         <div style="text-align:right">
-            <el-pagination :pager-count="11" :page-size="27" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            <el-pagination :pager-count="11" :page-size="27" :current-page.sync="pageIndex" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
             </el-pagination>
         </div>
     </div>
@@ -100,13 +105,14 @@ export default {
             arr: [],
             startDate: '',//开始时间
             endDate: '',//结束时间
-            width: 470,
+            width: 770,
             TechCtlTypeList: [], // 工艺文件使用范围
             TechCtlTypeListIndex: 0, // 工艺文件使用范围
-
+            keyword: "",
             TerminalTree: [],//终端列表
             TerminalTreeIndex: 0,//终端列表
-            total: 0,
+            total: 0,//分页总数
+            pageIndex: 1,//分页页码
             DeviceTree: [],//设备列表
             DeviceTreeIndex: 0,//设备列表
 
@@ -200,13 +206,13 @@ export default {
             }
             //如果为通用
             if (this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL == 0) {
-                this.width = 470;
+                this.width = 770;
 
 
             }
             //如果为终端内部
             else if (this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL == 1) {
-                this.width = 820;
+                this.width = 1120;
                 this.$axios.post("api/DDC/Terminal/TerminalTree" + utils.formatQueryStr(obj)).then(res => {
                     that.TerminalTree = res[0].children;
                 }).catch(error => {
@@ -216,7 +222,7 @@ export default {
             }
             //如果为设备专用
             else if (this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL == 2) {
-                this.width = 820;
+                this.width = 1120;
                 this.$axios.post("api/DDC/Terminal/DeviceTree" + utils.formatQueryStr(obj)).then(res => {
                     console.log(res);
                     that.DeviceTree = res[0].children;
@@ -237,6 +243,7 @@ export default {
             let obj = {
                 ctltype: this.TechCtlTypeList[this.TechCtlTypeListIndex].F_VAL,
                 oper: "wuji",
+                keyword: this.keyword,
                 pageindex: typeof arguments[0] == 'number' ? arguments[0] : 0,
                 pagesize: 27,
             }
@@ -247,6 +254,7 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.pageIndex = obj.pageindex + 1;
                     this.total = parseInt(res.Counts);
                     that.$emit("update:fileData", res.Rows);
                 }
@@ -263,8 +271,8 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.pageIndex = obj.pageindex + 1;
                     this.total = parseInt(res.Counts);
-
                     that.$emit("update:fileData", res.Rows);
                 }
                 ).catch(error => {
@@ -280,7 +288,9 @@ export default {
                             confirmButtonText: '确定',
                         });
                     }
+                    this.pageIndex = obj.pageindex + 1;
                     this.total = parseInt(res.Counts);
+
 
                     that.$emit("update:fileData", res.Rows);
                 }

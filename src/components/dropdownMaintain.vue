@@ -25,7 +25,10 @@
                 <button class="buttonAndText-button" @click="search">搜索</button>
             </div>
         </div>
-
+        <!-- <div style="text-align:right">
+            <el-pagination :pager-count="11" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+            </el-pagination>
+        </div> -->
     </div>
 
 </template>
@@ -69,7 +72,10 @@ export default {
 
     },
     methods: {
-        currentChange() { },
+        currentChange(val) {
+
+            this.search(val - 1);
+        },
         choseItem(index) {
             this.index = index;
         },
@@ -85,6 +91,8 @@ export default {
                 begindate: startDate,
                 enddate: endDate,
                 chkperiod: this.PeriodTypeList[this.PeriodTypeIndex].F_VAL,
+                // pageindex: typeof arguments[0] == 'number' ? arguments[0] : 0,
+                // pagesize: 10,
             }
             this.$axios.post("api/DDC/DeviceChk/QueryMTRecd" + utils.formatQueryStr(obj)).then(res => {
 
@@ -94,7 +102,6 @@ export default {
                     });
                 }
                 console.log(res);
-
                 this.$emit("update:tableData", res);
             }).catch(error => {
 

@@ -185,10 +185,10 @@
                         </el-col>
                         <el-col :span="9">
                             <div class="table-picture ">
-
                             </div>
                         </el-col>
                     </el-row>
+
                     <div class="right-table-content-new " id="echarts-pie">
                     </div>
                 </div>
@@ -212,7 +212,10 @@
                     <el-row>
                         <el-col :span="24">
                             <div class="timeText-bg ">
-                                <div v-if="alarmInformation.length > 0">
+                                <div v-show="alarmInformation.length == 0" class="center" style=" height: 120px;">
+                                    暂无数据
+                                </div>
+                                <div v-show="alarmInformation.length > 0">
                                     <div v-for="(item,index) in alarmInformation" class="timeText-bg-line" :key="index" @click="chooseAlarm(index)">
                                         <el-row>
                                             <el-col :span="7" :offset="1">
@@ -325,7 +328,7 @@
         <bottomText />
         <operatingDay />
         <!-- 点击标识 -->
-        <label v-show="labelTop!= null" ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px`"></label>
+        <label v-show="labelTop!= null" ref='label' class="label" :style="`top:${labelTop}px;left:${labelLeft}px;`"></label>
 
     </div>
 </template>
@@ -364,7 +367,6 @@ export default {
             scene: null,//场景
             renderer: null,//渲染器
             composer: null,//后期处理
-            mesh: null,//网格模型
             publicPath: process.env.VUE_APP_URL,
             container: null,
             controls: null,//控制器
@@ -396,13 +398,13 @@ export default {
             DayWorkLoadRank: [],
 
             flag: false,
+
         }
     },
     methods: {
 
         //初始化
         init() {
-
             let that = this;
             this.container = document.getElementById("container");
             // this.stats = this.initStats();
@@ -450,7 +452,7 @@ export default {
         },
         /**设置相机 */
         initCamera() {
-            this.camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.1, 10000);
+            this.camera = new Three.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 1, 10000);
             this.camera.position.set(0, 250, 500);
             this.camera.lookAt(0, 50, 50);
         },
@@ -471,16 +473,6 @@ export default {
             let directionalLight = new Three.DirectionalLight(0xffffff, 1);
             directionalLight.position.set(1, 0.75, 0.5).normalize();
             this.scene.add(directionalLight);
-
-
-
-            // directionalLight.color.setHSL(0.1, 1, 0.95);
-            // directionalLight.position.set(0, 200, 0).normalize();
-
-            // ambientLight.position.set(0, 0, 0);
-
-
-
         },
         /**控制器 */
         initControls() {
@@ -765,7 +757,8 @@ export default {
         },
         /** 动画  */
         animate() {
-            requestAnimationFrame(this.animate);
+            this.id = requestAnimationFrame(this.animate);
+
             this.renderer.render(this.scene, this.camera);
             this.composer.render();//后期
             // this.update();
@@ -1060,11 +1053,12 @@ export default {
                 this.renderer.dispose();
                 this.$router.push({
                     name: "seven",
-                    params: {
-                        groupName: groupName,
-                        deviceId: this.$store.state.deviceIdArr[groupName.substr(2, groupName.length - 1) - 1].deviceId
-                    }
                 });
+
+                this.$cookies.set("groupName", groupName, 60 * 60 * 24);
+                this.$cookies.set("deviceId", this.$store.state.deviceIdArr[groupName.substr(2, groupName.length - 1) - 1].deviceId, 60 * 60 * 24);
+                this.$cookies.set("online", this.DayWorkLoadRank[groupName.substr(2, groupName.length - 1) - 1].F_ONLINESTATUS, 60 * 60 * 24);
+
             }
 
             this.groupName = groupName;
@@ -1100,10 +1094,10 @@ export default {
             if (intersects.length > 0) {
                 let selectedObject = intersects[0].object;
                 // this.addSelectedObject(selectedObject, outlinePass, event.clientX, event.clientY);
-                //给标签赋值
+                //给标签赋值 
                 // this.labelLeft = event.clientX;
                 // this.labelTop = event.clientY;
-                // this.$refs.label.innerText = intersects[0].object.name;
+                // this.$refs.label.innerText = "双击查看设备详情";
 
                 outlinePass.selectedObjects = [intersects[0].object];
 
@@ -1164,12 +1158,30 @@ export default {
             if (intersects.length > 0) {
                 let selectedObject = intersects[0].object;
                 this.addSelectedObject(selectedObject, outlinePass, event.clientX, event.clientY);
+
             } else {
+                console.log();
             }
 
         },
         //鼠标移动事件
         move(event) {
+
+            // let raycaster = new Three.Raycaster();
+            // let mouse = new Three.Vector2();
+
+            // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            // mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+            // raycaster.setFromCamera(mouse, this.camera);
+            // let intersects = raycaster.intersectObjects([this.scene], true);
+            // if (intersects.length > 0) {
+            //     let selectedObject = intersects[0].object;
+            //     //给标签赋值 
+            //     this.labelLeft = event.clientX;
+            //     this.labelTop = event.clientY;
+            //     this.$refs.label.innerText = "双击查看设备详情";
+            // }
             if (this.leftPress) {
                 this.camera.rotateOnWorldAxis(
                     new Three.Vector3(0, 1, 0),
@@ -1783,7 +1795,7 @@ export default {
                 xAxis: [
                     {
                         type: 'category',
-                        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        data: [],
                         axisTick: {
                             alignWithLabel: true
                         },
@@ -1828,7 +1840,7 @@ export default {
                     {
                         type: 'bar',
                         barWidth: '40%',
-                        data: [10, 52, 200, 334, 390, 330, 220]
+                        data: []
                     }
                 ]
             }
@@ -1851,18 +1863,38 @@ export default {
 
                 }).then(res => {
                     myChart.hideLoading();
+                    console.log(res);
+                    if (res.length == 0) {
+                        myChart.setOption({
+                            title: {
+                                text: '暂无数据',
+                                x: "center",
+                                top: "40%",
+                                textStyle: {
+                                    color: "#fff"
+                                }
+                            },
+                        })
+                    }
                     res.sort((a, b) => {
                         return b["avg_workduration"] - a["avg_workduration"];
                     })
 
                     let data1 = [];
                     let data2 = [];
-                    for (let i = 0; i < 7; i++) {
-                        data1.push(res[i].name.substr(8, res[i].name.length - 1));
-                        data2.push(res[i].avg_work_duration);
+
+                    if (res.length < 7) {
+                        for (let i = 0; i < res.length; i++) {
+                            data1.push(res[i].name.substr(8, res[i].name.length - 1));
+                            data2.push(res[i].avg_work_duration);
+                        }
                     }
-                    console.log(data1);
-                    console.log(data2);
+                    if (res.length > 7) {
+                        for (let i = 0; i < 7; i++) {
+                            data1.push(res[i].name.substr(8, res[i].name.length - 1));
+                            data2.push(res[i].avg_work_duration);
+                        }
+                    }
 
                     myChart.setOption({
                         xAxis: {
@@ -2035,6 +2067,18 @@ export default {
                         name: item.F_ERRORN
                     })
                 })
+                if (res.length == 0) {
+                    myChart.setOption({
+                        title: {
+                            text: '暂无数据',
+                            x: "center",
+                            top: "40%",
+                            textStyle: {
+                                color: "#fff"
+                            }
+                        },
+                    })
+                }
                 myChart.setOption({
                     legend: {
                         data: data1
@@ -2121,7 +2165,6 @@ export default {
 
     },
     updated() {
-
         console.log('ssssssssssssssss');
         console.log(window.innerWidth);
         console.log(window.screen.availWidth);
@@ -2166,14 +2209,34 @@ export default {
         }, 500)
 
 
+        // setInterval(() => {
+        //     this.getData();
+        //     this.$nextTick(res => {
+        //         this.initEchartBar();
+        //         this.initEchartBar2();
+        //         this.initEchartBar3();
+        //         this.initEchartBar4();
+        //         this.initEchartLine();
+        //         this.initEchartPie();
+        //     })
+        // }, 10000)
+
 
         // alert(window);
     },
 
     destroyed() {
         //页面销毁时删除场景
+        console.log('sssssssssss')
+        cancelAnimationFrame(this.id);// Stop the animation
         this.scene.children = {};
         this.renderer.dispose();
+        this.scene = null;//清除场景
+        this.controls = null;//清除控制器
+        this.camera = null;//清除相机
+        this.renderer = null;//清除渲染器
+        this.container = null;
+        this.composer = null;//后期处理
         // socketApi.websock.close();
 
     },

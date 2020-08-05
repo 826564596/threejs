@@ -148,8 +148,8 @@ export default {
         return {
             index: 0,
             buttonActive: 0,
-            value2: "",
-            value3: "",
+            value2: [utils.getDay(-6)[0], utils.getDay(-6)[1]],
+            value3: [utils.getDay(-6)[0], utils.getDay(-6)[1]],
             startDate: utils.getDay(-6)[0],
             endDate: utils.getDay(-6)[1],
             tableData: [],
@@ -210,10 +210,10 @@ export default {
                         stop += res.data[i][key][j].stop_duration;
                         warn += res.data[i][key][j].warn_duration;
                     }
-                    free_duration.push((free / 1000 / 60).toFixed(5));
-                    run_duration.push((run / 1000 / 60).toFixed(5));
-                    stop_duration.push((stop / 1000 / 60).toFixed(5));
-                    warn_duration.push((warn / 1000 / 60).toFixed(5));
+                    free_duration.push((free / 1000 / 60).toFixed(2));
+                    run_duration.push((run / 1000 / 60).toFixed(2));
+                    stop_duration.push((stop / 1000 / 60).toFixed(2));
+                    warn_duration.push((warn / 1000 / 60).toFixed(2));
 
                 }
                 that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration);
@@ -542,11 +542,15 @@ export default {
             myChart.setOption({
 
                 dataZoom: [{
+
                     type: 'slider',
-                    show: true,
-                    start: 0,
-                    end: 30,
+                    show: false,
+                    // start: 80,
+                    // end: 100,
                     height: 12,
+
+                    startValue: 0,
+                    endValue: 7,
                     bottom: 0,
                     borderColor: "#fff",
                     // fillerColor: "#fff",
@@ -563,11 +567,10 @@ export default {
                 {
                     type: 'inside',
                     rangeMode: ['value', 'value'],
-                    startValue: 0,
+                    startValue: 80,
                     endValue: 100,
 
-                    start: 0,
-                    end: 30,
+
 
                 }
                 ],
@@ -576,7 +579,8 @@ export default {
                     left: '0%',
                     bottom: '10%',
                     top: "5%",
-                    containLabel: true
+                    containLabel: true,
+                    // show: 'false',
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -657,7 +661,8 @@ export default {
                     data: ['停机时长(分)', '运行时长(分)', '报警时长(分)', '空闲时长(分)'],
                     textStyle: {
                         color: "#fff"
-                    }
+                    },
+                    inactiveColor: "#777",
                 },
 
                 toolbox: {
@@ -713,56 +718,63 @@ export default {
                         stack: '总量',
                         symbol: 'none',//
                         smooth: true,//是否平滑
+                        areaStyle: {},
                         data: stop,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        // lineStyle: {
+                        //     color: "rgba(10,16,174,0.8)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,16,174,0.8)"
+                        // }
                     },
                     {
                         name: '运行时长(分)',
                         type: 'line',
                         stack: '总量',
+                        symbol: 'none',
                         smooth: true,
+                        areaStyle: {},
                         data: run,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        // lineStyle: {
+                        //     color: "rgba(10,156,174,0.8)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,156,174,0.8)"
+                        // }
                     },
                     {
                         name: '报警时长(分)',
                         type: 'line',
                         stack: '总量',
+                        symbol: 'none',
                         smooth: true,
+                        areaStyle: {},
                         data: warn,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        // lineStyle: {
+                        //     color: "rgba(10,206,174,0.8)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,206,174,0.8)"
+                        // }
                     },
                     {
                         name: '空闲时长(分)',
                         type: 'line',
                         stack: '总量',
+                        symbol: 'none',
                         smooth: true,
+                        areaStyle: {},
                         data: free,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        // lineStyle: {
+                        //     color: "rgba(10,255,174,1)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,255,174,1)"
+                        // }
                     },
 
                 ]

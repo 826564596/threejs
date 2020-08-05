@@ -11,8 +11,7 @@ import "./plugins/echarts.js";
 import cookies from "vue-cookies";
 
 import utils from "./assets/utils/utils";
-import test from "./assets/utils/test";
-
+Vue.prototype.$utils = utils;
 //组件
 import weather from "@/components/weather";
 import login from "@/components/login";

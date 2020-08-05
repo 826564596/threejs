@@ -10,7 +10,7 @@
                             <div class=" login_input ">
                                 <div class="login_input_picture_username "></div>
                                 <div class="login_input_input ">
-                                    <el-input v-model="userName" placeholder="请输入内容"></el-input>
+                                    <el-input v-model="userName" placeholder="请输入用户名"></el-input>
                                 </div>
                             </div>
                         </el-col>
@@ -64,11 +64,13 @@
 
 <script>
 import utils from "../assets/utils/utils";
+import md5 from "../assets/utils/md5";
+
 export default {
     data() {
         return {
-            userName: 'wuji',
-            password: '123456',
+            userName: '',
+            password: '',
             checked: true,
         };
     },
@@ -80,7 +82,7 @@ export default {
             let that = this;
             let obj = {
                 USERNAME: this.userName,
-                PASSWD: this.password
+                PASSWD: md5.hex_md5(this.password)
             }
             this.$axios.post("/api/DDC/User/Login" + utils.formatQueryStr(obj)).then(res => {
                 if (res.success == true) {
@@ -112,12 +114,12 @@ export default {
         },
         setUserInfo() {
             this.$cookies.set("userName", this.userName, 60 * 60 * 24);
-            this.$cookies.set("password", this.password, 60 * 60 * 24);
+            this.$cookies.set("password", md5.hex_md5(this.password), 60 * 60 * 24);
         },
 
         setUserInfoSeven() {
             this.$cookies.set("userName", this.userName, 60 * 60 * 24 * 7);
-            this.$cookies.set("password", this.password, 60 * 60 * 24 * 7);
+            this.$cookies.set("password", md5.hex_md5(this.password), 60 * 60 * 24 * 7);
         }
         // deleteUserInfo() {
         //     this.$cookies.isKey("userName") && this.$cookies.remove("userName");
@@ -129,7 +131,7 @@ export default {
 </script>
 <style  lang="scss" >
 input[placeholder="请输入密码"].el-input__inner,
-input[placeholder="请输入内容"].el-input__inner {
+input[placeholder="请输入用户名"].el-input__inner {
     height: 50px !important;
     line-height: 50px;
     background-color: rgba(1, 1, 1, 0.1) !important;

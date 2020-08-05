@@ -162,8 +162,8 @@
                     <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
                             <el-table :data="tableData" style="width: 100%; " max-height="571" border>
-                                <el-table-column prop="id" label="设备ID" width="249">
-                                </el-table-column>
+                                <!-- <el-table-column prop="id" label="设备ID" width="249">
+                                </el-table-column> -->
                                 <el-table-column prop="name" label="设备名称" width="200">
                                 </el-table-column>
                                 <el-table-column prop="run_count" label="运行数(次)" width="100">
@@ -206,7 +206,7 @@ export default {
         return {
             index: 4,
             buttonActive: 0,
-            value2: "",
+            value2: [utils.getDay(-6)[0], utils.getDay(-6)[1]],
             free: 0,
             stop: 0,
             warn: 0,
@@ -219,7 +219,7 @@ export default {
             this.buttonActive = index;
             if (this.buttonActive == 0) {
                 this.$nextTick(() => {
-                    this.value2 = "";
+                    this.value2 = [utils.getDay(-6)[0], utils.getDay(-6)[1]];
                     let arr = utils.getDay(-6);
                     this.getlineData(arr[0], arr[1]);
 
@@ -251,7 +251,9 @@ export default {
                     data: ['停机时长(分)', '运行时长(分)', '报警时长(分)', '空闲时长(分)', '加工量'],
                     textStyle: {
                         color: "#fff"
-                    }
+                    },
+
+                    inactiveColor: "#777",
                 },
 
                 toolbox: {
@@ -308,70 +310,83 @@ export default {
                         symbol: 'none',//
                         smooth: true,//是否平滑
                         data: stop,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        areaStyle: {},
+                        // lineStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
+                        // }
                     },
                     {
                         name: '运行时长(分)',
                         type: 'line',
                         stack: '总量',
+                        symbol: 'none',//
+
                         smooth: true,
                         data: run,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        areaStyle: {},
+                        // lineStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
+                        // }
                     },
                     {
                         name: '报警时长(分)',
                         type: 'line',
                         stack: '总量',
+                        symbol: 'none',//
+
                         smooth: true,
                         data: warn,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        areaStyle: {},
+                        // lineStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
+                        // }
                     },
                     {
                         name: '空闲时长(分)',
                         type: 'line',
                         stack: '总量',
+                        symbol: 'none',//
+
                         smooth: true,
                         data: free,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        areaStyle: {},
+                        // lineStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
+                        // }
                     },
 
                     {
                         name: '加工量',
                         type: 'line',
                         stack: '总量',
+                        symbol: 'none',//
+
                         smooth: true,
                         data: workload,
-                        lineStyle: {
-                            color: "rgba(10,156,174,0.5)"
+                        areaStyle: {},
+                        // lineStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
 
-                        },
-                        areaStyle: {
-                            color: "rgba(10,156,174,0.5)"
-                        }
+                        // },
+                        // areaStyle: {
+                        //     color: "rgba(10,156,174,0.5)"
+                        // }
                     },
 
                 ]
@@ -644,10 +659,10 @@ export default {
                     // warn_duration.push(warn);
 
 
-                    free_duration.push((free / 1000 / 60).toFixed(5));
-                    run_duration.push((run / 1000 / 60).toFixed(5));
-                    stop_duration.push((stop / 1000 / 60).toFixed(5));
-                    warn_duration.push((warn / 1000 / 60).toFixed(5));
+                    free_duration.push((free / 1000 / 60).toFixed(2));
+                    run_duration.push((run / 1000 / 60).toFixed(2));
+                    stop_duration.push((stop / 1000 / 60).toFixed(2));
+                    warn_duration.push((warn / 1000 / 60).toFixed(2));
 
                     workloadarr.push(workload);
 
@@ -657,6 +672,7 @@ export default {
 
 
                 for (let i = 0, len = free_duration.length; i < len; i++) {
+
                     free_all += parseFloat(free_duration[i]);
                     run_all += parseFloat(run_duration[i]);
                     warn_all += parseFloat(warn_duration[i]);
@@ -664,11 +680,11 @@ export default {
                     workload_all += workloadarr[i];
 
                 }
-
-                that.free = free_all;
-                that.run = run_all;
-                that.stop = stop_all;
-                that.warn = warn_all;
+                console.log(free_duration);
+                that.free = free_all.toFixed(2);
+                that.run = run_all.toFixed(2);
+                that.stop = stop_all.toFixed(2);
+                that.warn = warn_all.toFixed(2);
 
                 that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration, workloadarr);
                 that.initEchartPie2(workload_all);
@@ -691,7 +707,7 @@ export default {
                 for (let i of res) {
                     avg_work_duration += i.avg_work_duration;
                 }
-                that.initEchartPie3((avg_work_duration / 1000 / 60).toFixed(2));
+                that.initEchartPie3((avg_work_duration / 1000 / 60 / 13).toFixed(2));
 
             }).catch(error => {
 
