@@ -39,67 +39,6 @@
                     </div>
                 </div>
             </el-row>
-            <!-- 第一行 主体 -->
-            <!-- <el-row>
-                <el-col :span="24">
-                    <div class="left-table-single-content-new " style="height:185px">
-
-                        <el-row style="padding-top:7px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    设备状态
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    在线
-                                </div>
-                            </el-col>
-                        </el-row>
-
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    坐标
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    1,2,3
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    加速度
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    1m/s2
-                                </div>
-                            </el-col>
-                        </el-row>
-                        <el-row style="margin-top:5px">
-                            <el-col :span="9" :offset="1">
-                                <div class="content-content content-content-left ">
-                                    减速度
-                                </div>
-                            </el-col>
-
-                            <el-col :span="11" :offset="2">
-                                <div class="content-content content-content-right ">
-                                    1m/s2
-                                </div>
-                            </el-col>
-                        </el-row>
-                    </div>
-                </el-col>
-            </el-row> -->
 
             <!-- 第二行title -->
             <el-row>
@@ -125,8 +64,8 @@
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
 
-                                    <div v-if="operation.length>0"> {{operation[0].F_RUNDURA + operation[0].F_FREEDURA + operation[0].F_WARNDURA}}</div>
-                                    <div v-else>暂无</div>
+                                    <div v-if="operation.length > 0"> {{operation[0].F_ONLINETIMELEN }}</div>
+                                    <div v-else>00:00:00</div>
 
                                 </div>
                             </el-col>
@@ -141,8 +80,8 @@
 
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
-                                    <div v-if="operation.length>0"> {{operation[0].F_RUNDURA}}</div>
-                                    <div v-else>暂无</div>
+                                    <div v-if="operation.length > 0"> {{operation[0].F_RUNDURA}}</div>
+                                    <div v-else>00:00:00</div>
                                 </div>
                             </el-col>
                         </el-row>
@@ -156,8 +95,8 @@
 
                             <el-col :span="11" :offset="2">
                                 <div class="content-content content-content-right ">
-                                    <div v-if="operation.length>0"> {{operation[0].F_WARNDURA}}</div>
-                                    <div v-else>暂无</div>
+                                    <div v-if="operation.length > 0"> {{operation[0].F_WARNDURA}}</div>
+                                    <div v-else>00:00:00</div>
 
                                 </div>
                             </el-col>
@@ -168,7 +107,7 @@
             </el-row>
 
             <!-- 第三行title -->
-            <el-carousel height="260px" arrow="never">
+            <el-carousel height="260px" arrow="never" interval="10000">
                 <el-carousel-item>
                     <!-- 第三行标题 -->
                     <el-row>
@@ -307,74 +246,7 @@
 
                 </el-carousel-item>
 
-                <!-- <el-carousel-item>
-                    <el-row>
-                        <el-col :span="18">
-                            <div class=" left-table-single-title">
-                                <div>保养</div>
-                            </div>
-                        </el-col>
-                    </el-row>
-                    <el-row>
-                        <el-col :span="24">
-                            <div class="left-table-single-content-new-e " style="height:auto ">
-                                <el-row>
-                                    <el-col :span="8">
-                                        <div class="explain ">
-                                            <div class="colorone">
-                                            </div>
-                                            <div class="text">
-                                                未执行
-                                            </div>
-                                        </div>
-                                    </el-col>
-
-                                    <el-col :span="8">
-                                        <div class="explain ">
-                                            <div class="colortwo">
-                                            </div>
-                                            <div class="text">
-                                                已完成
-                                            </div>
-                                        </div>
-                                    </el-col>
-
-                                    <el-col :span="8">
-                                        <div class="explain ">
-                                            <div class="colorthree">
-                                            </div>
-                                            <div class="text">
-                                                未完成
-                                            </div>
-                                        </div>
-                                    </el-col>
-                                </el-row>
-                                <div style="padding-bottom:10px">
-                                    <calendar :deviceId="deviceId" :url="`/DDC/DeviceWorkStatic/DeviceMTRecd`" />
-                                </div>
-
-                            </div>
-                        </el-col>
-                    </el-row>
-
-                </el-carousel-item> -->
             </el-carousel>
-
-            <!-- 第三行title -->
-            <!-- <el-row>
-                <el-col :span="18">
-                    <div class=" left-table-single-title">
-                        <div>保养</div>
-                    </div>
-                </el-col>
-            </el-row> -->
-            <!-- 第三行 主体 -->
-            <!-- <el-row>
-                <el-col :span="24">
-                    <div class="left-table-single-content-new ">
-                    </div>
-                </el-col>
-            </el-row> -->
 
             <!-- 第四行title -->
             <el-row>
@@ -389,10 +261,10 @@
                 <el-col :span="24">
                     <div class="left-table-single-content-new bg-small" style="height:50px;">
                         <el-row>
-                            <el-col :span="10" :offset="4" class="healthy ">
+                            <el-col :span="8" :offset="2" class="healthy ">
                                 当日设备稼动率:
                             </el-col>
-                            <el-col :span="2" :offset="0" class="healthy ">
+                            <el-col :span="2" :offset="4" class="healthy ">
                                 <span>{{ACTRATE}}%</span>
                             </el-col>
                         </el-row>
@@ -401,24 +273,6 @@
             </el-row>
         </div>
 
-        <!-- 位置坐标 -->
-        <!-- <div class="location">
-            <div v-for="(item,index) in testarr" :key="index" class="location-div">
-                <el-row style="margin-top:5px">
-                    <el-col :span="9" :offset="1">
-                        <div class="content-content content-content-left ">
-                            轴{{index + 1}}
-                        </div>
-                    </el-col>
-
-                    <el-col :span="11" :offset="2">
-                        <div class="content-content content-content-right ">
-                            {{parseFloat(item).toFixed(4)}}°
-                        </div>
-                    </el-col>
-                </el-row>
-            </div>
-        </div> -->
     </div>
 
 </template>
@@ -466,13 +320,14 @@ export default {
             operation: [],//运行情况
             LstWarnListStr: "",//设备实时报警信息
             ACTRATE: 0,//设备稼动率
-            locationArray: [],//轴坐标数组、
-            preLocationArray: [0, -90, 180, 0, 0, 0],// 更新轴坐标前的数据
+            locationArray: [],//轴坐标数组
+            preLocationArray: [0 * Math.PI / 180, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],// 更新轴坐标前的数据
             testarr: [],
             flag: false,
             online: "",//在线状态
             DayWarnDis: [],
-            // i: 0,
+            i: 0,//设备帧率index
+            first: true,//判断是否是从初始状态到运行状态
 
 
         };
@@ -540,13 +395,6 @@ export default {
             this.createFloor();
             this.createEnvironment();
             // this.createTable();
-
-            //生成激光打标机
-            // let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
-            // let a = this.returnWallObject(30, 20, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca }), 10, 45, 0, "墙面4");
-            // let arr3 = [];
-            // arr3.push(a);
-            // let obj2 = this.createResultBspLight(wall, arr3);
 
             // 加载平台
             let mtlLoader = new MTLLoader();
@@ -770,7 +618,7 @@ export default {
 
             obj3.scale.set(1.5, 1.5, 1.5);
             obj3.rotation.y = Math.PI;
-            obj3.position.set(-5 * 20, 0, -60 * 20);
+            obj3.position.set(15 * 20, 0, -60 * 20);
             obj.add(obj3);
 
             obj4.rotation.y = Math.PI;
@@ -783,7 +631,7 @@ export default {
             obj.rotation.y = -0.5 * Math.PI;
 
 
-            this.createTables(this.groupName.substr(1, 2), this.online, -0, -20);
+            this.createTables(this.groupName.substr(2, this.groupName.length - 1), this.online, -0, -20);
             this.scene.add(obj);
 
         },
@@ -881,19 +729,6 @@ export default {
             let sprite6 = sprite4.clone();
             sprite6.position.set(17, 58, -10);
 
-
-            // //轴4
-            // let sprite4 = sprite1.clone();
-            // sprite4.position.set(17, 68, 0);
-            // //轴5
-            // let sprite5 = sprite1.clone();
-            // sprite5.position.set(17, 68, -10);
-            // //轴6
-            // let sprite6 = sprite1.clone();
-            // sprite6.position.set(17, 58, -10);
-
-
-
             this.scene.add(sprite1);
             this.scene.add(sprite2);
             this.scene.add(sprite3);
@@ -902,21 +737,6 @@ export default {
             this.scene.add(sprite6);
 
 
-
-            // let canvas = this.makeLabelCanvas(100, 100, 1, "rgb(210, 60, 64)");
-
-            // const texture = new Three.CanvasTexture(canvas);
-            // let spriteMaterial3 = new Three.SpriteMaterial({
-            //     transparent: true,
-            //     map: texture,
-            //     side: Three.DoubleSide,
-            //     // color: 0x00ff00,
-
-            // });
-            // let spriteText = new Three.Sprite(spriteMaterial3);
-            // spriteText.scale.set(25, 25, 1)
-            // spriteText.position.set(110, 23, 28);
-            // this.scene.add(spriteText);
 
 
 
@@ -961,25 +781,7 @@ export default {
                 this.camera.position.z += vect.dot(new Three.Vector3(0, 0, 15)) * 0.01;
                 this.camera.position.x += vect.dot(new Three.Vector3(15, 0, 0)) * 0.01;
             }
-            // 轴4和轴6是跟rotation相反
-            // if (this.locationArray.length > 0) {
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.locationArray[0] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = (this.locationArray[1] - (-90)) * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = (this.locationArray[2] - 180) * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = -this.locationArray[3] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.locationArray[4] * Math.PI / 180;
-            //     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = -this.locationArray[5] * Math.PI / 180;
-            // }
             this.i++;
-            if (this.locationArray && this.i == 1 && this.locationArray.length > 0) {
-                this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y = this.preLocationArray[0];
-                this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z = this.preLocationArray[1];
-                this.scene.getObjectByName(this.groupName).getObjectByName("J4Box").rotation.z = this.preLocationArray[2];
-                this.scene.getObjectByName(this.groupName).getObjectByName("J5Box").rotation.x = this.preLocationArray[3];
-                this.scene.getObjectByName(this.groupName).getObjectByName("J6Box").rotation.z = this.preLocationArray[4];
-                this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x = this.preLocationArray[5];
-
-            }
             if (this.locationArray && this.locationArray.length > 0) {
                 this.scene.getObjectByName(this.groupName).getObjectByName("J2").rotation.y += (this.locationArray[0] * Math.PI / 180 - this.preLocationArray[0]) * this.i / 60;
                 this.scene.getObjectByName(this.groupName).getObjectByName("J3Box").rotation.z += ((this.locationArray[1] - (-90)) * Math.PI / 180 - this.preLocationArray[1]) * this.i / 60;
@@ -996,9 +798,6 @@ export default {
                     this.scene.getObjectByName(this.groupName).getObjectByName("J7Box").rotation.x
                 ]
             }
-            // console.log(this.i);
-            // console.log(this.preLocationArray);
-
         },
 
         //键盘按下事件
@@ -1207,9 +1006,9 @@ export default {
                 mac: 'wuji',
                 deviceid: this.deviceId
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/WorkLoadView" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
                 console.log(res);
                 myChart.setOption({
                     series: [{
@@ -1301,9 +1100,9 @@ export default {
             let obj = {
                 deviceid: this.deviceId
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/DeviceSixD" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
                 console.log(res);
                 myChart.setOption({
                     series: [{
@@ -1384,18 +1183,26 @@ export default {
                 datestr: utils.getDay(0)[0],
                 deviceid: this.deviceId
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/DayWarnDis" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
                 this.DayWarnDis = res;
+                console.log(this.deviceId)
                 let data1 = [];
                 let data2 = [];
                 res.forEach((item, index) => {
-                    data1.push(item.F_ERRORN);
-                    data2.push({
-                        value: item.F_ERRORC,
-                        name: item.F_ERRORN
-                    })
+                    let i = data1.indexOf(item.F_ERRORN);
+                    if (i == -1) {
+                        data1.push(item.F_ERRORN);
+                        data2.push({
+                            value: item.F_ERRORC,
+                            name: item.F_ERRORN
+                        })
+                    }
+                    else {
+                        data2[i].value += item.F_ERRORC;
+                    }
+
                 })
                 if (res.length == 0) {
                     myChart.setOption({
@@ -1409,16 +1216,19 @@ export default {
                         },
                     })
                 }
-                myChart.setOption({
-                    legend: {
-                        data: data1
-                    },
-                    series: [
-                        {
-                            data: data2
-                        }
-                    ]
-                });
+                else {
+                    myChart.setOption({
+                        legend: {
+                            data: data1
+                        },
+                        series: [
+                            {
+                                data: data2
+                            }
+                        ]
+                    });
+                }
+
 
 
             }).catch(error => { }
@@ -1441,11 +1251,18 @@ export default {
                 this.$axios.post('/api/DDC/DeviceWorkStatic/DayDevActRank' + utils.formatQueryStr(obj)),
                 this.$axios.post("/api/DDC/DeviceWorkStatic/ProductMonthRpt" + utils.formatQueryStr(obj)),
             ]).then(this.axios.spread(function (DayWorkLoadRank, LstWarnList, DayDevActRank, ProductMonthRpt) {
-                that.LstWarnListStr = LstWarnList[0].F_ERROR;
-                that.ACTRATE = DayDevActRank[0].ACTRATE;
-                that.operation = DayWorkLoadRank;
-            })).catch(error => {
+                if (LstWarnList.length > 0) that.LstWarnListStr = LstWarnList[0].F_ERROR;
+                if (DayDevActRank.length > 0) that.ACTRATE = DayDevActRank[0].ACTRATE;
+                if (DayWorkLoadRank.length > 0) {
+                    DayWorkLoadRank[0].F_ONLINETIMELEN = utils.secondToHMS(DayWorkLoadRank[0].F_ONLINETIMELEN);
+                    DayWorkLoadRank[0].F_WARNDURA = utils.secondToHMS(DayWorkLoadRank[0].F_WARNDURA);
+                    DayWorkLoadRank[0].F_RUNDURA = utils.secondToHMS(DayWorkLoadRank[0].F_RUNDURA);
+                    that.operation = DayWorkLoadRank;
+                }
 
+
+            })).catch(error => {
+                console.warn("接口访问失败");
             });
 
 
@@ -1471,8 +1288,8 @@ export default {
         window.onresize = () => {
             return this.onWindowResize();
         }
-
-        setInterval(() => {
+        //监听窗口是否变动
+        this.setInterval3 = setInterval(() => {
             if (window.innerWidth != window.screen.availWidth) {
                 this.flag = true;
             }
@@ -1485,26 +1302,34 @@ export default {
 
         // setInterval(() => {
         this.$socketApi.sendSock((res) => {
-            let arr = [];
-            res[this.deviceId][0].value && (this.locationArrays = JSON.parse(res[this.deviceId][0].value));
+
+            res.forEach(index => {
+                if (index.Key == this.deviceId) {
+                    if (index.Value[0].value != "") {
+                        this.locationArrays = JSON.parse(index.Value[0].value);
+                    }
+                }
+            })
 
         });
-        setInterval(() => {
+        this.setInterval2 = setInterval(() => {
             this.locationArray = this.locationArrays;
             this.i = 0;
         }, 1000)
 
-        // setInterval(() => {
-        //     this.getData();
-        //     this.initEchartBar2();
-        //     this.initEchartRadar();
-        //     this.initEchartPie();
-        // }, 10000)
-        // }, 1000)
+        this.setInterval = setInterval(() => {
+            this.getData();
+            this.initEchartBar2();
+            this.initEchartRadar();
+            this.initEchartPie();
+        }, 30000)
 
     },
     destroyed() {
         //页面销毁时删除场景
+        clearInterval(this.setInterval);
+        clearInterval(this.setInterval2);
+        clearInterval(this.setInterval3);
         cancelAnimationFrame(this.id);//停止动画
         this.scene.children = {};
         this.renderer.dispose();

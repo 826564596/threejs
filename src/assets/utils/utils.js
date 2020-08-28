@@ -48,7 +48,12 @@ const getDay = (num) => {
 
     return num >= 0 ? [time1, time2] : [time2, time1];
 };
-
+const getDateDay = (num) => {
+    let date1 = new Date();
+    let date2 = new Date(date1);
+    date2.setDate(date1.getDate() + num);
+    return num >= 0 ? [date1, date2] : [date2, date1];
+};
 /**获取指定月份的第一天和最后一天 */
 const getAnyMouthFirstAndLast = (year, mouth) => {
     let monthStartDate = new Date(year, mouth, 1);
@@ -78,6 +83,9 @@ const getAnyMouthFirstAndLast = (year, mouth) => {
 //给Date得原型新增深拷贝clone函数
 Date.prototype.clone = function() {
     return new Date(this.valueOf());
+};
+String.prototype.clone = function() {
+    console.log(this);
 };
 
 /** 输入new Date(),装换yyyy-mm-dd */
@@ -137,6 +145,14 @@ const getAllAroundDay = (begin, end) => {
     }
     return arr; // 返回两个日期之间的所有日期数组。
 };
+/** 秒转时分秒*/
+const secondToHMS = (second) => {
+    if (second == 0) return `00:00:00`;
+    let h = Math.floor(second / 3600) < 10 ? "0" + Math.floor(second / 3600) : Math.floor(second / 3600);
+    let m = Math.floor((second / 60) % 60) < 10 ? "0" + Math.floor((second / 60) % 60) : Math.floor((second / 60) % 60);
+    let s = Math.floor(second % 60) < 10 ? "0" + Math.floor(second % 60) : Math.floor(second % 60);
+    return h + ":" + m + ":" + s;
+};
 module.exports = {
     CurrentMonthFirstAndLast: CurrentMonthFirstAndLast,
     formatQueryStr: formatQueryStr,
@@ -146,4 +162,6 @@ module.exports = {
     differDate: differDate,
     getAllAroundDay: getAllAroundDay,
     dateToDayTime: dateToDayTime,
+    secondToHMS: secondToHMS,
+    getDateDay: getDateDay,
 };

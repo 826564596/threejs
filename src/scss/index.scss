@@ -2,17 +2,12 @@
     font-family: "微软雅黑";
 }
 
-
-
-
 #container {
     height: 100%;
     width: 100%;
     position: absolute;
     top: 0px;
     left: 0px;
-    // transform: scale(0.6);
-
 
 }
 
@@ -20,7 +15,6 @@
     background: url("../assets/image/bg.jpg") no-repeat;
     background-size: 100% 100%;
 }
-
 
 .login_bg {
     background: url("../assets/image/login_bg.jpg") no-repeat;
@@ -61,8 +55,6 @@
     .login_input_input {
         width: 300px;
     }
-
-
 }
 
 .login_input_button {
@@ -74,7 +66,6 @@
     cursor: pointer;
     background: url("../assets/image/登录.png") no-repeat;
 }
-
 
 .thrid {
     height: 20px;
@@ -106,8 +97,6 @@
     left: 1%;
     color: #fff;
 }
-
-
 
 .img-title {
     position: absolute;
@@ -589,8 +578,9 @@
     }
 
     .el_contents {
-        height: 100px;
-        width: 100px;
+        margin-top: 10px;
+        height: 80px;
+        width: 80px;
     }
 
     .el_content:hover {
@@ -604,18 +594,37 @@
     }
 
     .el_bg2 {
-        background-image: url("../assets/image/二维码图标.png");
+        background-image: url("../assets/image/二维码.png");
         background-size: 100% 100%;
         justify-content: center;
         align-items: center;
         display: flex;
 
+
+        .big-image {
+            height: 200px;
+            width: 200px;
+            position: absolute;
+            top: -165px;
+            left: 205px;
+            z-index: 100;
+            background-image: url("../assets/image/无极小程序.jpg");
+            background-size: 100% 100%;
+
+        }
+
         div {
             height: 90px;
             width: 90px;
-            background-image: url("../assets/image/无极小程序.jpg");
-            background-size: 100% 100%;
+            // background-image: url("../assets/image/无极小程序.jpg");
+            // background-size: 100% 100%;
         }
+
+
+    }
+
+    .el_bg2:hover .big-image {
+        display: inline-block;
     }
 }
 
@@ -803,7 +812,7 @@
 
     span {
         color: rgb(1, 220, 247);
-        font-size: 35px;
+        font-size: 30px;
         font-weight: bold;
     }
 
@@ -934,10 +943,11 @@
         color: #fff;
         font-size: 16px;
         width: 85%;
-        height: 140px;
+        height: 120px;
         margin: 0 auto;
+        overflow-y: scroll;
         // white-space: nowrap;
-        text-overflow: ellipsis;
+        // text-overflow: ellipsis;
     }
 }
 

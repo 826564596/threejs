@@ -21,7 +21,6 @@ export default new Vuex.Store({
             { deviceId: "dev_wuji_b76b300a4f0845b58481350a8b588284", deviceName: "鞋材激光3D雕刻工位11" },
             { deviceId: "dev_wuji_6c78c0147c6b4885b0759bf74c66039f", deviceName: "鞋材激光3D雕刻工位12" },
             { deviceId: "dev_wuji_585de886ce0a4a8795bb1260e389273e", deviceName: "鞋材激光3D雕刻工位13" },
-            { deviceId: "dev_test_ad7528b86fcd44f4a4cacf06733c07de", deviceName: "鞋材激光3D雕刻工位14" },
         ],
         a: 1,
         deviceId: "",

@@ -100,15 +100,13 @@
                                     <el-table :data="tableData" style="width: 100%; " max-height="293" border>
                                         <el-table-column prop="date" label="日期" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="id" label="设备ID" width="350">
-                                        </el-table-column>
                                         <el-table-column prop="name" label="名称" width="200">
                                         </el-table-column>
                                         <el-table-column prop="warn_type" label="报警类型" width="200">
                                         </el-table-column>
                                         <el-table-column prop="warn_time" label="报警时间" width="200">
                                         </el-table-column>
-                                        <el-table-column prop="warn_message" label=" 报警内容">
+                                        <el-table-column prop="warn_message" label=" 报警内容" show-overflow-tooltip>
                                         </el-table-column>
                                     </el-table>
                                 </div>
@@ -166,13 +164,13 @@ export default {
 
         },
         search() {
-            let startDate = utils.dateToDay(this.value2[0]);
-            let endDate = utils.dateToDay(this.value2[1]);
+            let startDate = utils.dateToDay(this.value2[0].clone());
+            let endDate = utils.dateToDay(this.value2[1].clone());
             this.getlineData(startDate, endDate);
         },
         search2() {
-            let startDate = utils.dateToDay(this.value3[0]);
-            let endDate = utils.dateToDay(this.value3[1]);
+            let startDate = utils.dateToDay(this.value3[0].clone());
+            let endDate = utils.dateToDay(this.value3[1].clone());
 
             this.getData(startDate, endDate);
             this.initTable(startDate, endDate);
@@ -305,54 +303,78 @@ export default {
         },
         /**报警数量统计 */
         initEchartPie(legendData, seriesData) {
+
             let myChart = this.$echarts.init(document.getElementById('echarts-pie'));
-            let option = {
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
-                },
-                legend: {
-                    // show: true,
-                    type: 'scroll',
-                    orient: 'vertical',
-                    right: 0,
-                    textStyle: { color: " #fff" },
-                    pageIconColor: '#fff',
-                    pageIconSize: 12,
-                    pageTextStyle: {
-                        color: "#fff",
-                        fontSize: 12
+
+            if (seriesData.length == 0) {
+                myChart.setOption({
+                    title: {
+                        text: '暂无数据',
+                        x: "center",
+                        top: "40%",
+                        textStyle: {
+                            color: "#fff"
+                        }
                     },
-                    data: legendData
-                },
-                grid: {
-                },
-                series: [
-                    {
-                        name: '设备报警数',
-                        type: 'pie',
-                        radius: ['30%', '50%'],
-                        // radius: "50%",
-                        avoidLabelOverlap: false,
-                        label: {
-                            show: false,
-                            position: 'left'
+                    legend: {
+                        data: [],
+                    },
+                    series: [{
+                        data: []
+                    }]
+                })
+            }
+            else {
+                let option = {
+                    title: { text: '', },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        // show: true,
+                        type: 'scroll',
+                        orient: 'vertical',
+                        right: 0,
+                        textStyle: { color: " #fff" },
+                        pageIconColor: '#fff',
+                        pageIconSize: 12,
+                        pageTextStyle: {
+                            color: "#fff",
+                            fontSize: 12
                         },
-                        emphasis: {
+                        data: legendData
+                    },
+                    grid: {
+                    },
+                    series: [
+                        {
+                            name: '设备报警数',
+                            type: 'pie',
+                            radius: ['30%', '50%'],
+                            // radius: "50%",
+                            avoidLabelOverlap: false,
                             label: {
-                                show: true,
-                                fontSize: '16',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        // labelLine: {
-                        //     show: false
-                        // },
-                        data: seriesData
-                    }
-                ]
-            };
-            myChart.setOption(option);
+                                show: false,
+                                position: 'left'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: '16',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            // labelLine: {
+                            //     show: false
+                            // },
+                            data: seriesData
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+
+            }
 
 
 
@@ -363,53 +385,76 @@ export default {
         /** 报警类型占比 */
         initEchartPie2(data1, data2) {
             let myChart = this.$echarts.init(document.getElementById('echarts-pie2'));
-            let option = {
-                tooltip: {
-                    trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} ({d}%)'
-                },
-                legend: {
-                    // show: true,
-                    type: 'scroll',
-                    orient: 'vertical',
-                    right: 0,
-                    textStyle: { color: " #fff" },
-                    pageIconColor: '#fff',
-                    pageIconSize: 12,
-                    pageTextStyle: {
-                        color: "#fff",
-                        fontSize: 12
+
+            if (data2.length == 0) {
+                myChart.setOption({
+                    title: {
+                        text: '暂无数据',
+                        x: "center",
+                        top: "40%",
+                        textStyle: {
+                            color: "#fff"
+                        }
                     },
-                    data: data1
-                },
-                grid: {
-                },
-                series: [
-                    {
-                        name: '设备报警数',
-                        type: 'pie',
-                        radius: ['30%', '50%'],
-                        // radius: "50%",
-                        avoidLabelOverlap: false,
-                        label: {
-                            show: false,
-                            position: 'left'
+                    legend: {
+                        data: [],
+                    },
+                    series: [{
+                        data: []
+                    }]
+                })
+            }
+            else {
+                let option = {
+                    title: { text: "" },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        // show: true,
+                        type: 'scroll',
+                        orient: 'vertical',
+                        right: 0,
+                        textStyle: { color: " #fff" },
+                        pageIconColor: '#fff',
+                        pageIconSize: 12,
+                        pageTextStyle: {
+                            color: "#fff",
+                            fontSize: 12
                         },
-                        emphasis: {
+                        data: data1
+                    },
+                    grid: {
+                    },
+                    series: [
+                        {
+                            name: '设备报警数',
+                            type: 'pie',
+                            radius: ['30%', '50%'],
+                            // radius: "50%",
+                            avoidLabelOverlap: false,
                             label: {
-                                show: true,
-                                fontSize: '16',
-                                fontWeight: 'bold'
-                            }
-                        },
-                        // labelLine: {
-                        //     show: false
-                        // },
-                        data: data2
-                    }
-                ]
-            };
-            myChart.setOption(option);
+                                show: false,
+                                position: 'left'
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: '16',
+                                    fontWeight: 'bold'
+                                }
+                            },
+                            // labelLine: {
+                            //     show: false
+                            // },
+                            data: data2
+                        }
+                    ]
+                };
+                myChart.setOption(option);
+            }
+
 
             // let obj = {
             //     mac: "wuji",
@@ -447,192 +492,220 @@ export default {
         initEchartBar3(data1, data2) {
             let myChart = this.$echarts.init(document.getElementById('echarts-bar3'));
             // 绘制图表
-            myChart.setOption({
-                color: ['#3398DB'],
-                grid: {
-                    left: '0%',
-                    bottom: '3%',
-                    top: "5%",
-                    containLabel: true
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                yAxis: [
-                    {
-                        // show: false,
-                        type: 'value',
+            if (data2.length == 0) {
+                myChart.setOption({
+                    title: {
+                        text: '暂无数据',
+                        x: "center",
+                        top: "40%",
+                        textStyle: {
+                            color: "#fff"
+                        }
+                    },
+                    xAxis: {
+                        data: [],
                         axisLabel: {
-                            interval: 0,
-                            textStyle: {
-                                color: '#fff'
+                            show: false
+                        },
+                        axisTick: {
+                            alignWithLabel: false
+                        },
+
+                    },
+                    series: [{
+                        data: []
+                    }]
+                })
+            }
+
+            else {
+                myChart.setOption({
+                    title: { text: "", },
+                    color: ['#3398DB'],
+                    grid: {
+                        left: '0%',
+                        bottom: '3%',
+                        top: "5%",
+                        containLabel: true
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    yAxis: [
+                        {
+                            // show: false,
+                            type: 'value',
+                            axisLabel: {
+                                interval: 0,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                            }
+                        }
+                    ],
+                    xAxis: [
+                        {
+                            // name: '工位',
+                            type: 'category',
+                            data: data1,
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ddd', // 颜色
+                                    width: 1 // 粗细
+                                }
+                            },
+                            axisLabel: {
+                                interval: 0,
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                rotate: 300 //倾斜角度
                             },
                         }
-                    }
-                ],
-                xAxis: [
-                    {
-                        // name: '工位',
-                        type: 'category',
-                        data: data1,
-                        axisTick: {
-                            alignWithLabel: true
-                        },
+                    ],
+                    series: [
+                        {
+                            type: 'bar',
+                            barWidth: '40%',
+                            data: data2
+                        }
+                    ]
+                });
 
-                        axisLine: {
-                            lineStyle: {
-                                color: '#ddd', // 颜色
-                                width: 1 // 粗细
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                            show: true,
-                            textStyle: {
-                                color: '#fff'
-                            },
-                            rotate: 300 //倾斜角度
-                        },
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: '40%',
-                        data: data2
-                    }
-                ]
-            });
-            // let arr = utils.CurrentMonthFirstAndLast();
-            // let obj = {
-            //     mac: "wuji",
-            //     begindate: arr[0],
-            //     enddate: arr[1],
-            // }
-            // myChart.showLoading();
-            // this.$axios.post("/api/DDC/DeviceWorkStatic/WarnRank" + utils.formatQueryStr(obj)).then(res => {
-            //     myChart.hideLoading();
-            //     let data1 = [];
-            //     let data2 = [];
-            //     for (let i = 0; i < 7; i++) {
-            //         data1.push(res[i].F_NAME.substr(8, res[i].F_NAME.length - 1));
-            //         data2.push(res[i].F_WARNRATE);
-            //     }
+            }
 
-            //     myChart.setOption({
-            //         xAxis: {
-            //             data: data1
-            //         },
-            //         series: [{
-            //             data: data2
-            //         }]
-            //     })
-            // }).catch(error => {
-
-            // })
 
         },
         /** 报警趋势 */
         initEchartBar4(date, warn_duration) {
             let myChart = this.$echarts.init(document.getElementById('echarts-bar4'));
             // 绘制图表
-            myChart.setOption({
-
-                dataZoom: [{
-
-                    type: 'slider',
-                    show: false,
-                    // start: 80,
-                    // end: 100,
-                    height: 12,
-
-                    startValue: 0,
-                    endValue: 7,
-                    bottom: 0,
-                    borderColor: "#fff",
-                    // fillerColor: "#fff",
-                    handleSize: '10%',
-                    textStyle: {
-                        color: "#fff",
-
+            if (warn_duration.length == 0) {
+                myChart.setOption({
+                    title: {
+                        text: '暂无数据',
+                        x: "center",
+                        top: "40%",
+                        textStyle: {
+                            color: "#fff"
+                        }
                     },
-                    handleStyle: {
-                        color: "#fff",
-                        borderColor: '#fff',
-                    }
-                },
-                {
-                    type: 'inside',
-                    rangeMode: ['value', 'value'],
-                    startValue: 80,
-                    endValue: 100,
-
-
-
-                }
-                ],
-                color: ['#3398DB'],
-                grid: {
-                    left: '0%',
-                    bottom: '10%',
-                    top: "5%",
-                    containLabel: true,
-                    // show: 'false',
-                },
-                tooltip: {
-                    trigger: 'axis',
-                    axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-                        type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-                    }
-                },
-                yAxis: [
-                    {
-                        // show: false,
-                        type: 'value',
+                    xAxis: {
+                        data: [],
                         axisLabel: {
-                            interval: 0,
-                            textStyle: {
-                                color: '#fff'
+                            show: false
+                        }
+                    },
+                    series: [{
+                        data: []
+                    }]
+                })
+            }
+            else {
+                myChart.setOption({
+                    title: { text: "" },
+                    dataZoom: [{
+
+                        type: 'slider',
+                        show: false,
+                        // start: 80,
+                        // end: 100,
+                        height: 12,
+
+                        startValue: 0,
+                        endValue: 7,
+                        bottom: 0,
+                        borderColor: "#fff",
+                        // fillerColor: "#fff",
+                        handleSize: '10%',
+                        textStyle: {
+                            color: "#fff",
+
+                        },
+                        handleStyle: {
+                            color: "#fff",
+                            borderColor: '#fff',
+                        }
+                    },
+                    {
+                        type: 'inside',
+                        rangeMode: ['value', 'value'],
+                        startValue: 80,
+                        endValue: 100,
+
+
+
+                    }
+                    ],
+                    color: ['#3398DB'],
+                    grid: {
+                        left: '0%',
+                        bottom: '10%',
+                        top: "5%",
+                        containLabel: true,
+                        // show: 'false',
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+                            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+                        }
+                    },
+                    yAxis: [
+                        {
+                            // show: false,
+                            type: 'value',
+                            axisLabel: {
+                                interval: 0,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                            }
+                        }
+                    ],
+                    xAxis: [
+                        {
+                            // name: '工位',
+                            type: 'category',
+                            data: date,
+                            axisTick: {
+                                alignWithLabel: true
+                            },
+
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#ddd', // 颜色
+                                    width: 1 // 粗细
+                                }
+                            },
+                            axisLabel: {
+                                interval: 0,
+                                show: true,
+                                textStyle: {
+                                    color: '#fff'
+                                },
+                                rotate: 300 //倾斜角度
                             },
                         }
-                    }
-                ],
-                xAxis: [
-                    {
-                        // name: '工位',
-                        type: 'category',
-                        data: date,
-                        axisTick: {
-                            alignWithLabel: true
-                        },
+                    ],
+                    series: [
+                        {
+                            type: 'bar',
+                            barWidth: '40%',
+                            data: warn_duration
+                        }
+                    ]
+                });
+            }
 
-                        axisLine: {
-                            lineStyle: {
-                                color: '#ddd', // 颜色
-                                width: 1 // 粗细
-                            }
-                        },
-                        axisLabel: {
-                            interval: 0,
-                            show: true,
-                            textStyle: {
-                                color: '#fff'
-                            },
-                            rotate: 300 //倾斜角度
-                        },
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        barWidth: '40%',
-                        data: warn_duration
-                    }
-                ]
-            });
 
 
         },
@@ -716,7 +789,7 @@ export default {
                         name: '停机时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',//
+                        // symbol: 'none',//
                         smooth: true,//是否平滑
                         areaStyle: {},
                         data: stop,
@@ -732,7 +805,7 @@ export default {
                         name: '运行时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',
+                        // symbol: 'none',
                         smooth: true,
                         areaStyle: {},
                         data: run,
@@ -748,7 +821,7 @@ export default {
                         name: '报警时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',
+                        // symbol: 'none',
                         smooth: true,
                         areaStyle: {},
                         data: warn,
@@ -764,7 +837,7 @@ export default {
                         name: '空闲时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',
+                        // symbol: 'none',
                         smooth: true,
                         areaStyle: {},
                         data: free,

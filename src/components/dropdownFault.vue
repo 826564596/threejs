@@ -83,8 +83,8 @@ export default {
 
         search() {
             let that = this;
-            let startDate = utils.dateToDay(this.value2[0]);
-            let endDate = utils.dateToDay(this.value2[1]);
+            let startDate = utils.dateToDay(this.value2[0].clone());
+            let endDate = utils.dateToDay(this.value2[1].clone());
             let obj = {
                 deviceid: this.$store.state.deviceIdArr[this.index].deviceId,
                 begindate: startDate,

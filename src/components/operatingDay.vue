@@ -2,7 +2,7 @@
 <template>
     <div class="operatingDay">
         <div>
-            {{operatingDay}}
+            平台运行天数: {{operatingDay}}
         </div>
     </div>
 </template>
@@ -37,7 +37,7 @@ export default {
 <style lang="scss">
 .operatingDay {
     height: 50px;
-    width: 230px;
+    width: 430px;
     position: absolute;
     bottom: 3%;
     right: 2%;
@@ -45,7 +45,7 @@ export default {
     background-size: 100% 100%;
     color: rgb(1, 220, 247);
     font-family: "方正粗倩简体";
-    font-size: 45px;
+    font-size: 35px;
     font-weight: bold;
 
     div {

@@ -14,7 +14,6 @@ const service = axios.create({
 //request请求拦截器
 service.interceptors.request.use(
     (config) => {
-        // console.log(config);
         return config;
     },
     (error) => {
@@ -44,6 +43,8 @@ service.interceptors.response.use(
         // })
         //
         alert("接口访问失败");
+        alert(error);
+
         return Promise.reject(error);
     }
 );

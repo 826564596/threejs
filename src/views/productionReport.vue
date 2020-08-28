@@ -58,7 +58,7 @@
                                     <el-row>
                                         <el-col :span="4" :offset="1">
                                             <div class="input-label-left ">
-                                                运行时长(分)
+                                                运行时长
                                             </div>
                                         </el-col>
 
@@ -70,7 +70,7 @@
 
                                         <el-col :span="4" :offset="2">
                                             <div class="input-label-left ">
-                                                空闲时长(分)
+                                                空闲时长
                                             </div>
                                         </el-col>
 
@@ -83,7 +83,7 @@
                                     <el-row style="margin-top:30px">
                                         <el-col :span="4" :offset="1">
                                             <div class="input-label-left">
-                                                停机时长(分)
+                                                停机时长
                                             </div>
                                         </el-col>
 
@@ -95,7 +95,7 @@
 
                                         <el-col :span="4" :offset="2">
                                             <div class="input-label-left">
-                                                报警时长(分)
+                                                报警时长
                                             </div>
                                         </el-col>
 
@@ -174,13 +174,13 @@
                                 </el-table-column>
                                 <el-table-column prop="warn_count" label="报警数(次)" width="100">
                                 </el-table-column>
-                                <el-table-column prop="run_duration" label="运行时长(分)" width="150">
+                                <el-table-column prop="run_duration" label="运行时长" width="150">
                                 </el-table-column>
-                                <el-table-column prop="free_duration" label="空闲时长(分)" width="150">
+                                <el-table-column prop="free_duration" label="空闲时" width="150">
                                 </el-table-column>
-                                <el-table-column prop="stop_duration" label="停机时长(分)" width="150">
+                                <el-table-column prop="stop_duration" label="停机时长" width="150">
                                 </el-table-column>
-                                <el-table-column prop="warn_duration" label="报警时长(分)" width="150">
+                                <el-table-column prop="warn_duration" label="报警时长" width="150">
                                 </el-table-column>
                                 <el-table-column prop="online_rate" label="在线率" width="100">
                                 </el-table-column>
@@ -307,7 +307,7 @@ export default {
                         name: '停机时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',//
+                        // symbol: 'none',//
                         smooth: true,//是否平滑
                         data: stop,
                         areaStyle: {},
@@ -323,7 +323,7 @@ export default {
                         name: '运行时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',//
+                        // symbol: 'none',//
 
                         smooth: true,
                         data: run,
@@ -340,7 +340,7 @@ export default {
                         name: '报警时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',//
+                        // symbol: 'none',//
 
                         smooth: true,
                         data: warn,
@@ -357,7 +357,7 @@ export default {
                         name: '空闲时长(分)',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',//
+                        // symbol: 'none',//
 
                         smooth: true,
                         data: free,
@@ -375,7 +375,7 @@ export default {
                         name: '加工量',
                         type: 'line',
                         stack: '总量',
-                        symbol: 'none',//
+                        // symbol: 'none',//
 
                         smooth: true,
                         data: workload,
@@ -606,8 +606,8 @@ export default {
         },
         search() {
             let that = this;
-            let startDate = utils.dateToDay(this.value2[0]);
-            let endDate = utils.dateToDay(this.value2[1]);
+            let startDate = utils.dateToDay(this.value2[0].clone());
+            let endDate = utils.dateToDay(this.value2[1].clone());
             this.getlineData(startDate, endDate);
 
         },
@@ -658,12 +658,11 @@ export default {
                     // stop_duration.push(stop);
                     // warn_duration.push(warn);
 
-
-                    free_duration.push((free / 1000 / 60).toFixed(2));
-                    run_duration.push((run / 1000 / 60).toFixed(2));
-                    stop_duration.push((stop / 1000 / 60).toFixed(2));
-                    warn_duration.push((warn / 1000 / 60).toFixed(2));
-
+                    // 毫秒转成秒不保留小数
+                    free_duration.push((free / 1000).toFixed(0));
+                    run_duration.push((run / 1000).toFixed(0));
+                    stop_duration.push((stop / 1000).toFixed(0));
+                    warn_duration.push((warn / 1000).toFixed(0));
                     workloadarr.push(workload);
 
                 }
@@ -673,18 +672,18 @@ export default {
 
                 for (let i = 0, len = free_duration.length; i < len; i++) {
 
-                    free_all += parseFloat(free_duration[i]);
-                    run_all += parseFloat(run_duration[i]);
-                    warn_all += parseFloat(warn_duration[i]);
-                    stop_all += parseFloat(stop_duration[i]);
+                    free_all += parseInt(free_duration[i]);
+                    run_all += parseInt(run_duration[i]);
+                    warn_all += parseInt(warn_duration[i]);
+                    stop_all += parseInt(stop_duration[i]);
                     workload_all += workloadarr[i];
 
                 }
                 console.log(free_duration);
-                that.free = free_all.toFixed(2);
-                that.run = run_all.toFixed(2);
-                that.stop = stop_all.toFixed(2);
-                that.warn = warn_all.toFixed(2);
+                that.free = utils.secondToHMS(free_all);
+                that.run = utils.secondToHMS(run_all);
+                that.stop = utils.secondToHMS(stop_all);
+                that.warn = utils.secondToHMS(warn_all);
 
                 that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration, workloadarr);
                 that.initEchartPie2(workload_all);

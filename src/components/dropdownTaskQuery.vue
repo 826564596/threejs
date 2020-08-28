@@ -35,7 +35,7 @@ export default {
             arr: [],
             startDate: '',//开始时间
             endDate: '',//结束时间
-            value4: "",
+            value4: [utils.getDateDay(-30)[0], utils.getDateDay(-1)[1]],
             total: 0,//数据总数
             pageIndex: 1,//分页页码
         };
@@ -45,11 +45,13 @@ export default {
         let that = this;
         this.arr = JSON.parse(JSON.stringify(this.$store.state.deviceIdArr));
         this.arr.unshift({ deviceId: "", deviceName: "全部" });
+        let startDate = utils.dateToDay(this.value4[0].clone());
+        let endDate = utils.dateToDay(this.value4[1].clone());
         let obj = {
             MAC: 'wuji',
             pageindex: 0,
-            begindate: "",
-            enddate: "",
+            begindate: startDate,
+            enddate: endDate,
             pagesize: 10,
         }
         this.$axios.post("api/DDC/ProductTask/ProductTaskList" + utils.formatQueryStr(obj)).then(res => {
@@ -69,9 +71,9 @@ export default {
         currentChange(val) {
             console.log(this.value4);
             let that = this;
-            let arr = [this.value4[0].clone(), this.value4[1].clone()];
-            let startDate = utils.dateToDay(arr[0]);
-            let endDate = utils.dateToDay(arr[1]);
+            let arr = [this.value4[0], this.value4[1]];
+            let startDate = utils.dateToDay(arr[0].clone());
+            let endDate = utils.dateToDay(arr[1].clone());
             let obj = {
                 MAC: 'wuji',
                 deviceid: this.arr[this.index].deviceId,
@@ -104,9 +106,9 @@ export default {
         //搜索
         search() {
             let that = this;
-            let arr = [this.value4[0].clone(), this.value4[1].clone()];
-            let startDate = utils.dateToDay(arr[0]);
-            let endDate = utils.dateToDay(arr[1]);
+            let arr = [this.value4[0], this.value4[1]];
+            let startDate = utils.dateToDay(arr[0].clone());
+            let endDate = utils.dateToDay(arr[1].clone());
             let obj = {
                 MAC: 'wuji',
                 deviceid: this.arr[this.index].deviceId,

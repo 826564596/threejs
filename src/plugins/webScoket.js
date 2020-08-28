@@ -2,7 +2,7 @@ let websock = null;
 let globalCallback = function() {}; //接收回调函数
 const initWebSocket = () => {
     //初始化weosocket
-    const wsuri = "ws://27.150.173.9:9002/ws/ParaQry";
+    const wsuri = "ws://119.3.66.94:7002/ws/ParaQry";
     websock = new WebSocket(wsuri);
     websock.onmessage = websocketonmessage;
     websock.onopen = websocketonopen;
@@ -36,7 +36,6 @@ const websocketonerror = () => {
 };
 const websocketonmessage = (e) => {
     //数据接收
-    // console.log(JSON.parse(e.data));
     globalCallback(JSON.parse(e.data));
 };
 const websocketsend = (Data) => {
@@ -58,12 +57,12 @@ const sendSock = (callback, agentData) => {
     } else if (websock.readyState === websock.CONNECTING) {
         // 若是 正在开启状态，则等待1s后重新调用
         // setTimeout(function() {
-        //     sendSock(agentData, callback);
+        //     sendSock(callback, agentData);
         // }, 1000);
     } else {
-        // 若未开启 ，则等待1s后重新调用
+        // // 若未开启 ，则等待1s后重新调用
         // setTimeout(function() {
-        //     sendSock(agentData, callback);
+        //     sendSock(callback, agentData);
         // }, 1000);
     }
 };

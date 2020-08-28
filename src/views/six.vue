@@ -91,7 +91,7 @@
                             </el-col>
                         </el-row> -->
 
-                        <el-carousel height="200px" arrow="never">
+                        <el-carousel height="200px" arrow="never" interval="10000">
                             <el-carousel-item>
                                 <el-row>
                                     <el-col :span="10" :offset="1">
@@ -271,15 +271,6 @@
                             </div>
                         </el-col>
                     </el-row>
-
-                    <!-- <el-table :data="tableData" size="mini" header-row-class-name="rowNames" row-class-name="rowName">
-                        <el-table-column prop="deviceName" label="设备名" width="80">
-                        </el-table-column>
-                        <el-table-column prop="time" label="报警时间" width="80">
-                        </el-table-column>
-                        <el-table-column prop="content" label="报警内容" width="180">
-                        </el-table-column>
-                    </el-table> -->
                 </div>
             </el-row>
             <!-- 第四行 -->
@@ -298,10 +289,10 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="12" :offset="4" class="healthy ">
+                        <el-col :span="12" :offset="0" class="healthy">
                             产线平均稼动率:
                         </el-col>
-                        <el-col :span="2" :offset="2" class="healthy ">
+                        <el-col :span="8" :offset="2" class="healthy">
                             <span>{{averageYield}}%</span>
                         </el-col>
                     </el-row>
@@ -356,7 +347,23 @@ import utils from "../assets/utils/utils";
 // import socketApi from "../plugins/webScoket";
 
 
-
+let locationArrays = [];
+let locationArray = [];
+let preLocationArray = [
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+    [0, -90 * Math.PI / 180, 180 * Math.PI / 180, 0, 0, 0],
+];
 
 export default {
     name: "App",
@@ -398,6 +405,7 @@ export default {
             DayWorkLoadRank: [],
 
             flag: false,
+            i: 0,
 
         }
     },
@@ -477,7 +485,7 @@ export default {
         /**控制器 */
         initControls() {
             this.controls = new Three.OrbitControls(this.camera, this.renderer.domElement); //创建控件对象
-            console.log(this.controls);
+            this.controls.autoRotate = true;
             this.controls.maxZoom = 0.8;
         },
         /**设置辅助坐标系 */
@@ -503,34 +511,11 @@ export default {
             let floorGeometry = new Three.BoxGeometry(that.LENGTH, that.WIDTH, 1);
             // let floorMaterial = new Three.MeshBasicMaterial({ color: 0x08441f });
             let floorMaterial = new Three.MeshBasicMaterial({ color: 0x000E2E });
-
             let floor = new Three.Mesh(floorGeometry, floorMaterial);
             floor.position.y = -0.5;
             floor.rotation.x = Math.PI / 2;
             floor.name = "地面";
             that.scene.add(floor);
-
-            // let loader = new Three.TextureLoader();
-            // loader.load(require("../assets/image/timg6.jpg"), function (texture) {
-            //     texture.wrapS = texture.wrapT = Three.RepeatWrapping;
-            //     texture.repeat.set(10, 10);
-            //     let floorGeometry = new Three.BoxGeometry(that.LENGTH, that.WIDTH, 1);
-            //     let floorMaterial = new Three.MeshBasicMaterial({ map: texture, side: Three.DoubleSide });
-            //     let floor = new Three.Mesh(floorGeometry, floorMaterial);
-            //     floor.position.y = -0.5;
-            //     floor.rotation.x = Math.PI / 2;
-            //     floor.name = "地面";
-            //     floor.position.z = -150;
-            //     that.scene.add(floor);
-            // });
-
-
-            //安装警戒线
-            // this.addAlarmLine(this.WIDTH, 2, 0.5, -150, 0.1, 0, "线1", "../assets/image/line.png");
-            // this.addAlarmLine(this.WIDTH, 2, 0.5, 150, 0.1, 0, "线2", "../assets/image/line.png");
-
-            // this.addAlarmLineP(this.WIDTH, 2, 0.5, -130, 0.1, 0, "线3");
-            // this.addAlarmLineP(this.WIDTH, 2, 0.5, 130, 0.1, 0, "线4");
         },
 
         /** 创建canvas对象*/
@@ -620,22 +605,12 @@ export default {
             // this.createAllCubeWall();
             this.createEnvironment();
             // this.createTable();
-
-            //生成激光打标机
-            let wall = this.returnWallObject(50, 70, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca, opacity: 0.1 }), 0, 35, 0, "墙面4");
-            let a = this.returnWallObject(30, 20, 40, 0, new Three.MeshBasicMaterial({ color: 0xafc0ca }), 10, 45, 0, "墙面4");
-            let arr3 = [];
-            arr3.push(a);
-            let obj2 = this.createResultBspLight(wall, arr3);
-
-
             // 加载平台
             let mtlLoader = new MTLLoader();
             mtlLoader.load(`${that.publicPath}/model/TP06.mtl`, function (materials1) {
                 let objLoader = new OBJLoader();
                 objLoader.setMaterials(materials1);
                 objLoader.load(`${that.publicPath}/model/TP06.obj`, function (pt) {
-
                     pt.scale.set(0.05, 0.05, 0.05);
                     //加载机械臂
                     let mtlLoader2 = new MTLLoader();
@@ -643,22 +618,12 @@ export default {
                         let objLoader2 = new OBJLoader();
                         objLoader2.setMaterials(materials);
                         objLoader2.load(`${that.publicPath}/model/model02(1).obj`, function (object) {
-
-                            // console.log(object);
-                            // object.rotation.z = Math.PI;
-                            // object.position.set(0, 16, 0);
-                            // that.scene.add(object);
-
-
                             //加载激光打标 
                             let mtlLoader3 = new MTLLoader();
                             mtlLoader3.load(`${that.publicPath}/model/激光打标机05.mtl`, function (materials2) {
                                 let objLoader3 = new OBJLoader();
                                 objLoader3.setMaterials(materials2);
                                 objLoader3.load(`${that.publicPath}/model/激光打标机05.obj`, function (obj3) {
-
-
-
                                     //加载控制台
                                     let mtlLoader4 = new MTLLoader();
                                     mtlLoader4.load(`${that.publicPath}/model/控制台04.mtl`, function (materials3) {
@@ -668,83 +633,12 @@ export default {
                                             that.clone(object, pt, obj3, obj4);
                                         })
                                     })
-
-
-
-
-
-
                                 })
                             })
-
-
-
                         });
                     });
                 });
             });
-
-
-
-            // let loader = new FBXLoader();
-            // loader.load(`${that.publicPath}/model/1341234.FBX`, function (object) {
-            //     console.log(object);
-            //     object.position.set(0, 16, 0);
-            //     object.position.set(0, 16, 0);
-            //     that.scene.add(object);
-            //     console.log(object);
-            //     // that.clone(object); 
-            // });
-
-
-
-
-
-            // let loader = new FBXLoader();
-            // loader.load(`${that.publicPath}/model/1341234.FBX`, function (object) {
-
-            //     object.position.set(0, 0, 0);
-            //     that.scene.add(object);
-            //     console.log(object);
-            //     // that.clone(object);
-
-
-            // });
-
-
-            // let gltfLoader = new GLTFLoader();
-            // gltfLoader.load(`${that.publicPath}/model/pt.gltf`, function (pt) {
-            //     console.log(pt.scene);
-            //     pt.scene.scale.set(0.05, 0.05, 0.05);
-
-
-            //     // let loader = new FBXLoader();
-            //     // loader.load(`${that.publicPath}/model/1341234.FBX`, function (object) {
-            //     //     that.clone(object, pt.scene, obj2);
-            //     // });
-
-
-            //     let gltfLoader1 = new GLTFLoader();
-            //     gltfLoader1.load(`${that.publicPath}/model/model.gltf`, (pt2) => {
-            //         that.clone(pt2.scene, pt.scene, obj2);
-            //     })
-
-
-            //     //加载机械臂
-            //     // let mtlLoader2 = new MTLLoader();
-            //     // mtlLoader2.load(`${that.publicPath}/model/605(1).mtl`, function (materials) {
-            //     //     let objLoader2 = new OBJLoader();
-            //     //     objLoader2.setMaterials(materials);
-            //     //     objLoader2.load(`${that.publicPath}/model/model(1).obj`, function (object) {
-
-            //     //         console.log(object);
-            //     //         that.clone(object, pt.scene, obj2);
-            //     //     });
-            //     // });
-
-
-
-            // });
         },
         /**初始化性能插件 */
         initStats() {
@@ -758,7 +652,6 @@ export default {
         /** 动画  */
         animate() {
             this.id = requestAnimationFrame(this.animate);
-
             this.renderer.render(this.scene, this.camera);
             this.composer.render();//后期
             // this.update();
@@ -787,95 +680,31 @@ export default {
                 this.camera.position.z += vect.dot(new Three.Vector3(0, 0, 15)) * 0.01;
                 this.camera.position.x += vect.dot(new Three.Vector3(15, 0, 0)) * 0.01;
             }
-            // //转轴1
-            if (this.one) {
-                this.shaftOne();
+            this.i++;
+            if (locationArray && locationArray.length > 0) {
+
+                for (let i of locationArray) {
+
+                    this.scene.getObjectByName(i.name).getObjectByName("J2").rotation.y += (i.locationArray[0] * Math.PI / 180 - preLocationArray[i.index][0]) * this.i / 60;
+                    this.scene.getObjectByName(i.name).getObjectByName("J3Box").rotation.z += ((i.locationArray[1] - (-90)) * Math.PI / 180 - preLocationArray[i.index][1]) * this.i / 60;
+                    this.scene.getObjectByName(i.name).getObjectByName("J4Box").rotation.z += ((i.locationArray[2] - 180) * Math.PI / 180 - preLocationArray[i.index][2]) * this.i / 60;
+                    this.scene.getObjectByName(i.name).getObjectByName("J5Box").rotation.x += (-i.locationArray[3] * Math.PI / 180 - preLocationArray[i.index][3]) * this.i / 60;
+                    this.scene.getObjectByName(i.name).getObjectByName("J6Box").rotation.z += (i.locationArray[4] * Math.PI / 180 - preLocationArray[i.index][4]) * this.i / 60;
+                    this.scene.getObjectByName(i.name).getObjectByName("J7Box").rotation.x += (-i.locationArray[5] * Math.PI / 180 - preLocationArray[i.index][5]) * this.i / 60;
+                    preLocationArray[i.index] = [
+                        this.scene.getObjectByName(i.name).getObjectByName("J2").rotation.y,
+                        this.scene.getObjectByName(i.name).getObjectByName("J3Box").rotation.z,
+                        this.scene.getObjectByName(i.name).getObjectByName("J4Box").rotation.z,
+                        this.scene.getObjectByName(i.name).getObjectByName("J5Box").rotation.x,
+                        this.scene.getObjectByName(i.name).getObjectByName("J6Box").rotation.z,
+                        this.scene.getObjectByName(i.name).getObjectByName("J7Box").rotation.x
+                    ]
+                }
+
             }
-            if (this.two) {
-                this.shaftTwo();
-            }
-            if (this.three) {
-                this.shaftThree();
-            }
-            if (this.four) {
-                this.shaftFour();
-            }
-            if (this.five) {
-                this.shaftFive();
-            }
-            if (this.six) {
-                this.shaftSix();
-            }
-        },
-        /**创建墙 */
-        createAllCubeWall() {
-            let that = this;
-            this.createCubeWall(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0x9cb2d1 }), 0, 25, -this.WIDTH / 2, "墙面3");
-
-
-            // this.createCubeWall(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -100, 25, -150, "墙面1");
-            // this.createCubeWall(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 100, 25, -150, "墙面2");
-
-
-            //有窗户的墙
-            let wall1 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -this.LENGTH / 2, 25, 0, "墙面1");
-            let arr1 = [];
-            for (let i = 0; i < 7; i++) {
-                arr1.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), -this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, "墙面1"));
-            }
-            this.createResultBsp(wall1, arr1);
-
-            //有窗户的墙
-            let wall2 = this.returnWallObject(this.WIDTH, this.HEIGHT, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), this.LENGTH / 2, 25, 0, "墙面2");
-            let arr2 = [];
-            for (let i = 0; i < 7; i++) {
-                arr2.push(this.returnWallObject(20, 20, 1, 0.5, new Three.MeshPhongMaterial({ color: 0xafc0ca }), this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, "墙面2"));
-            }
-            this.createResultBsp(wall2, arr2);
-
-
-            //有门的墙
-            let wall3 = this.returnWallObject(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, this.WIDTH / 2, "墙面4");
-            let b = this.returnWallObject(30, 40, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 20, this.WIDTH / 2, "墙面4");
-            let arr3 = [];
-            arr3.push(b);
-            this.createResultBsp(wall3, arr3);
-
-            // 有字的墙
-            // let wall4 = this.returnWallObject(this.LENGTH, this.HEIGHT, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
-            // let c = this.returnWallObject(150, 25, 1, 0, new Three.MeshPhongMaterial({ color: 0xafc0ca }), 0, 25, -350, "墙面3");
-            // let arr4 = [];
-            // arr4.push(c);
-            // this.createResultBsp(wall4, arr4);
-
-            // 安装门
-            this.createDoor_left(15, 40, 1, 0, -15, 20, this.WIDTH / 2, "左门1");
-            this.createDoor_right(15, 40, 1, 0, 15, 20, this.WIDTH / 2, "右门1");
-
-            //安装窗户
-            for (let i = 0; i < 7; i++) {
-                this.createWindow(20, 20, 1, 0.5, -this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, `窗户${i + 1}`);
-                this.createWindow(20, 20, 1, 0.5, this.LENGTH / 2, 25, this.WIDTH / 2 - this.interval - this.interval * i, `窗户${14 - i}`);
-            }
-            //安装字
-            let loader = new Three.TextureLoader();
-            loader.load(require("../assets/image/biaoyu.png"), function (texture) {
-                let doorgeometry = new Three.PlaneGeometry(100, 20);
-                let doormaterial = new Three.MeshBasicMaterial({ map: texture, color: 0xffffff });
-                let door = new Three.Mesh(doorgeometry, doormaterial);
-                doormaterial.opacity = 1.0;
-                doormaterial.transparent = true;
-                door.position.set(0, 25, -that.WIDTH / 2 + 1);
-                // door.rotation.y += angle * Math.PI;  //-逆时针旋转,+顺时针
-                door.name = "";
-                that.scene.add(door);
-            });
-
-
-
-
 
         },
+
         //创建一面有窗户墙面
         createResultBsp(bsp, cubeArray) {
             let material = new Three.MeshPhongMaterial({ color: 0x9cb2d1, specular: 0x9cb2d1, shininess: 30, transparent: true, opacity: 1 });
@@ -1093,52 +922,9 @@ export default {
             // console.log(intersects);
             if (intersects.length > 0) {
                 let selectedObject = intersects[0].object;
-                // this.addSelectedObject(selectedObject, outlinePass, event.clientX, event.clientY);
-                //给标签赋值 
-                // this.labelLeft = event.clientX;
-                // this.labelTop = event.clientY;
-                // this.$refs.label.innerText = "双击查看设备详情";
-
                 outlinePass.selectedObjects = [intersects[0].object];
 
 
-                // if (intersects[0].object.name == "左门1") {
-
-                //     if (this.door_state_left1) {
-                //         new TWEEN.Tween(intersects[0].object.rotation).to({
-                //             y: -0.5 * Math.PI
-                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                //         }).start();
-                //         this.door_state_left1 = false;
-                //     } else {
-                //         new TWEEN.Tween(intersects[0].object.rotation).to({
-                //             y: 0
-                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                //         }).start();
-                //         this.door_state_left1 = true;
-                //     }
-                // }
-                // else if (intersects[0].object.name == "右门1") {
-                //     if (this.door_state_right1) {
-                //         new TWEEN.Tween(intersects[0].object.rotation).to({
-                //             y: 0.5 * Math.PI
-                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                //         }).start();
-                //         this.door_state_right1 = false;
-                //     } else {
-                //         new TWEEN.Tween(intersects[0].object.rotation).to({
-                //             y: 0
-                //         }, 5000).easing(TWEEN.Easing.Elastic.Out).onComplete(function () {
-                //         }).start();
-                //         this.door_state_right1 = true;
-                //     }
-                // }
-
-
-
-
-                // this.rollOverMesh.position.copy(intersects[0].point);
-                // this.rollOverMesh.position.divideScalar(5).floor().multiplyScalar(5).addScalar(2.5);
 
             } else {
 
@@ -1389,13 +1175,15 @@ export default {
             // obj2.position.set(0 * 20, 35 * 20, 60 * 20);
             // obj.add(obj2);
 
+
+
             obj3.scale.set(1.5, 1.5, 1.5);
             obj3.rotation.y = Math.PI;
-            obj3.position.set(-5 * 20, 0, -60 * 20);
+            obj3.position.set(15 * 20, 0, -60 * 20);
             obj.add(obj3);
 
             obj4.rotation.y = Math.PI;
-            obj4.position.set(-60 * 20, 0, 40 * 20);
+            obj4.position.set(-40 * 20, 0, 40 * 20);
             obj.add(obj4);
 
             obj.position.z = z;
@@ -1431,7 +1219,6 @@ export default {
                 copy_J2.name = `J0${15 - j}`;
                 j++;
                 this.createTable(13 - i, this.DayWorkLoadRank[12 - i], x + 50, z);
-
                 this.scene.add(copy_J1);
                 this.scene.add(copy_J2);
             }
@@ -1563,9 +1350,9 @@ export default {
                 begindate: arr[0],
                 enddate: arr[1],
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/WorkLoadRank" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
                 let data1 = [];
                 let data2 = [];
                 for (let i = 0; i < 7; i++) {
@@ -1668,9 +1455,9 @@ export default {
             let obj = {
                 mac: 'wuji'
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/WorkLoadView" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
                 console.log(res);
                 myChart.setOption({
                     series: [{
@@ -1752,9 +1539,9 @@ export default {
                 begindate: arr[0],
                 enddate: arr[1],
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/WarnCRank" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
                 let data1 = [];
                 let data2 = [];
                 for (let i = 0; i < 7; i++) {
@@ -1782,6 +1569,10 @@ export default {
                 color: ['#3398DB'],
                 tooltip: {
                     trigger: 'axis',
+                    formatter(params) {
+                        let a = utils.secondToHMS(params[0].data);
+                        return `${a}`;
+                    },
                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                         type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                     }
@@ -1829,6 +1620,10 @@ export default {
                         show: true,
                         type: 'value',
                         axisLabel: {
+                            formatter: function (value) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                return utils.secondToHMS(value);
+                            },
                             interval: 0,
                             textStyle: {
                                 color: '#fff'
@@ -1847,7 +1642,7 @@ export default {
             myChart.setOption(option);
 
 
-            myChart.showLoading();
+            // myChart.showLoading();
             let arr = utils.CurrentMonthFirstAndLast();
 
 
@@ -1862,7 +1657,7 @@ export default {
                     }
 
                 }).then(res => {
-                    myChart.hideLoading();
+                    // myChart.hideLoading();
                     console.log(res);
                     if (res.length == 0) {
                         myChart.setOption({
@@ -1876,34 +1671,36 @@ export default {
                             },
                         })
                     }
-                    res.sort((a, b) => {
-                        return b["avg_workduration"] - a["avg_workduration"];
-                    })
+                    else {
+                        res.sort((a, b) => {
+                            return b["avg_work_duration"] - a["avg_work_duration"];
+                        })
 
-                    let data1 = [];
-                    let data2 = [];
-
-                    if (res.length < 7) {
-                        for (let i = 0; i < res.length; i++) {
-                            data1.push(res[i].name.substr(8, res[i].name.length - 1));
-                            data2.push(res[i].avg_work_duration);
+                        let data1 = [];
+                        let data2 = [];
+                        if (res.length <= 7) {
+                            for (let i = 0; i < res.length; i++) {
+                                data1.push(res[i].name.substr(8, res[i].name.length - 1));
+                                data2.push(res[i].avg_work_duration);
+                            }
                         }
-                    }
-                    if (res.length > 7) {
-                        for (let i = 0; i < 7; i++) {
-                            data1.push(res[i].name.substr(8, res[i].name.length - 1));
-                            data2.push(res[i].avg_work_duration);
+                        else if (res.length > 7) {
+                            for (let i = 0; i < 7; i++) {
+                                data1.push(res[i].name.substr(8, res[i].name.length - 1));
+                                data2.push(res[i].avg_work_duration);
+                            }
                         }
+
+                        myChart.setOption({
+                            xAxis: {
+                                data: data1
+                            },
+                            series: [{
+                                data: data2
+                            }]
+                        })
                     }
 
-                    myChart.setOption({
-                        xAxis: {
-                            data: data1
-                        },
-                        series: [{
-                            data: data2
-                        }]
-                    })
 
 
                 }).catch(error => {
@@ -1973,9 +1770,9 @@ export default {
                 begindate: arr[0],
                 enddate: arr[1],
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/WorkStatLine" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
                 let data1 = [];
                 let data2 = [];
                 res.forEach((item, index) => {
@@ -2055,17 +1852,25 @@ export default {
                 mac: "wuji",
                 datestr: utils.getDay(0)[0],
             }
-            myChart.showLoading();
+            // myChart.showLoading();
             this.$axios.post("/api/DDC/DeviceWorkStatic/DayWarnDis" + utils.formatQueryStr(obj)).then(res => {
-                myChart.hideLoading();
+                // myChart.hideLoading();
+                console.log(res);
                 let data1 = [];
                 let data2 = [];
                 res.forEach((item, index) => {
-                    data1.push(item.F_ERRORN);
-                    data2.push({
-                        value: item.F_ERRORC,
-                        name: item.F_ERRORN
-                    })
+                    let i = data1.indexOf(item.F_ERRORN);
+                    if (i == -1) {
+                        data1.push(item.F_ERRORN);
+                        data2.push({
+                            value: item.F_ERRORC,
+                            name: item.F_ERRORN
+                        })
+                    }
+                    else {
+                        data2[i].value += item.F_ERRORC;
+                    }
+
                 })
                 if (res.length == 0) {
                     myChart.setOption({
@@ -2079,21 +1884,23 @@ export default {
                         },
                     })
                 }
-                myChart.setOption({
-                    legend: {
-                        data: data1
-                    },
-                    series: [
-                        {
-                            data: data2
-                        }
-                    ]
-                });
+                else {
+                    myChart.setOption({
+                        legend: {
+                            data: data1
+                        },
+                        series: [
+                            {
+                                data: data2
+                            }
+                        ]
+                    });
+                }
+
 
 
             }).catch(error => { }
             )
-
         },
         //获取设备当前页面需要数据
         getData() {
@@ -2151,7 +1958,7 @@ export default {
                 DayDevActRank.forEach((item, index) => {
                     averageYield += item.ACTRATE;
                 })
-                that.averageYield = averageYield / 13;
+                that.averageYield = (averageYield / 13).toFixed(2);
 
                 that.number = that.alarmInformation[0].name;
 
@@ -2165,9 +1972,6 @@ export default {
 
     },
     updated() {
-        console.log('ssssssssssssssss');
-        console.log(window.innerWidth);
-        console.log(window.screen.availWidth);
     },
     mounted() {
         let that = this;
@@ -2184,21 +1988,37 @@ export default {
         this.helper();
         this.animate();
 
+        // let setInterval3 = setInterval(() => {
+        //     this.animate();
+        // }, 30)
 
 
         window.onresize = () => {
-
             return this.onWindowResize();
         }
         this.$socketApi.sendSock((res) => {
-            console.log(6);
+            locationArrays = [];
+            for (let i of res) {
+                for (let j of this.$store.state.deviceIdArr) {
+                    if (j.deviceId == i.Key) {
+                        locationArrays.push({
+                            deviceId: i.Key,
+                            name: `J0` + j.deviceName.substr(10, j.deviceName.length - 1),
+                            locationArray: JSON.parse(i.Value[0].value),
+                            index: j.deviceName.substr(10, j.deviceName.length - 1) - 1,
+                        })
+                    }
+                }
+
+            }
+
             // this.locationArray = JSON.parse(res[this.deviceId][0].value);
         });
 
 
 
 
-        setInterval(() => {
+        this.setInterval2 = setInterval(() => {
             if (window.innerWidth != window.screen.availWidth) {
                 this.flag = true;
             }
@@ -2207,19 +2027,22 @@ export default {
                 this.onWindowResize();
             }
         }, 500)
+        this.setInterval3 = setInterval(() => {
+            locationArray = locationArrays;
+            this.i = 0;
+        }, 1000)
 
-
-        // setInterval(() => {
-        //     this.getData();
-        //     this.$nextTick(res => {
-        //         this.initEchartBar();
-        //         this.initEchartBar2();
-        //         this.initEchartBar3();
-        //         this.initEchartBar4();
-        //         this.initEchartLine();
-        //         this.initEchartPie();
-        //     })
-        // }, 10000)
+        this.setInterval = setInterval(() => {
+            this.getData();
+            this.$nextTick(res => {
+                this.initEchartBar();
+                this.initEchartBar2();
+                this.initEchartBar3();
+                this.initEchartBar4();
+                this.initEchartLine();
+                this.initEchartPie();
+            })
+        }, 30000)
 
 
         // alert(window);
@@ -2227,7 +2050,13 @@ export default {
 
     destroyed() {
         //页面销毁时删除场景
-        console.log('sssssssssss')
+        clearInterval(this.setInterval);
+        clearInterval(this.setInterval2);
+        clearInterval(this.setInterval3);
+        // clearInterval(this.setInterval4);
+
+
+
         cancelAnimationFrame(this.id);// Stop the animation
         this.scene.children = {};
         this.renderer.dispose();

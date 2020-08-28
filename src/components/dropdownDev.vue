@@ -56,11 +56,10 @@ export default {
                 return a.name.substr(10, a.name.length - 1) - b.name.substr(10, b.name.length - 1);
             })
             for (let i of res) {
-                i.run_duration = (i.run_duration / 1000 / 60).toFixed(2);
-                i.free_duration = (i.free_duration / 1000 / 60).toFixed(2);
-
-                i.stop_duration = (i.stop_duration / 1000 / 60).toFixed(2);
-                i.warn_duration = (i.warn_duration / 1000 / 60).toFixed(2);
+                i.run_duration = utils.secondToHMS((i.run_duration / 1000).toFixed(0));
+                i.free_duration = utils.secondToHMS((i.free_duration / 1000).toFixed(0));
+                i.stop_duration = utils.secondToHMS((i.stop_duration / 1000).toFixed(0));
+                i.warn_duration = utils.secondToHMS((i.warn_duration / 1000).toFixed(0));
 
             }
             this.$emit("update:tableData", res);
@@ -79,8 +78,8 @@ export default {
         },
         search() {
             let that = this;
-            let startDate = utils.dateToDay(this.value2[0]);
-            let endDate = utils.dateToDay(this.value2[1]);
+            let startDate = utils.dateToDay(this.value2[0].clone());
+            let endDate = utils.dateToDay(this.value2[1].clone());
             this.$axios.post("newApi/wuji/Device/ProductionStatement", {
                 "device": {
                     "id": that.$store.state.deviceIdArr[that.index].deviceId
