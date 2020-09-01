@@ -125,6 +125,13 @@ export default {
         //     this.$cookies.isKey("userName") && this.$cookies.remove("userName");
         //     this.$cookies.isKey("password") && this.$cookies.remove("password");
         // }
+    },
+    mounted() {
+        // console.log(this.$cookies.get("userName"));
+        // console.log(this.$cookies.get("password"));
+        // if (this.$cookies.get("userName") && this.this.$cookies.get("password")) {
+        //     this.$router.push({ name: "six" }).catch(err => { console.log("跳转失败！") });
+        // }
     }
 
 }

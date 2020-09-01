@@ -153,6 +153,18 @@ const secondToHMS = (second) => {
     let s = Math.floor(second % 60) < 10 ? "0" + Math.floor(second % 60) : Math.floor(second % 60);
     return h + ":" + m + ":" + s;
 };
+/**创建一个二维数组
+ * @param {string} m - 行
+ * @param {string} n - 列
+ *
+ */
+const creteTwoDimensionalArray = (m, n) => {
+    let arr = new Array(m); //表格有m行
+    for (let i = 0; i < arr.length; i++) {
+        arr[i] = new Array(n); //每行有n列
+    }
+    return arr;
+};
 module.exports = {
     CurrentMonthFirstAndLast: CurrentMonthFirstAndLast,
     formatQueryStr: formatQueryStr,
@@ -164,4 +176,5 @@ module.exports = {
     dateToDayTime: dateToDayTime,
     secondToHMS: secondToHMS,
     getDateDay: getDateDay,
+    creteTwoDimensionalArray: creteTwoDimensionalArray,
 };

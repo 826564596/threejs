@@ -42,17 +42,19 @@
 
                 </div>
                 <div v-if="buttonActive == 1">
-
+                    <!-- <div style="display: flex;justify-content: space-between;align-items: center;"> -->
                     <div class=" buttonAndText" style="width:420px">
                         <div>
                             <el-date-picker v-model="value3" type="daterange" align="right" unlink-panels range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
                             </el-date-picker>
                         </div>
-
                         <div class="">
                             <button class="buttonAndText-button" @click="search2">搜索</button>
                         </div>
+
                     </div>
+
+                    <!-- </div> -->
 
                     <el-row style="margin-top:10px;">
                         <el-col :span="23" class="" style="margin-left:30px;">
@@ -111,26 +113,11 @@
                                     </el-table>
                                 </div>
                             </div>
-                        </el-col>
-                        <!-- <el-col :span="4" style="margin-left:30px;height:700px">
-                            <el-row>
-                                <el-col :span="24">
-                                    <date top="-70" right="-10" />
-                                </el-col>
-                            </el-row>
-
-                            <div>
-                                <el-table :data="tableData" style="width: 100%; " max-height="640" border>
-                                    <el-table-column prop="date" label="当前设备" width="90">
-                                    </el-table-column>
-                                    <el-table-column prop="name" label="当前状态" width="90">
-                                    </el-table-column>
-                                    <el-table-column prop="address" label="运行时长" width="90">
-                                    </el-table-column>
-                                </el-table>
+                            <div style="text-align:right;margin-top:30px;">
+                                <el-pagination :pager-count="5" :page-size="20" :current-page.sync="pageIndex" @current-change="currentChange" layout="prev, pager, next, jumper" :total="total">
+                                </el-pagination>
                             </div>
-
-                        </el-col> -->
+                        </el-col>
                     </el-row>
                 </div>
             </div>
@@ -147,14 +134,23 @@ export default {
             index: 0,
             buttonActive: 0,
             value2: [utils.getDay(-6)[0], utils.getDay(-6)[1]],
-            value3: [utils.getDay(-6)[0], utils.getDay(-6)[1]],
+            value3: [utils.getDateDay(-6)[0], utils.getDateDay(-6)[1]],
             startDate: utils.getDay(-6)[0],
             endDate: utils.getDay(-6)[1],
             tableData: [],
+
+            total: 0,//数据总数
+            pageIndex: 1,//分页页码
             flag: false,//报警统计初次加载判断标志
         };
     },
     methods: {
+        currentChange(val) {
+            let startDate = utils.dateToDay(this.value3[0].clone());
+            let endDate = utils.dateToDay(this.value3[1].clone());
+
+            this.initTable(startDate, endDate, val - 1);
+        },
         changeButton(item) {
             this.buttonActive = item;
 
@@ -169,11 +165,12 @@ export default {
             this.getlineData(startDate, endDate);
         },
         search2() {
+            this.pageIndex = 1;
             let startDate = utils.dateToDay(this.value3[0].clone());
             let endDate = utils.dateToDay(this.value3[1].clone());
 
             this.getData(startDate, endDate);
-            this.initTable(startDate, endDate);
+            this.initTable(startDate, endDate, 1);
 
             this.startDate = startDate;
             this.endDate = endDate;
@@ -869,7 +866,7 @@ export default {
             // )
         },
         /**表格信息 */
-        initTable(startDate, endDate) {
+        initTable(startDate, endDate, index) {
             let that = this;
             this.$axios.post("newApi/wuji/Device/WarnMessage", {
                 "device": {
@@ -880,11 +877,12 @@ export default {
                     "end_date": endDate
                 },
                 "page": {
-                    "offset": 0,
-                    "limit": 30,
+                    "offset": index,
+                    "limit": 20,
                 }
             }).then(res => {
-                that.tableData = res;
+                that.total = res.count;
+                that.tableData = res.data;
             }).catch(errror => {
             })
         }
@@ -909,7 +907,7 @@ export default {
         if (this.buttonActive == 0) {
             let arr = utils.getDay(-6);
             this.getlineData(arr[0], arr[1]);
-            this.initTable(arr[0], arr[1]);
+            this.initTable(arr[0], arr[1], this.pageIndex);
 
 
 

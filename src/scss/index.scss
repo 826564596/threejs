@@ -946,6 +946,8 @@
         height: 120px;
         margin: 0 auto;
         overflow-y: scroll;
+        overflow-x: hidden;
+        word-wrap: break-word;
         // white-space: nowrap;
         // text-overflow: ellipsis;
     }
@@ -979,6 +981,7 @@
 
     }
 }
+
 
 .buttonAndText {
     width: 1400px;
@@ -1538,6 +1541,19 @@ $color: #00bdfc;
 .timeText-bg-line:hover {
     background-color: rgb(22, 117, 168);
     cursor: pointer;
+    content: attr(labelTooltip);
+}
+
+.timeText-bg-line:hover::after {
+    position: absolute;
+    // width: 600px;
+    transform: translate(-105%, -50%);
+    border: 2px solid rgba(22, 117, 168, 1);
+    background-color: rgba(22, 117, 168, 1);
+    border-radius: 5px;
+    color: #fff;
+    content: attr(labelTooltip);
+    z-index: 2;
 }
 
 .location-div {

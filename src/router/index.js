@@ -14,7 +14,7 @@ const routes = [
         meta: {
             keepAlive: false, //导航栏在该页面显示
             requireLogin: false, //是否需要登陆
-            title: "登录",
+            title: "鞋材激光3D雕刻生产线信息化平台",
         },
     },
     {

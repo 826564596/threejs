@@ -216,7 +216,7 @@
                                     暂无数据
                                 </div>
                                 <div v-show="alarmInformation.length > 0">
-                                    <div v-for="(item,index) in alarmInformation" class="timeText-bg-line" :key="index" @click="chooseAlarm(index)">
+                                    <div v-for="(item,index) in alarmInformation" class="timeText-bg-line" :labelTooltip="item.alarmContent" :key="index" @click="chooseAlarm(index)">
                                         <el-row>
                                             <el-col :span="7" :offset="1">
                                                 <div class="timeText ">
@@ -1947,7 +1947,7 @@ export default {
                 })
 
                 if (alarmInformation.length > 4) {
-                    that.alarmInformation = alarmInformation.slice(0, 3);
+                    that.alarmInformation = alarmInformation.slice(0, 4);
                 }
                 else {
                     that.alarmInformation = alarmInformation;

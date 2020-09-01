@@ -17,7 +17,7 @@ import test from "./assets/utils/test";
 Vue.prototype.$utils = utils;
 //组件
 import weather from "@/components/weather";
-import login from "@/components/login";
+import login from "@/components/logins";
 import titles from "@/components/title";
 import qrcode from "@/components/qrcode";
 import bottomText from "@/components/bottomText";
@@ -55,6 +55,11 @@ Vue.config.productionTip = false;
 
 //路由守卫，拦截
 router.beforeEach((to, from, next) => {
+    if (to.name == "login" && cookies.get("userName") && cookies.get("password")) {
+        router.push({ name: "six" }).catch((err) => {
+            console.log("跳转失败！");
+        });
+    }
     if (to.meta.title) {
         document.title = to.meta.title;
     }

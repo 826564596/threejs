@@ -227,8 +227,28 @@ export default {
             }
         },
         //加载echart折线图
-        initEchartLine(date, free, run, warn, stop, workload) {
+        initEchartLine(date, arr) {
             let myChart = this.$echarts.init(document.getElementById('echarts-line'));
+            let array = [];
+            let arrayName = [];
+            for (let i = 0, len = arr.length; i < len; i++) {
+                arrayName.push(`工位${i + 1}`);
+                array.push({
+                    name: `工位${i + 1}`,
+                    type: 'line',
+                    // symbol: 'none',//
+                    smooth: true,//是否平滑
+                    data: arr[i],
+                    // areaStyle: {},
+                    // lineStyle: {
+                    //     color: "rgba(10,156,174,0.5)"
+
+                    // },
+                    // areaStyle: {
+                    //     color: "rgba(10,156,174,0.5)"
+                    // }
+                })
+            }
             let option = {
                 title: {
                     // text: '堆叠区域1',
@@ -248,7 +268,7 @@ export default {
                     }
                 },
                 legend: {
-                    data: ['停机时长(分)', '运行时长(分)', '报警时长(分)', '空闲时长(分)', '加工量'],
+                    data: arrayName,
                     textStyle: {
                         color: "#fff"
                     },
@@ -302,94 +322,7 @@ export default {
                         }
                     }
                 ],
-                series: [
-                    {
-                        name: '停机时长(分)',
-                        type: 'line',
-                        stack: '总量',
-                        // symbol: 'none',//
-                        smooth: true,//是否平滑
-                        data: stop,
-                        areaStyle: {},
-                        // lineStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-
-                        // },
-                        // areaStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-                        // }
-                    },
-                    {
-                        name: '运行时长(分)',
-                        type: 'line',
-                        stack: '总量',
-                        // symbol: 'none',//
-
-                        smooth: true,
-                        data: run,
-                        areaStyle: {},
-                        // lineStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-
-                        // },
-                        // areaStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-                        // }
-                    },
-                    {
-                        name: '报警时长(分)',
-                        type: 'line',
-                        stack: '总量',
-                        // symbol: 'none',//
-
-                        smooth: true,
-                        data: warn,
-                        areaStyle: {},
-                        // lineStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-
-                        // },
-                        // areaStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-                        // }
-                    },
-                    {
-                        name: '空闲时长(分)',
-                        type: 'line',
-                        stack: '总量',
-                        // symbol: 'none',//
-
-                        smooth: true,
-                        data: free,
-                        areaStyle: {},
-                        // lineStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-
-                        // },
-                        // areaStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-                        // }
-                    },
-
-                    {
-                        name: '加工量',
-                        type: 'line',
-                        stack: '总量',
-                        // symbol: 'none',//
-
-                        smooth: true,
-                        data: workload,
-                        areaStyle: {},
-                        // lineStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-
-                        // },
-                        // areaStyle: {
-                        //     color: "rgba(10,156,174,0.5)"
-                        // }
-                    },
-
-                ]
+                series: array
             };
             myChart.setOption(option);
 
@@ -630,10 +563,12 @@ export default {
                 let warn_count_all = 0;
                 let workload_all = 0;
                 let workloadarr = [];
-
+                let arrs = utils.creteTwoDimensionalArray(13, res.data.length);
                 for (let i = 0, len = res.data.length; i < len; i++) {
                     let key = Object.keys(res.data[i]);
                     data.push(key[0]);
+                    // arr[res.data[i][key][j].name.substr(10, length - 1)]
+
                     let free = 0;
                     let run = 0;
                     let stop = 0;
@@ -641,22 +576,18 @@ export default {
                     let workload = 0;
                     let warn_count = 0;
                     for (let j = 0, length = res.data[i][key].length; j < length; j++) {
-
                         free += res.data[i][key][j].free_duration;
                         run += res.data[i][key][j].run_duration;
                         stop += res.data[i][key][j].stop_duration;
                         warn += res.data[i][key][j].warn_duration;
                         workload += res.data[i][key][j].workload;
                         warn_count += res.data[i][key][j].warn_count;
-
-
                         warn_count_all = warn_count;
+                        let length = res.data[i][key][j].name.length;
+                        let a = res.data[i][key][j].name.substr(10, length - 1) - 1;
 
+                        arrs[a][i] = res.data[i][key][j].workload;
                     }
-                    // free_duration.push(free);
-                    // run_duration.push(run);
-                    // stop_duration.push(stop);
-                    // warn_duration.push(warn);
 
                     // 毫秒转成秒不保留小数
                     free_duration.push((free / 1000).toFixed(0));
@@ -665,11 +596,9 @@ export default {
                     warn_duration.push((warn / 1000).toFixed(0));
                     workloadarr.push(workload);
 
+
+
                 }
-
-
-
-
                 for (let i = 0, len = free_duration.length; i < len; i++) {
 
                     free_all += parseInt(free_duration[i]);
@@ -685,7 +614,7 @@ export default {
                 that.stop = utils.secondToHMS(stop_all);
                 that.warn = utils.secondToHMS(warn_all);
 
-                that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration, workloadarr);
+                that.initEchartLine(data, arrs);
                 that.initEchartPie2(workload_all);
                 that.initEchartPie1(warn_count_all);
 

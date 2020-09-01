@@ -9,16 +9,15 @@
 
 <script>
 export default {
-    name: "login",
+    name: "logins",
     data() {
         return {
         };
     },
     methods: {
         loginOut() {
-
-            // this.$cookies.remove("userName");
-            // this.$cookies.remove("password");
+            this.$cookies.remove("userName");
+            this.$cookies.remove("password");
             this.$router.push({ path: "/" });
         }
     }
