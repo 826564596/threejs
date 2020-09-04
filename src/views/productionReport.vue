@@ -277,8 +277,15 @@ export default {
                 },
 
                 toolbox: {
+                    iconStyle: {
+                        color: "#fff",
+                        borderColor: "#fff",
+                    },
                     feature: {
-                        saveAsImage: {}
+                        saveAsImage: {
+                            backgroundColor: "#01060E",
+
+                        }
                     }
                 },
                 grid: {
@@ -358,7 +365,7 @@ export default {
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} '
+                    formatter: '{a}: {c} '
                 },
                 legend: {
                     show: false,
@@ -423,7 +430,7 @@ export default {
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} '
+                    formatter: '{a}: {c} '
                 },
                 legend: {
                     show: false,
@@ -488,7 +495,7 @@ export default {
                 },
                 tooltip: {
                     trigger: 'item',
-                    formatter: '{a} <br/>{b}: {c} '
+                    formatter: '{a}: {c} '
                 },
                 legend: {
                     show: false,
@@ -527,8 +534,7 @@ export default {
                         //     show: false
                         // },
                         data: [
-                            { value: 335 },
-                            { value: 0 },
+                            { value: num },
 
                         ]
                     }

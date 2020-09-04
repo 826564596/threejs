@@ -89,7 +89,7 @@
                                 </el-table-column>
                                 <el-table-column prop="F_mttmlen" label="维修时长（分钟）" width="200">
                                 </el-table-column>
-                                <el-table-column prop="f_mtdesc" label="维修内容" show-overflow-tooltip>
+                                <el-table-column prop="f_mtdesc" min-width="300" label="维修内容" show-overflow-tooltip>
                                 </el-table-column>
                             </el-table>
                         </div>

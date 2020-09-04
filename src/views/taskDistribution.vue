@@ -44,7 +44,7 @@
                                 </el-table-column>
                                 <el-table-column prop="F_PLANWORKLOAD" label="计划产量" width="200">
                                 </el-table-column>
-                                <el-table-column prop="F_DESC" label="备注">
+                                <el-table-column prop="F_DESC" label="备注" min-width="300">
                                 </el-table-column>
 
                             </el-table>

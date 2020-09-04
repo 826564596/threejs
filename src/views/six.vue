@@ -553,7 +553,8 @@ export default {
         createTable(index, item, x, z) {
 
             let canvas;
-            if (item.F_ONLINESTATUS == "离线") {
+            if (item.F_ONLINESTATUS == undefined) { return; }
+            else if (item.F_ONLINESTATUS == "离线") {
                 canvas = this.makeLabelCanvas(100, 100, index, "rgb(210, 60, 64)");
                 let spriteMap = new Three.TextureLoader().load(require("../assets/image/离线2.png"));
                 let spriteMaterial = new Three.SpriteMaterial({
@@ -1570,7 +1571,7 @@ export default {
                 tooltip: {
                     trigger: 'axis',
                     formatter(params) {
-                        let a = utils.secondToHMS(params[0].data);
+                        let a = utils.secondToHMS((params[0].data / 1000).toFixed(0));
                         return `${a}`;
                     },
                     axisPointer: {            // 坐标轴指示器，坐标轴触发有效
@@ -1622,7 +1623,7 @@ export default {
                         axisLabel: {
                             formatter: function (value) {
                                 // 格式化成月/日，只在第一个刻度显示年份
-                                return utils.secondToHMS(value);
+                                return utils.secondToHMS((value / 1000).toFixed(0));
                             },
                             interval: 0,
                             textStyle: {
@@ -1692,6 +1693,7 @@ export default {
                         }
 
                         myChart.setOption({
+                            title: { text: "" },
                             xAxis: {
                                 data: data1
                             },
@@ -1886,6 +1888,7 @@ export default {
                 }
                 else {
                     myChart.setOption({
+                        title: { text: '' },
                         legend: {
                             data: data1
                         },
@@ -1986,7 +1989,9 @@ export default {
         })
         this.init();
         this.helper();
-        this.animate();
+        setTimeout(() => {
+            this.animate();
+        }, 2000)
 
         // let setInterval3 = setInterval(() => {
         //     this.animate();

@@ -36,7 +36,15 @@ const websocketonerror = () => {
 };
 const websocketonmessage = (e) => {
     //数据接收
-    globalCallback(JSON.parse(e.data));
+    let data = JSON.parse(e.data);
+    for (let i of data) {
+        if (i.Key == "dev_wuji_36ccc0be0e064379b8778f03cb8bcb39") {
+            let arr = JSON.parse(i.Value[0].value);
+            arr[0] = -arr[0];
+            i.Value[0].value = JSON.stringify(arr);
+        }
+    }
+    globalCallback(data);
 };
 const websocketsend = (Data) => {
     //数据发送

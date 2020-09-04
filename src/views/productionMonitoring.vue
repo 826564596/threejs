@@ -205,12 +205,12 @@ export default {
                         stop += res.data[i][key][j].stop_duration;
                         warn += res.data[i][key][j].warn_duration;
                     }
-                    free_duration.push((free / 1000 / 60).toFixed(2));
-                    run_duration.push((run / 1000 / 60).toFixed(2));
-                    stop_duration.push((stop / 1000 / 60).toFixed(2));
-                    warn_duration.push((warn / 1000 / 60).toFixed(2));
-
+                    free_duration.push((free / 1000).toFixed(0));
+                    run_duration.push((run / 1000).toFixed(0));
+                    stop_duration.push((stop / 1000).toFixed(0));
+                    warn_duration.push((warn / 1000).toFixed(0));
                 }
+
                 that.initEchartLine(data, free_duration, run_duration, warn_duration, stop_duration);
 
 
@@ -713,22 +713,32 @@ export default {
                 title: {
                     // text: '堆叠区域1',
                     // textStyle: {
-                    //     color: '#fff',
+                    //     color: '#fff', 
                     //     fontWeight: 'bold',
                     //     fontSize: 18,
                     // }
                 },
                 tooltip: {
                     trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            backgroundColor: '#6a7985'
+                    formatter(params) {
+                        // debugger;
+                        let str = `日期:${params[0].axisValue}<br/>`;
+                        for (let i of params) {
+                            let a = utils.secondToHMS(i.data);
+                            str += `<span style="margin-right:5px; display:inline-block;height: 10px;width: 10px;border-radius: 50%;background-color:${i.color};"></span>${i.seriesName}:${a}<br/>`
                         }
-                    }
+
+                        return str;
+                    },
+                    // axisPointer: {
+                    //     type: 'cross',
+                    //     label: {
+                    //         backgroundColor: '#6a7985'
+                    //     }
+                    // }
                 },
                 legend: {
-                    data: ['停机时长(分)', '运行时长(分)', '报警时长(分)', '空闲时长(分)'],
+                    data: ['停机时长', '运行时长', '报警时长', '空闲时长'],
                     textStyle: {
                         color: "#fff"
                     },
@@ -736,8 +746,14 @@ export default {
                 },
 
                 toolbox: {
+                    iconStyle: {
+                        color: "#fff",
+                        borderColor: "#fff",
+                    },
                     feature: {
-                        saveAsImage: {}
+                        saveAsImage: {
+                            backgroundColor: "#01060E",
+                        }
                     }
                 },
                 grid: {
@@ -770,6 +786,11 @@ export default {
                         axisLabel: {
                             color: '#fff',
                             fontSize: 24,
+
+                            formatter: function (value) {
+                                // 格式化成月/日，只在第一个刻度显示年份
+                                return utils.secondToHMS(value);
+                            },
                         },
                         axisLine: { show: false },
                         splitLine: {
@@ -783,9 +804,9 @@ export default {
                 ],
                 series: [
                     {
-                        name: '停机时长(分)',
+                        name: '停机时长',
                         type: 'line',
-                        stack: '总量',
+                        // stack: '总量',
                         // symbol: 'none',//
                         smooth: true,//是否平滑
                         areaStyle: {},
@@ -799,9 +820,9 @@ export default {
                         // }
                     },
                     {
-                        name: '运行时长(分)',
+                        name: '运行时长',
                         type: 'line',
-                        stack: '总量',
+                        // stack: '总量',
                         // symbol: 'none',
                         smooth: true,
                         areaStyle: {},
@@ -815,9 +836,9 @@ export default {
                         // }
                     },
                     {
-                        name: '报警时长(分)',
+                        name: '报警时长',
                         type: 'line',
-                        stack: '总量',
+                        // stack: '总量',
                         // symbol: 'none',
                         smooth: true,
                         areaStyle: {},
@@ -831,9 +852,9 @@ export default {
                         // }
                     },
                     {
-                        name: '空闲时长(分)',
+                        name: '空闲时长',
                         type: 'line',
-                        stack: '总量',
+                        // stack: '总量',
                         // symbol: 'none',
                         smooth: true,
                         areaStyle: {},

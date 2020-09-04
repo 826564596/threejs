@@ -95,13 +95,11 @@ export default {
                 // pagesize: 10,
             }
             this.$axios.post("api/DDC/DeviceChk/QueryMTRecd" + utils.formatQueryStr(obj)).then(res => {
-
                 if (res.length == 0) {
                     this.$messageBox('暂无数据', '提示', {
                         confirmButtonText: '确定',
                     });
                 }
-                console.log(res);
                 this.$emit("update:tableData", res);
             }).catch(error => {
 
