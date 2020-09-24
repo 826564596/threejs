@@ -42,8 +42,8 @@ service.interceptors.response.use(
         //   duration: 5 * 1000
         // })
         //
-        alert("接口访问失败");
-        alert(error);
+        // alert("接口访问失败");
+        // alert(error);
 
         return Promise.reject(error);
     }

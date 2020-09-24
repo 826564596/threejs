@@ -107,7 +107,7 @@
             </el-row>
 
             <!-- 第三行title -->
-            <el-carousel height="260px" arrow="never" interval="10000">
+            <el-carousel height="260px" arrow="never" :interval="10000">
                 <el-carousel-item>
                     <!-- 第三行标题 -->
                     <el-row>

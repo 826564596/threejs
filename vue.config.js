@@ -96,6 +96,17 @@ module.exports = {
         loaderOptions: {
             postcss: {
                 plugins: [
+                    // 通过 plugins 选项
+                    //配置css样式前缀
+                    require("autoprefixer")({
+                        overrideBrowserslist: [
+                            "Chrome > 31",
+                            "ff > 31",
+                            "ie >= 8",
+                            "last 2 versions", // 所有主流浏览器最近2个版本
+                        ],
+                        // grid: true,
+                    }),
                     require("postcss-plugin-px2rem")({
                         rootValue: 55, //换算基数， 默认100  ，这样的话把根标签的字体规定为1rem为50px,这样就可以从设计稿上量出多少个px直接在代码中写多上px了。
                         // unitPrecision: 5, //允许REM单位增长到的十进制数字。

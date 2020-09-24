@@ -91,7 +91,7 @@
                             </el-col>
                         </el-row> -->
 
-                        <el-carousel height="200px" arrow="never" interval="10000">
+                        <el-carousel height="200px" arrow="never" :interval="10000">
                             <el-carousel-item>
                                 <el-row>
                                     <el-col :span="10" :offset="1">
@@ -400,8 +400,6 @@ export default {
             number: "...",//选中报警工位
             averageYield: 0,//平均稼动率
             deviceIdArr: [],//存放设备Id
-
-
             DayWorkLoadRank: [],
 
             flag: false,
@@ -430,28 +428,6 @@ export default {
             };
 
             this.definedComposer();
-
-            // let rollOverGeo = new Three.BoxBufferGeometry(5, 5, 5);
-            // this.rollOverMaterial = new Three.MeshBasicMaterial({ color: 0xff0000, opacity: 0.5, transparent: true });
-            // this.rollOverMesh = new Three.Mesh(rollOverGeo, this.rollOverMaterial);
-            // this.scene.add(this.rollOverMesh);
-
-
-            // let geometry = new Three.PlaneGeometry(5, 5, 32);
-            // let material = new Three.MeshBasicMaterial({ color: 0x000000, side: Three.DoubleSide });
-            // let plane = new Three.Mesh(geometry, material);
-            // this.scene.add(plane);
-
-
-            // let geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
-            // geometry.rotateX( - Math.PI / 2 );
-
-            // plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
-            // scene.add( plane );
-
-            // objects.push( plane );
-
-
         },
         /**设置场景 */
         initScene() {
@@ -551,9 +527,10 @@ export default {
 
         /** 添加精灵图 */
         createTable(index, item, x, z) {
-
             let canvas;
-            if (item.F_ONLINESTATUS == undefined) { return; }
+            if (item == undefined || item.F_ONLINESTATUS == undefined) {
+                return;
+            }
             else if (item.F_ONLINESTATUS == "离线") {
                 canvas = this.makeLabelCanvas(100, 100, index, "rgb(210, 60, 64)");
                 let spriteMap = new Three.TextureLoader().load(require("../assets/image/离线2.png"));
@@ -685,20 +662,18 @@ export default {
             if (locationArray && locationArray.length > 0) {
 
                 for (let i of locationArray) {
+                    let a = this.scene.getObjectByName(i.name);
+                    if (!a) return;
+                    let one = a.getObjectByName("J2").rotation.y += (i.locationArray[0] * Math.PI / 180 - preLocationArray[i.index][0]) * this.i / 60;
+                    let two = a.getObjectByName("J3Box").rotation.z += ((i.locationArray[1] - (-90)) * Math.PI / 180 - preLocationArray[i.index][1]) * this.i / 60;
+                    let three = a.getObjectByName("J4Box").rotation.z += ((i.locationArray[2] - 180) * Math.PI / 180 - preLocationArray[i.index][2]) * this.i / 60;
+                    let four = a.getObjectByName("J5Box").rotation.x += (-i.locationArray[3] * Math.PI / 180 - preLocationArray[i.index][3]) * this.i / 60;
+                    let five = a.getObjectByName("J6Box").rotation.z += (i.locationArray[4] * Math.PI / 180 - preLocationArray[i.index][4]) * this.i / 60;
+                    let six = a.getObjectByName("J7Box").rotation.x += (-i.locationArray[5] * Math.PI / 180 - preLocationArray[i.index][5]) * this.i / 60;
 
-                    this.scene.getObjectByName(i.name).getObjectByName("J2").rotation.y += (i.locationArray[0] * Math.PI / 180 - preLocationArray[i.index][0]) * this.i / 60;
-                    this.scene.getObjectByName(i.name).getObjectByName("J3Box").rotation.z += ((i.locationArray[1] - (-90)) * Math.PI / 180 - preLocationArray[i.index][1]) * this.i / 60;
-                    this.scene.getObjectByName(i.name).getObjectByName("J4Box").rotation.z += ((i.locationArray[2] - 180) * Math.PI / 180 - preLocationArray[i.index][2]) * this.i / 60;
-                    this.scene.getObjectByName(i.name).getObjectByName("J5Box").rotation.x += (-i.locationArray[3] * Math.PI / 180 - preLocationArray[i.index][3]) * this.i / 60;
-                    this.scene.getObjectByName(i.name).getObjectByName("J6Box").rotation.z += (i.locationArray[4] * Math.PI / 180 - preLocationArray[i.index][4]) * this.i / 60;
-                    this.scene.getObjectByName(i.name).getObjectByName("J7Box").rotation.x += (-i.locationArray[5] * Math.PI / 180 - preLocationArray[i.index][5]) * this.i / 60;
                     preLocationArray[i.index] = [
-                        this.scene.getObjectByName(i.name).getObjectByName("J2").rotation.y,
-                        this.scene.getObjectByName(i.name).getObjectByName("J3Box").rotation.z,
-                        this.scene.getObjectByName(i.name).getObjectByName("J4Box").rotation.z,
-                        this.scene.getObjectByName(i.name).getObjectByName("J5Box").rotation.x,
-                        this.scene.getObjectByName(i.name).getObjectByName("J6Box").rotation.z,
-                        this.scene.getObjectByName(i.name).getObjectByName("J7Box").rotation.x
+                        one, two, three, four, five, six
+
                     ]
                 }
 
