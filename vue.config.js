@@ -57,13 +57,12 @@ module.exports = {
     },
 
     devServer: {
-        // open: false,
+        open: true,
         disableHostCheck: true,
         host: "0.0.0.0",
         port: 8081,
         https: false,
         hotOnly: false,
-        before: (app) => {},
         // 跨域--代理
         proxy: {
             "/api": {
@@ -71,7 +70,7 @@ module.exports = {
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {
-                    "^/api": "/", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
+                    "^/api": "", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
                 },
             },
             "/newApi": {
@@ -81,32 +80,24 @@ module.exports = {
                     "^/newApi": "", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
                 },
             },
-            "ftp/": {
-                target: "http://119.3.66.94:8090/", //域名
-                changeOrigin: true,
-                pathRewrite: {
-                    "^/newApi": "", //http://192.168.1.65:8886/api => http://192.168.1.65:8886/
-                },
-            },
         },
-        // proxy: null,
+        before: (app) => {},
     },
-    //把px换成rem
     css: {
         loaderOptions: {
             postcss: {
                 plugins: [
                     // 通过 plugins 选项
-                    //配置css样式前缀
-                    require("autoprefixer")({
-                        overrideBrowserslist: [
-                            "Chrome > 31",
-                            "ff > 31",
-                            "ie >= 8",
-                            "last 2 versions", // 所有主流浏览器最近2个版本
-                        ],
-                        // grid: true,
-                    }),
+                    //配置css样式前缀,会跟serve中的optimize-css-assets-webpack-plugin冲突，可以在build时再用
+                    // require("autoprefixer")({
+                    //     overrideBrowserslist: [
+                    //         "Chrome > 31",
+                    //         "ff > 31",
+                    //         "ie >= 8",
+                    //         "last 2 versions", // 所有主流浏览器最近2个版本
+                    //     ],
+                    //     grid: true,
+                    // }),
                     require("postcss-plugin-px2rem")({
                         rootValue: 55, //换算基数， 默认100  ，这样的话把根标签的字体规定为1rem为50px,这样就可以从设计稿上量出多少个px直接在代码中写多上px了。
                         // unitPrecision: 5, //允许REM单位增长到的十进制数字。
