@@ -1,31 +1,31 @@
-let CheckObject = function() {
-    CheckObject.prototype.checkName = () => {
-        console.log("checkName");
-        return this;
-    };
-    CheckObject.prototype.checkPassword = () => {
-        console.log("checkPassword");
-        return this;
-    };
-    CheckObject.prototype.addMethod = (name, fn) => {
-        console.log(this);
-        console.log(this.prototype);
+// 抽象工厂 父类
+class Stationery {
+    constructor() {
+        if (new.target == Stationery) {
+            throw new Error("不允许实例化一个抽象类");
+        }
+    }
+    useFor() {
+        return "好好学习，天天向上";
+    }
+}
 
-        this[name] = fn;
-        return this;
-    };
+class Pen extends Stationery {
+    constructor() {
+        super();
+        this.type = "pen";
+    }
+    introduce() {
+        console.log(this.type);
+    }
+}
 
-    CheckObject.prototype.addMethods = (name, fn) => {
-        this[name] = fn;
-        return this;
-    };
-};
-
-let a = new CheckObject();
-
-a.addMethods("checkEmail", () => {
-    console.log("checkEmail");
-    return this;
-});
-
-a.checkEmail();
+class Earser extends Stationery {
+    constructor() {
+        super();
+        this.type = "Earser";
+    }
+    introduce() {
+        console.log(this.type);
+    }
+}

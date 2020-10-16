@@ -361,8 +361,6 @@ export default {
                     transparent: true,
                     map: spriteMap,
                     side: THREE.DoubleSide,
-
-
                 });
                 let sprite = new THREE.Sprite(spriteMaterial);
                 sprite.scale.set(25, 25, 1)
@@ -471,7 +469,6 @@ export default {
             J1.position.set(16 * 20, 18 * 20, 12 * 20);
             obj.name = this.groupName;
             obj.add(J1);
-
 
             obj3.scale.set(1.5, 1.5, 1.5);
             obj3.rotation.y = Math.PI;

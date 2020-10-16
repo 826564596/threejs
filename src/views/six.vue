@@ -405,9 +405,6 @@ export default {
             threeUtils.initRender(this);
             threeUtils.initLight(this);
             threeUtils.initControls(this);
-
-
-
             this.initContent();
             this.definedComposer();
         },
@@ -470,7 +467,6 @@ export default {
             threeUtils.loadObj(this.publicPath, (object1, object2, object3, object4) => {
                 that.clone(object1, object2, object3, object4)
             });
-
         },
 
         /** 动画  */
@@ -518,12 +514,9 @@ export default {
 
                     preLocationArray[i.index] = [
                         one, two, three, four, five, six
-
                     ]
                 }
-
             }
-
         },
 
         /**获取object的父对象 */
