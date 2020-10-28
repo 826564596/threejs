@@ -333,7 +333,7 @@ export default {
             threeUtils.createFloor(this);
             threeUtils.createEnvironment(this);
             threeUtils.loadObj(this.publicPath, (object1, object2, object3, object4) => {
-                that.clone(object1, object2, object3, object4)
+                that.addObject(object1, object2, object3, object4)
             });
         },
         /** 添加精灵图 */
