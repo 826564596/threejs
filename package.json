@@ -9,7 +9,7 @@
     },
     "dependencies": {
         "@tweenjs/tween.js": "^18.5.0",
-        "axios": "^0.19.2",
+        "axios": "^0.21.1",
         "core-js": "^3.6.4",
         "element-ui": "^2.13.2",
         "lib-flexible": "^0.3.2",
