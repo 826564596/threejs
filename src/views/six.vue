@@ -420,7 +420,7 @@ export default {
                 let spriteMaterial = new THREE.SpriteMaterial({
                     transparent: true,
                     map: spriteMap,
-                    side: ThREE.DoubleSide,
+                    side: THREE.DoubleSide,
 
                 });
                 let sprite = new THREE.Sprite(spriteMaterial);
@@ -435,7 +435,7 @@ export default {
                 let spriteMaterial = new THREE.SpriteMaterial({
                     transparent: true,
                     map: spriteMap,
-                    side: ThREE.DoubleSide,
+                    side: THREE.DoubleSide,
 
 
                 });
@@ -448,7 +448,7 @@ export default {
             let spriteMaterial = new THREE.SpriteMaterial({
                 transparent: true,
                 map: texture,
-                side: Three.DoubleSide,
+                side: THREE.DoubleSide,
                 // color: 0x00ff00,
 
             });

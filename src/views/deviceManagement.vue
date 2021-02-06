@@ -74,7 +74,7 @@
 
                     <div class="pm_content-two" style="height:572px;width:98%;margin-left:10px">
                         <div style="margin-bottom:10px;height:100%;width:100%">
-                            <el-table :data="tableData2" style="width: 100%; " max-height="571" border>
+                            <el-table :data="tableData2" style="width: 100%;" max-height="571" border>
                                 <el-table-column prop="F_DEVICEID" label="设备ID" width="249">
                                 </el-table-column>
                                 <el-table-column prop="F_mtoper" label="维修人员" width="200">
@@ -85,7 +85,7 @@
                                 </el-table-column>
                                 <el-table-column prop="F_CHKNAME" label="点检项" width="200">
                                 </el-table-column>
-                                <el-table-column prop="f_downtmlen" label="停机时长（分钟）" width="200">
+                                <el-table-column prop="f_downtmlen" label="停机时长（分钟）" width="500">
                                 </el-table-column>
                                 <el-table-column prop="F_mttmlen" label="维修时长（分钟）" width="200">
                                 </el-table-column>

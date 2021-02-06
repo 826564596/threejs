@@ -66,7 +66,9 @@ module.exports = {
         // 跨域--代理
         proxy: {
             "/api": {
-                target: "http://119.3.66.94:7002/", // 域名
+                // target: "http://119.3.66.94:7002/", // 域名
+                target: "http://27.150.173.9:9002/", //域名
+
                 changeOrigin: true,
                 ws: true,
                 pathRewrite: {

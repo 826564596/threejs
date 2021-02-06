@@ -345,7 +345,7 @@ export default {
                 let spriteMaterial = new THREE.SpriteMaterial({
                     transparent: true,
                     map: spriteMap,
-                    side: ThREE.DoubleSide,
+                    side: THREE.DoubleSide,
 
                 });
                 let sprite = new THREE.Sprite(spriteMaterial);
