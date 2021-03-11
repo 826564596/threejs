@@ -2,9 +2,10 @@
 <template>
     <div class=" buttonAndText" style="width:720px">
         <div class="dropdown">
-            {{this.$store.state.deviceIdArr[index].deviceName}}
+            <!-- {{this.$store.state.deviceIdArr[index].deviceName}} -->
+            {{this.arr[index].deviceName}}
             <div class="dropdown-content">
-                <div v-for="(item,index) in this.$store.state.deviceIdArr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
+                <div v-for="(item,index) in this.arr" :key="index" @click="choseItem(index)">{{item.deviceName}}</div>
             </div>
         </div>
         <div>
@@ -28,13 +29,17 @@ export default {
             arr: [],
             startDate: '',//开始时间
             endDate: '',//结束时间
-            value2: ["2020-06-01", utils.dateToDay(new Date())],
+            // value2: [utils.dateToDay(new Date("2020/6/1")), utils.dateToDay(new Date())],
+            value2: [new Date("2020/6/1"), new Date()],
+
         };
     },
 
     mounted() {
         let that = this;
-        this.arr = this.$store.state.deviceIdArr;
+        this.arr = JSON.parse(JSON.stringify(this.$store.state.deviceIdArr));
+        this.arr.unshift({ deviceId: "wuji", deviceName: "全部" });
+
         let a = utils.dateToDay(new Date());
         this.$axios.post("newApi/wuji/Device/ProductionStatement", {
             "device": {
@@ -82,7 +87,7 @@ export default {
             let endDate = utils.dateToDay(this.value2[1].clone());
             this.$axios.post("newApi/wuji/Device/ProductionStatement", {
                 "device": {
-                    "id": that.$store.state.deviceIdArr[that.index].deviceId
+                    "id": that.arr[that.index].deviceId
                 },
                 "date_period": {
                     "start_date": startDate,
@@ -96,6 +101,9 @@ export default {
                         confirmButtonText: '确定',
                     });
                 }
+                res.sort((a, b) => {
+                    return a.name.substr(10, a.name.length - 1) - b.name.substr(10, b.name.length - 1);
+                })
                 this.$emit("update:tableData", res);
             }).catch(error => {
 
